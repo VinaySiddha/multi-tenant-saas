@@ -52,13 +52,15 @@ public class AuthService {
 
     @Transactional
     public AuthResponse login(LoginRequest request) {
-        log.info("Attempting login for email: {}", request.getEmail());
+        String cleanEmail = request.getEmail() != null ? request.getEmail().trim().toLowerCase() : "";
+        log.info("Attempting login for email: {}", cleanEmail);
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                    new UsernamePasswordAuthenticationToken(cleanEmail, request.getPassword())
             );
         } catch (Exception e) {
+            log.warn("Authentication failed for email [{}]: {}", cleanEmail, e.getMessage());
             throw new UnauthorizedException("Invalid email or password");
         }
 

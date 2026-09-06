@@ -1,0 +1,31 @@
+# Maven & Java
+backend/target/
+backend/.mvn/
+backend/*.log
+*.class
+.factorypath
+.project
+.settings/
+.classpath
+
+# Node & Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/*.tsbuildinfo
+
+# IDE & OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+*.swp
+*.swo
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

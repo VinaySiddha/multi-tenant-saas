@@ -59,7 +59,14 @@ public class KitchenService {
             if (order != null) {
                 order.setStatus(OrderStatus.READY);
                 orderRepository.save(order);
-                notificationService.sendOrderReadyEvent(tenantId, ticket.getBranchId(), order);
+
+                java.util.Map<String, Object> orderReadyPayload = new java.util.HashMap<>();
+                orderReadyPayload.put("orderId", order.getId());
+                orderReadyPayload.put("orderNumber", order.getOrderNumber());
+                orderReadyPayload.put("status", order.getStatus().name());
+                orderReadyPayload.put("tableId", order.getTableId());
+                orderReadyPayload.put("grandTotal", order.getGrandTotal());
+                notificationService.sendOrderReadyEvent(tenantId, ticket.getBranchId(), orderReadyPayload);
             }
         }
 
@@ -70,7 +77,7 @@ public class KitchenService {
         return dto;
     }
 
-    private KitchenTicketDto mapToDto(KitchenTicket t) {
+    public KitchenTicketDto mapToDto(KitchenTicket t) {
         long elapsedMinutes = 0;
         if (t.getCreatedAt() != null) {
             elapsedMinutes = Duration.between(t.getCreatedAt(), Instant.now()).toMinutes();

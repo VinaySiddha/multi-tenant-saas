@@ -29,7 +29,7 @@ export default function LoginPage() {
       if (response.data?.success) {
         const { accessToken, refreshToken, user, restaurant, branch } = response.data.data;
         setAuth(accessToken, refreshToken, user, restaurant, branch);
-        router.push("/admin/dashboard");
+        router.push("/dashboard");
       } else {
         setErrorMsg(response.data?.message || "Login failed");
       }
@@ -68,7 +68,7 @@ export default function LoginPage() {
             createdAt: new Date().toISOString(),
           }
         );
-        router.push("/admin/dashboard");
+        router.push("/dashboard");
       } else {
         setErrorMsg(err.response?.data?.message || "Invalid email or password");
       }

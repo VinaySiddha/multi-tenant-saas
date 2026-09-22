@@ -57,7 +57,9 @@ export interface DiningTable {
   section?: string;
   capacity: number;
   status: "AVAILABLE" | "OCCUPIED" | "RESERVED" | "BILLING" | "CLEANING";
+  qrCodeToken?: string;
   qrCodeUrl?: string;
+  isActive?: boolean;
 }
 
 export interface MenuItem {
@@ -74,6 +76,7 @@ export interface MenuItem {
   isVeg: boolean;
   isAvailable: boolean;
   imageUrl?: string;
+  preparationTimeMinutes?: number;
 }
 
 export interface Category {
@@ -82,7 +85,35 @@ export interface Category {
   name: string;
   description?: string;
   displayOrder: number;
+  imageUrl?: string;
   isActive: boolean;
+}
+
+export interface InventoryItem {
+  id: string;
+  tenantId: string;
+  branchId?: string;
+  name: string;
+  unit: string;
+  currentStock: number;
+  minThreshold: number;
+  costPerUnit?: number;
+  isLowStock: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface StaffMember {
+  id: string;
+  tenantId: string;
+  branchId?: string;
+  email: string;
+  fullName: string;
+  phoneNumber?: string;
+  role: UserRole;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface OrderItem {

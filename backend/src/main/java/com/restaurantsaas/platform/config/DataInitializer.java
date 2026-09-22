@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -28,6 +30,7 @@ public class DataInitializer implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final MenuItemRepository menuItemRepository;
     private final DiningTableRepository tableRepository;
+    private final InventoryItemRepository inventoryItemRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -115,12 +118,45 @@ public class DataInitializer implements CommandLineRunner {
         );
 
         createOrUpdateUser(
+                "waiter@royalbistro.com",
+                "Admin@123",
+                "Priya Sharma",
+                "+91 98765 43213",
+                RoleType.WAITER,
+                waiterRole,
+                restaurant.getId(),
+                branch.getId()
+        );
+
+        createOrUpdateUser(
                 "admin@restaurantsaas.io",
                 "Admin@123",
                 "System Administrator",
                 "+91 98765 43200",
                 RoleType.PLATFORM_ADMIN,
                 adminRole,
+                restaurant.getId(),
+                branch.getId()
+        );
+
+        createOrUpdateUser(
+                "admin@sapru.com",
+                "password123",
+                "Sapru Administrator",
+                "+91 98765 43299",
+                RoleType.PLATFORM_ADMIN,
+                adminRole,
+                restaurant.getId(),
+                branch.getId()
+        );
+
+        createOrUpdateUser(
+                "owner@sapru.com",
+                "password123",
+                "Sapru Restaurant Owner",
+                "+91 98765 43298",
+                RoleType.RESTAURANT_OWNER,
+                ownerRole,
                 restaurant.getId(),
                 branch.getId()
         );
@@ -255,6 +291,22 @@ public class DataInitializer implements CommandLineRunner {
             createTableIfNotExists(restaurant.getId(), branch.getId(), "T-02", "Ground Floor AC", 2, TableStatus.AVAILABLE);
             createTableIfNotExists(restaurant.getId(), branch.getId(), "T-03", "Rooftop Lounge", 6, TableStatus.AVAILABLE);
             createTableIfNotExists(restaurant.getId(), branch.getId(), "T-04", "Rooftop Lounge", 4, TableStatus.AVAILABLE);
+            createTableIfNotExists(restaurant.getId(), branch.getId(), "T-05", "Outdoor Patio", 4, TableStatus.AVAILABLE);
+            createTableIfNotExists(restaurant.getId(), branch.getId(), "T-06", "Outdoor Patio", 2, TableStatus.AVAILABLE);
+        }
+
+        // 7. Initialize Inventory Items
+        if (inventoryItemRepository.findAllByTenantIdOrderByCreatedAtDesc(restaurant.getId()).isEmpty()) {
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Fresh Cottage Cheese (Paneer)", "kg", new BigDecimal("18.500"), new BigDecimal("5.000"), new BigDecimal("320.00"));
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Premium Basmati Rice", "kg", new BigDecimal("45.000"), new BigDecimal("15.000"), new BigDecimal("110.00"));
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Fresh Farm Chicken Cuts", "kg", new BigDecimal("4.200"), new BigDecimal("10.000"), new BigDecimal("240.00")); // Low stock!
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Amul Salted Butter", "kg", new BigDecimal("12.000"), new BigDecimal("3.000"), new BigDecimal("480.00"));
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Refined Wheat Flour (Maida)", "kg", new BigDecimal("25.000"), new BigDecimal("8.000"), new BigDecimal("45.00"));
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Pure Desi Ghee", "ltr", new BigDecimal("2.500"), new BigDecimal("4.000"), new BigDecimal("650.00")); // Low stock!
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Sweet Corn Kernels", "kg", new BigDecimal("15.000"), new BigDecimal("5.000"), new BigDecimal("95.00"));
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Ratnagiri Alphonso Mango Pulp", "kg", new BigDecimal("8.000"), new BigDecimal("2.000"), new BigDecimal("180.00"));
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Fresh Cow Milk", "ltr", new BigDecimal("1.500"), new BigDecimal("5.000"), new BigDecimal("60.00")); // Low stock!
+            createInventoryIfNotExists(restaurant.getId(), branch.getId(), "Coca Cola Can (330ml)", "pcs", new BigDecimal("48.000"), new BigDecimal("24.000"), new BigDecimal("28.00"));
         }
 
         log.info("Platform demo initialization complete. Login credentials: owner@royalbistro.com / Admin@123");
@@ -281,7 +333,7 @@ public class DataInitializer implements CommandLineRunner {
                     .fullName(fullName)
                     .phoneNumber(phone)
                     .primaryRole(roleType)
-                    .roles(Collections.singleton(role))
+                    .roles(new HashSet<>(Collections.singleton(role)))
                     .tenantId(tenantId)
                     .branchId(branchId)
                     .isActive(true)
@@ -293,7 +345,7 @@ public class DataInitializer implements CommandLineRunner {
             user.setTenantId(tenantId);
             user.setBranchId(branchId);
             user.setPrimaryRole(roleType);
-            user.setRoles(Collections.singleton(role));
+            user.setRoles(new HashSet<>(Collections.singleton(role)));
             user.setActive(true);
             userRepository.save(user);
             log.info("Updated and verified credentials for user: {}", cleanEmail);
@@ -313,5 +365,18 @@ public class DataInitializer implements CommandLineRunner {
                     .isActive(true)
                     .build());
         }
+    }
+
+    private void createInventoryIfNotExists(UUID tenantId, UUID branchId, String name, String unit,
+                                           BigDecimal stock, BigDecimal threshold, BigDecimal cost) {
+        inventoryItemRepository.save(InventoryItem.builder()
+                .tenantId(tenantId)
+                .branchId(branchId)
+                .name(name)
+                .unit(unit)
+                .currentStock(stock)
+                .minThreshold(threshold)
+                .costPerUnit(cost)
+                .build());
     }
 }

@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface MenuItemRepository extends JpaRepository<MenuItem, UUID> {
+    List<MenuItem> findAllByTenantId(UUID tenantId);
     List<MenuItem> findAllByTenantIdAndIsAvailableTrue(UUID tenantId);
     List<MenuItem> findAllByTenantIdAndCategoryId(UUID tenantId, UUID categoryId);
     Optional<MenuItem> findByIdAndTenantId(UUID id, UUID tenantId);

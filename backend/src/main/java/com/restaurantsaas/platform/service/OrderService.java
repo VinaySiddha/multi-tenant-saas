@@ -4,6 +4,7 @@ import com.restaurantsaas.platform.common.exception.BadRequestException;
 import com.restaurantsaas.platform.common.exception.ResourceNotFoundException;
 import com.restaurantsaas.platform.domain.entity.*;
 import com.restaurantsaas.platform.domain.enums.*;
+import com.restaurantsaas.platform.dto.kitchen.KitchenTicketDto;
 import com.restaurantsaas.platform.dto.order.*;
 import com.restaurantsaas.platform.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -113,6 +114,7 @@ public class OrderService {
                 table.setStatus(TableStatus.OCCUPIED);
                 tableRepository.save(table);
                 tableNumberStr = table.getTableNumber();
+                order.setTable(table);
             }
         }
 
@@ -130,13 +132,30 @@ public class OrderService {
                 .specialInstructions(request.getNotes())
                 .build();
 
-        kitchenTicketRepository.save(kot);
+        kot = kitchenTicketRepository.save(kot);
 
         OrderDto orderDto = mapToDto(order);
 
+        KitchenTicketDto kotDto = KitchenTicketDto.builder()
+                .id(kot.getId())
+                .tenantId(kot.getTenantId())
+                .branchId(kot.getBranchId())
+                .orderId(kot.getOrderId())
+                .kotNumber(kot.getKotNumber())
+                .tableNumber(kot.getTableNumber())
+                .orderType(kot.getOrderType())
+                .status(kot.getStatus())
+                .itemsSummary(kot.getItemsSummary())
+                .specialInstructions(kot.getSpecialInstructions())
+                .createdAt(kot.getCreatedAt())
+                .startedAt(kot.getStartedAt())
+                .completedAt(kot.getCompletedAt())
+                .elapsedMinutes(0)
+                .build();
+
         // Real-time broadcast
         notificationService.sendOrderCreatedEvent(tenantId, branchId, orderDto);
-        notificationService.sendKotUpdatedEvent(tenantId, branchId, kot);
+        notificationService.sendKotUpdatedEvent(tenantId, branchId, kotDto);
 
         return orderDto;
     }

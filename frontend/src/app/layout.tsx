@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "RestoSaaS - Enterprise Restaurant Operating System",
-  description: "Cloud-native Multi-tenant POS, Kitchen Display & Restaurant Management Platform",
+  title: "Sapru — Next-Gen Enterprise Restaurant Operating System",
+  description: "Cloud-native Multi-Tenant POS, Real-Time Kitchen Display (KDS), QR Ordering & Restaurant Intelligence Platform",
 };
 
 export default function RootLayout({

@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.UUID;
 
 @Slf4j
@@ -135,7 +136,7 @@ public class AuthService {
                 .fullName(request.getOwnerName())
                 .phoneNumber(request.getPhoneNumber())
                 .primaryRole(RoleType.RESTAURANT_OWNER)
-                .roles(Collections.singleton(ownerRole))
+                .roles(new HashSet<>(Collections.singleton(ownerRole)))
                 .isActive(true)
                 .build();
         user = userRepository.save(user);

@@ -23,15 +23,8 @@ import {
 import apiClient from "@/lib/api-client";
 import { StaffMember, UserRole } from "@/types";
 
-const DEMO_STAFF: StaffMember[] = [
-  { id: "u1", tenantId: "demo", email: "owner@royalbistro.com", fullName: "Alex Mercer", phoneNumber: "+91 98765 43210", role: "RESTAURANT_OWNER", isActive: true },
-  { id: "u2", tenantId: "demo", email: "cashier@royalbistro.com", fullName: "Rahul Verma", phoneNumber: "+91 98765 43211", role: "CASHIER", isActive: true },
-  { id: "u3", tenantId: "demo", email: "chef@royalbistro.com", fullName: "Sanjay Kapoor", phoneNumber: "+91 98765 43212", role: "CHEF", isActive: true },
-  { id: "u4", tenantId: "demo", email: "waiter@royalbistro.com", fullName: "Priya Sharma", phoneNumber: "+91 98765 43213", role: "WAITER", isActive: true },
-];
-
 export default function StaffManagementPage() {
-  const [staffList, setStaffList] = useState<StaffMember[]>(DEMO_STAFF);
+  const [staffList, setStaffList] = useState<StaffMember[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("ALL");
@@ -57,11 +50,13 @@ export default function StaffManagementPage() {
     try {
       setLoading(true);
       const res = await apiClient.get("/staff");
-      if (res.data?.data && res.data.data.length > 0) {
+      if (res.data?.data) {
         setStaffList(res.data.data);
+      } else {
+        setStaffList([]);
       }
     } catch {
-      // Keep demo fallback
+      setStaffList([]);
     } finally {
       setLoading(false);
     }

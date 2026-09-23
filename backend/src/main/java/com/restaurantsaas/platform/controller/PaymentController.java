@@ -27,7 +27,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @PostMapping("/settle")
+    @PostMapping(value = {"", "/settle"})
     @Operation(summary = "Settle Order Bill", description = "Record payment, complete order and release table")
     public ResponseEntity<ApiResponse<PaymentDto>> processPayment(@Valid @RequestBody PaymentRequest request) {
         UUID tenantId = TenantContext.getTenantId();

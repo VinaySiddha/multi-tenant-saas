@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { 
   DollarSign, 
@@ -28,21 +28,17 @@ import { useAuthStore } from "@/store/useAuthStore";
 export default function AdminDashboardPage() {
   const { tenant, branch } = useAuthStore();
   const [summary, setSummary] = useState<any>({
-    todayRevenue: 48250,
-    todayOrdersCount: 128,
-    occupiedTablesCount: 14,
-    totalTablesCount: 20,
-    tableOccupancyRate: 70.0,
+    todayRevenue: 0,
+    todayOrdersCount: 0,
+    occupiedTablesCount: 0,
+    totalTablesCount: 0,
+    tableOccupancyRate: 0.0,
     avgPrepTimeMinutes: 14.5,
-    activeOrdersCount: 4
+    activeOrdersCount: 0
   });
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, []);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     try {
       setLoading(true);
       const res = await apiClient.get("/analytics/summary");
@@ -50,31 +46,53 @@ export default function AdminDashboardPage() {
         setSummary(res.data.data);
       }
     } catch {
-      // Keep demo values
+      // Clean zero state
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchAnalytics();
+
+    // Listen to real-time events to auto-refresh analytics
+    const handleAnalyticsEvents = () => {
+      fetchAnalytics();
+    };
+
+    window.addEventListener("sapru:order-created", handleAnalyticsEvents);
+    window.addEventListener("sapru:order-ready", handleAnalyticsEvents);
+    window.addEventListener("sapru:payment-completed", handleAnalyticsEvents);
+
+    const interval = setInterval(fetchAnalytics, 15000);
+
+    return () => {
+      window.removeEventListener("sapru:order-created", handleAnalyticsEvents);
+      window.removeEventListener("sapru:order-ready", handleAnalyticsEvents);
+      window.removeEventListener("sapru:payment-completed", handleAnalyticsEvents);
+      clearInterval(interval);
+    };
+  }, [fetchAnalytics]);
 
   const kpis = [
     { 
       title: "Today's Gross Revenue", 
-      value: formatCurrency(Number(summary.todayRevenue || 48250)), 
-      subtext: "+14.2% vs yesterday", 
+      value: formatCurrency(Number(summary.todayRevenue || 0)), 
+      subtext: "Live collected revenue", 
       icon: DollarSign, 
       color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" 
     },
     { 
       title: "Orders Placed Today", 
-      value: String(summary.todayOrdersCount || 128), 
-      subtext: `${summary.activeOrdersCount || 4} in active preparation`, 
+      value: String(summary.todayOrdersCount || 0), 
+      subtext: `${summary.activeOrdersCount || 0} in active kitchen prep`, 
       icon: ShoppingBag, 
       color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20" 
     },
     { 
       title: "Table Occupancy", 
-      value: `${summary.occupiedTablesCount || 14} / ${summary.totalTablesCount || 20}`, 
-      subtext: `${summary.tableOccupancyRate || 70.0}% capacity active`, 
+      value: `${summary.occupiedTablesCount || 0} / ${summary.totalTablesCount || 0}`, 
+      subtext: `${summary.tableOccupancyRate || 0}% dining capacity active`, 
       icon: Utensils, 
       color: "text-amber-400 bg-amber-500/10 border-amber-500/20" 
     },
@@ -90,7 +108,7 @@ export default function AdminDashboardPage() {
   const quickLaunchers = [
     {
       title: "POS Billing Terminal",
-      subtitle: "Open front-of-house cashier register",
+      subtitle: "Open front-of-house cashier register & send KOT",
       href: "/terminal",
       icon: Receipt,
       badge: "Cashier Desk",
@@ -99,7 +117,7 @@ export default function AdminDashboardPage() {
     },
     {
       title: "Kitchen Display (KDS)",
-      subtitle: "Live chef ticket line with prep timers",
+      subtitle: "Live chef ticket line with prep timers & ready alerts",
       href: "/kds",
       icon: ChefHat,
       badge: "Kitchen Line",
@@ -107,27 +125,26 @@ export default function AdminDashboardPage() {
       iconBg: "bg-rose-500/10 text-rose-400 border border-rose-500/20",
     },
     {
-      title: "Guest QR Menu Demo",
-      subtitle: "Simulate contactless customer ordering",
-      href: "/menu/5da85f64-5717-4562-b3fc-2c963f66afb5",
-      icon: QrCode,
-      badge: "Guest View",
-      color: "hover:border-indigo-500/50 hover:bg-indigo-500/5",
-      iconBg: "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
+      title: "Orders & Invoices Ledger",
+      subtitle: "Settle bills, collect payments & print receipts",
+      href: "/orders",
+      icon: ShoppingBag,
+      badge: "Billing",
+      color: "hover:border-emerald-500/50 hover:bg-emerald-500/5",
+      iconBg: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
     },
   ];
 
   const managementModules = [
-    { label: "Orders & Invoices", href: "/orders", icon: ShoppingBag, count: `${summary.todayOrdersCount || 128} records` },
-    { label: "Menu & Items", href: "/menu", icon: Utensils, count: "6 Active categories" },
-    { label: "Floor & Tables", href: "/tables", icon: LayoutGrid, count: `${summary.totalTablesCount || 20} Dining tables` },
-    { label: "Inventory Stock", href: "/inventory", icon: Boxes, count: "3 Low stock alerts" },
-    { label: "Staff & Roles", href: "/staff", icon: Users, count: "4 Team members" },
+    { label: "Orders & Invoices", href: "/orders", icon: ShoppingBag, count: `${summary.todayOrdersCount || 0} records today` },
+    { label: "Menu & Pricing", href: "/menu", icon: Utensils, count: "Active food & drinks catalog" },
+    { label: "Floor & Dining Tables", href: "/tables", icon: LayoutGrid, count: `${summary.totalTablesCount || 0} Dining tables` },
+    { label: "Inventory Stock", href: "/inventory", icon: Boxes, count: "Stock levels & consumption" },
+    { label: "Staff & Team Roles", href: "/staff", icon: Users, count: "Roles & permissions" },
   ];
 
   return (
     <div className="space-y-8">
-      
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -135,7 +152,7 @@ export default function AdminDashboardPage() {
             Operations &amp; Revenue Overview
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Real-time telemetry for <strong className="text-slate-200">{tenant?.name || "The Royal Bistro"}</strong> ({branch?.name || "Indiranagar Flagship"})
+            Live telemetry for <strong className="text-slate-200">{tenant?.name || "The Royal Bistro"}</strong> ({branch?.name || "Indiranagar Flagship"})
           </p>
         </div>
 
@@ -170,7 +187,7 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
               <div>
-                <div className="text-2xl font-extrabold text-white mb-1">
+                <div className="text-2xl font-extrabold text-white mb-1 font-mono">
                   {kpi.value}
                 </div>
                 <span className="text-[11px] font-medium text-slate-400">
@@ -188,7 +205,7 @@ export default function AdminDashboardPage() {
           <h2 className="text-sm font-bold text-slate-200 uppercase tracking-wider">
             Live Service Portals
           </h2>
-          <span className="text-xs text-slate-400">Instant Role Switching</span>
+          <span className="text-xs text-slate-400">Instant Access</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -229,7 +246,6 @@ export default function AdminDashboardPage() {
 
       {/* Operations & Management Hub */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
         {/* Management Shortcuts */}
         <div className="lg:col-span-2 p-6 bg-slate-900 rounded-2xl border border-slate-800 shadow-md space-y-4">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -272,32 +288,30 @@ export default function AdminDashboardPage() {
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-4 h-4 text-indigo-400" />
               <h3 className="font-bold text-sm text-white">
-                Platform Reliability
+                Platform Telemetry &amp; Speed
               </h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Front-of-house POS, Kitchen Display System, and Contactless QR orders are running on high-availability cloud channels with automatic data synchronization.
+              Front-of-house POS, Kitchen Display System, and Contactless QR orders are running on high-availability cloud channels with automatic real-time WebSocket synchronization.
             </p>
           </div>
 
           <div className="space-y-2 pt-4 border-t border-slate-800 text-xs">
             <div className="flex items-center justify-between text-slate-400">
               <span>Order Dispatch Latency:</span>
-              <span className="font-bold text-emerald-400">&lt; 150ms</span>
+              <span className="font-bold text-emerald-400">&lt; 100ms</span>
             </div>
             <div className="flex items-center justify-between text-slate-400">
               <span>Multi-Tenant Data Isolation:</span>
               <span className="font-bold text-indigo-400">Strict Verified</span>
             </div>
             <div className="flex items-center justify-between text-slate-400">
-              <span>Automatic Stock Depletion:</span>
-              <span className="font-bold text-emerald-400">Enabled</span>
+              <span>Live WebSocket Notifications:</span>
+              <span className="font-bold text-emerald-400">Active</span>
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
   );
 }

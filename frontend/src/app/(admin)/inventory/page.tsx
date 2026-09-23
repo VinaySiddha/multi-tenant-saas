@@ -20,21 +20,8 @@ import apiClient from "@/lib/api-client";
 import { formatCurrency } from "@/lib/utils";
 import { InventoryItem } from "@/types";
 
-const DEMO_INVENTORY: InventoryItem[] = [
-  { id: "1", tenantId: "demo", name: "Fresh Cottage Cheese (Paneer)", unit: "kg", currentStock: 18.5, minThreshold: 5.0, costPerUnit: 320, isLowStock: false },
-  { id: "2", tenantId: "demo", name: "Premium Basmati Rice", unit: "kg", currentStock: 45.0, minThreshold: 15.0, costPerUnit: 110, isLowStock: false },
-  { id: "3", tenantId: "demo", name: "Fresh Farm Chicken Cuts", unit: "kg", currentStock: 4.2, minThreshold: 10.0, costPerUnit: 240, isLowStock: true },
-  { id: "4", tenantId: "demo", name: "Amul Salted Butter", unit: "kg", currentStock: 12.0, minThreshold: 3.0, costPerUnit: 480, isLowStock: false },
-  { id: "5", tenantId: "demo", name: "Refined Wheat Flour (Maida)", unit: "kg", currentStock: 25.0, minThreshold: 8.0, costPerUnit: 45, isLowStock: false },
-  { id: "6", tenantId: "demo", name: "Pure Desi Ghee", unit: "ltr", currentStock: 2.5, minThreshold: 4.0, costPerUnit: 650, isLowStock: true },
-  { id: "7", tenantId: "demo", name: "Sweet Corn Kernels", unit: "kg", currentStock: 15.0, minThreshold: 5.0, costPerUnit: 95, isLowStock: false },
-  { id: "8", tenantId: "demo", name: "Ratnagiri Alphonso Mango Pulp", unit: "kg", currentStock: 8.0, minThreshold: 2.0, costPerUnit: 180, isLowStock: false },
-  { id: "9", tenantId: "demo", name: "Fresh Cow Milk", unit: "ltr", currentStock: 1.5, minThreshold: 5.0, costPerUnit: 60, isLowStock: true },
-  { id: "10", tenantId: "demo", name: "Coca Cola Can (330ml)", unit: "pcs", currentStock: 48.0, minThreshold: 24.0, costPerUnit: 28, isLowStock: false },
-];
-
 export default function InventoryPage() {
-  const [items, setItems] = useState<InventoryItem[]>(DEMO_INVENTORY);
+  const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterTab, setFilterTab] = useState<"ALL" | "LOW_STOCK" | "IN_STOCK">("ALL");
@@ -67,11 +54,13 @@ export default function InventoryPage() {
     try {
       setLoading(true);
       const res = await apiClient.get("/inventory");
-      if (res.data?.data && res.data.data.length > 0) {
+      if (res.data?.data) {
         setItems(res.data.data);
+      } else {
+        setItems([]);
       }
     } catch {
-      // Keep demo fallback
+      setItems([]);
     } finally {
       setLoading(false);
     }

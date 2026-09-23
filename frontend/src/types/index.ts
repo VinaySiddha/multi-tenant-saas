@@ -135,7 +135,11 @@ export interface Order {
   orderNumber: string;
   orderType: "DINE_IN" | "TAKEAWAY" | "DELIVERY" | "QR_ORDER";
   tableId?: string;
+  tableNumber?: string;
   tableName?: string;
+  customerName?: string;
+  customerPhone?: string;
+  notes?: string;
   status: "PLACED" | "CONFIRMED" | "IN_KITCHEN" | "READY" | "COMPLETED" | "CANCELLED";
   paymentStatus: "UNPAID" | "PARTIAL" | "PAID" | "REFUNDED";
   subtotal: number;

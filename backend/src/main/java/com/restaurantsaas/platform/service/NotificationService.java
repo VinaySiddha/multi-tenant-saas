@@ -23,6 +23,7 @@ public class NotificationService {
         payload.put("data", order);
         log.info("Broadcasting ORDER_CREATED event to {}", destination);
         messagingTemplate.convertAndSend(destination, payload);
+        messagingTemplate.convertAndSend("/topic/orders", payload);
     }
 
     public void sendKotUpdatedEvent(UUID tenantId, UUID branchId, Object kot) {
@@ -32,6 +33,7 @@ public class NotificationService {
         payload.put("data", kot);
         log.info("Broadcasting KOT_UPDATED event to {}", destination);
         messagingTemplate.convertAndSend(destination, payload);
+        messagingTemplate.convertAndSend("/topic/kot", payload);
     }
 
     public void sendOrderReadyEvent(UUID tenantId, UUID branchId, Object order) {
@@ -41,6 +43,8 @@ public class NotificationService {
         payload.put("data", order);
         log.info("Broadcasting ORDER_READY event to {}", destination);
         messagingTemplate.convertAndSend(destination, payload);
+        messagingTemplate.convertAndSend("/topic/orders", payload);
+        messagingTemplate.convertAndSend("/topic/notifications", payload);
     }
 
     public void sendPaymentCompletedEvent(UUID tenantId, UUID branchId, Object payment) {
@@ -50,5 +54,7 @@ public class NotificationService {
         payload.put("data", payment);
         log.info("Broadcasting PAYMENT_COMPLETED event to {}", destination);
         messagingTemplate.convertAndSend(destination, payload);
+        messagingTemplate.convertAndSend("/topic/payments", payload);
+        messagingTemplate.convertAndSend("/topic/notifications", payload);
     }
 }

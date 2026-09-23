@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, RefreshCw } from "lucide-react";
+import NotificationBell from "@/components/NotificationBell";
 
 export default function KitchenLayout({
   children,
@@ -45,7 +46,8 @@ export default function KitchenLayout({
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Real-Time Ticket Stream</span>
           </div>
-          <span className="text-slate-400 text-xs font-medium">Head Chef: Sanjay</span>
+          <span className="text-slate-400 text-xs font-medium hidden md:inline">Head Chef: Sanjay</span>
+          <NotificationBell />
         </div>
       </header>
 

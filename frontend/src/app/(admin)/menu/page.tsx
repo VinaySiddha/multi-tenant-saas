@@ -21,25 +21,9 @@ import apiClient from "@/lib/api-client";
 import { formatCurrency } from "@/lib/utils";
 import { MenuItem, Category } from "@/types";
 
-const DEMO_CATEGORIES: Category[] = [
-  { id: "c1", tenantId: "demo", name: "Main Course", displayOrder: 1, isActive: true },
-  { id: "c2", tenantId: "demo", name: "Breads & Rice", displayOrder: 2, isActive: true },
-  { id: "c3", tenantId: "demo", name: "Starters & Appetizers", displayOrder: 3, isActive: true },
-  { id: "c4", tenantId: "demo", name: "Beverages", displayOrder: 4, isActive: true },
-];
-
-const DEMO_ITEMS: MenuItem[] = [
-  { id: "m1", tenantId: "demo", categoryId: "c1", categoryName: "Main Course", name: "Paneer Butter Masala", description: "Fresh cottage cheese cubes in rich tomato butter gravy", price: 340, costPrice: 110, taxRate: 5, isVeg: true, isAvailable: true, preparationTimeMinutes: 15 },
-  { id: "m2", tenantId: "demo", categoryId: "c1", categoryName: "Main Course", name: "Butter Chicken Masala", description: "Smoked chicken tikka tossed in traditional makhani gravy", price: 420, costPrice: 150, taxRate: 5, isVeg: false, isAvailable: true, preparationTimeMinutes: 20 },
-  { id: "m3", tenantId: "demo", categoryId: "c2", categoryName: "Breads & Rice", name: "Butter Garlic Naan", description: "Soft clay-oven baked bread glazed with roasted garlic butter", price: 65, costPrice: 15, taxRate: 5, isVeg: true, isAvailable: true, preparationTimeMinutes: 8 },
-  { id: "m4", tenantId: "demo", categoryId: "c2", categoryName: "Breads & Rice", name: "Chicken Dum Biryani", description: "Hyderabadi spiced long grain basmati rice with tender chicken", price: 380, costPrice: 140, taxRate: 5, isVeg: false, isAvailable: true, preparationTimeMinutes: 18 },
-  { id: "m5", tenantId: "demo", categoryId: "c3", categoryName: "Starters & Appetizers", name: "Crispy Corn Pepper Salt", description: "Sweet corn tossed with bell peppers and crushed black pepper", price: 260, costPrice: 60, taxRate: 5, isVeg: true, isAvailable: true, preparationTimeMinutes: 10 },
-  { id: "m6", tenantId: "demo", categoryId: "c4", categoryName: "Beverages", name: "Mango Lassi", description: "Chilled creamy yogurt blended with sweet Ratnagiri Alphonso mango pulp", price: 120, costPrice: 35, taxRate: 5, isVeg: true, isAvailable: true, preparationTimeMinutes: 5 },
-];
-
 export default function MenuManagementPage() {
-  const [categories, setCategories] = useState<Category[]>(DEMO_CATEGORIES);
-  const [items, setItems] = useState<MenuItem[]>(DEMO_ITEMS);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [items, setItems] = useState<MenuItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -79,14 +63,19 @@ export default function MenuManagementPage() {
         apiClient.get("/menu/categories"),
         apiClient.get("/menu/items")
       ]);
-      if (catRes.data?.data && catRes.data.data.length > 0) {
+      if (catRes.data?.data) {
         setCategories(catRes.data.data);
+      } else {
+        setCategories([]);
       }
-      if (itemRes.data?.data && itemRes.data.data.length > 0) {
+      if (itemRes.data?.data) {
         setItems(itemRes.data.data);
+      } else {
+        setItems([]);
       }
     } catch {
-      // Keep demo fallback
+      setCategories([]);
+      setItems([]);
     } finally {
       setLoading(false);
     }

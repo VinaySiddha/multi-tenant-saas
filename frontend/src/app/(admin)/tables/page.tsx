@@ -21,17 +21,8 @@ import {
 import apiClient from "@/lib/api-client";
 import { DiningTable } from "@/types";
 
-const DEMO_TABLES: DiningTable[] = [
-  { id: "5da85f64-5717-4562-b3fc-2c963f66afb5", tenantId: "demo", branchId: "b1", tableNumber: "T-01", section: "Ground Floor AC", capacity: 4, status: "AVAILABLE", qrCodeToken: "qr-demo-01" },
-  { id: "5da85f64-5717-4562-b3fc-2c963f66afb6", tenantId: "demo", branchId: "b1", tableNumber: "T-02", section: "Ground Floor AC", capacity: 2, status: "OCCUPIED", qrCodeToken: "qr-demo-02" },
-  { id: "5da85f64-5717-4562-b3fc-2c963f66afb7", tenantId: "demo", branchId: "b1", tableNumber: "T-03", section: "Rooftop Lounge", capacity: 6, status: "AVAILABLE", qrCodeToken: "qr-demo-03" },
-  { id: "5da85f64-5717-4562-b3fc-2c963f66afb8", tenantId: "demo", branchId: "b1", tableNumber: "T-04", section: "Rooftop Lounge", capacity: 4, status: "RESERVED", qrCodeToken: "qr-demo-04" },
-  { id: "5da85f64-5717-4562-b3fc-2c963f66afb9", tenantId: "demo", branchId: "b1", tableNumber: "T-05", section: "Outdoor Patio", capacity: 4, status: "CLEANING", qrCodeToken: "qr-demo-05" },
-  { id: "5da85f64-5717-4562-b3fc-2c963f66afba", tenantId: "demo", branchId: "b1", tableNumber: "T-06", section: "Outdoor Patio", capacity: 2, status: "AVAILABLE", qrCodeToken: "qr-demo-06" },
-];
-
 export default function TablesManagementPage() {
-  const [tables, setTables] = useState<DiningTable[]>(DEMO_TABLES);
+  const [tables, setTables] = useState<DiningTable[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedSection, setSelectedSection] = useState<string>("ALL");
 
@@ -51,17 +42,31 @@ export default function TablesManagementPage() {
 
   useEffect(() => {
     fetchTables();
+
+    const handleTableEvents = () => {
+      fetchTables();
+    };
+
+    window.addEventListener("sapru:order-created", handleTableEvents);
+    window.addEventListener("sapru:payment-completed", handleTableEvents);
+
+    return () => {
+      window.removeEventListener("sapru:order-created", handleTableEvents);
+      window.removeEventListener("sapru:payment-completed", handleTableEvents);
+    };
   }, []);
 
   const fetchTables = async () => {
     try {
       setLoading(true);
       const res = await apiClient.get("/tables");
-      if (res.data?.data && res.data.data.length > 0) {
+      if (res.data?.data) {
         setTables(res.data.data);
+      } else {
+        setTables([]);
       }
     } catch {
-      // Keep demo fallback
+      setTables([]);
     } finally {
       setLoading(false);
     }

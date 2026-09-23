@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { 
   Plus, 
   Minus, 
@@ -11,11 +11,18 @@ import {
   Search,
   CheckCircle,
   Utensils,
-  ChevronDown
+  ChevronDown,
+  RefreshCw,
+  QrCode,
+  DollarSign,
+  Printer,
+  X,
+  AlertCircle
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import apiClient from "@/lib/api-client";
 import { Category, MenuItem, DiningTable, Order } from "@/types";
+import { useNotifications } from "@/context/NotificationContext";
 
 interface CartItem {
   menuItem: MenuItem;
@@ -32,38 +39,22 @@ export default function PosTerminalPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [catalogLoading, setCatalogLoading] = useState(false);
   const [orderSuccessMsg, setOrderSuccessMsg] = useState<string | null>(null);
+  const [customerName, setCustomerName] = useState("Walk-in Guest");
+  const [orderType, setOrderType] = useState<"DINE_IN" | "TAKEAWAY" | "DELIVERY">("DINE_IN");
 
-  // Fallback default menu items for instant demo interactivity
-  const defaultItems: MenuItem[] = [
-    { id: "fca85f64-5717-4562-b3fc-2c963f66afaf", tenantId: "tenant-1", categoryId: "cat-1", name: "Paneer Butter Masala", price: 340, taxRate: 5, isVeg: true, isAvailable: true, description: "Cottage cheese cubes in rich butter gravy" },
-    { id: "0da85f64-5717-4562-b3fc-2c963f66afb0", tenantId: "tenant-1", categoryId: "cat-1", name: "Butter Chicken Masala", price: 420, taxRate: 5, isVeg: false, isAvailable: true, description: "Tender chicken tikka in tomato cream gravy" },
-    { id: "1da85f64-5717-4562-b3fc-2c963f66afb1", tenantId: "tenant-1", categoryId: "cat-2", name: "Butter Garlic Naan", price: 65, taxRate: 5, isVeg: true, isAvailable: true, description: "Clay oven baked flatbread with garlic butter" },
-    { id: "2da85f64-5717-4562-b3fc-2c963f66afb2", tenantId: "tenant-1", categoryId: "cat-2", name: "Chicken Dum Biryani", price: 380, taxRate: 5, isVeg: false, isAvailable: true, description: "Fragrant basmati rice with chicken" },
-    { id: "3da85f64-5717-4562-b3fc-2c963f66afb3", tenantId: "tenant-1", categoryId: "cat-3", name: "Crispy Corn Pepper Salt", price: 260, taxRate: 5, isVeg: true, isAvailable: true, description: "Crisp corn with bell peppers & crushed pepper" },
-    { id: "4da85f64-5717-4562-b3fc-2c963f66afb4", tenantId: "tenant-1", categoryId: "cat-4", name: "Mango Lassi", price: 120, taxRate: 5, isVeg: true, isAvailable: true, description: "Chilled sweetened Alphonso yogurt drink" }
-  ];
+  // Payment Modal state
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"CASH" | "UPI" | "CARD">("CASH");
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [lastPlacedOrder, setLastPlacedOrder] = useState<any | null>(null);
 
-  const defaultCategories: Category[] = [
-    { id: "cat-1", tenantId: "tenant-1", name: "Main Course", displayOrder: 1, isActive: true },
-    { id: "cat-2", tenantId: "tenant-1", name: "Breads & Rice", displayOrder: 2, isActive: true },
-    { id: "cat-3", tenantId: "tenant-1", name: "Starters", displayOrder: 3, isActive: true },
-    { id: "cat-4", tenantId: "tenant-1", name: "Beverages", displayOrder: 4, isActive: true }
-  ];
+  const { playNotificationSound } = useNotifications();
 
-  const defaultTables: DiningTable[] = [
-    { id: "5da85f64-5717-4562-b3fc-2c963f66afb5", tenantId: "tenant-1", branchId: "branch-1", tableNumber: "T-01", section: "Main Hall", capacity: 4, status: "AVAILABLE" },
-    { id: "6da85f64-5717-4562-b3fc-2c963f66afb6", tenantId: "tenant-1", branchId: "branch-1", tableNumber: "T-02", section: "Main Hall", capacity: 2, status: "OCCUPIED" },
-    { id: "7da85f64-5717-4562-b3fc-2c963f66afb7", tenantId: "tenant-1", branchId: "branch-1", tableNumber: "T-03", section: "Rooftop", capacity: 6, status: "AVAILABLE" },
-    { id: "8da85f64-5717-4562-b3fc-2c963f66afb8", tenantId: "tenant-1", branchId: "branch-1", tableNumber: "T-04", section: "Rooftop", capacity: 4, status: "AVAILABLE" }
-  ];
-
-  useEffect(() => {
-    loadCatalogAndTables();
-  }, []);
-
-  const loadCatalogAndTables = async () => {
+  const loadCatalogAndTables = useCallback(async () => {
     try {
+      setCatalogLoading(true);
       const [catRes, itemRes, tableRes] = await Promise.allSettled([
         apiClient.get("/menu/categories"),
         apiClient.get("/menu/items"),
@@ -73,30 +64,51 @@ export default function PosTerminalPage() {
       if (catRes.status === "fulfilled" && catRes.value.data?.data) {
         setCategories(catRes.value.data.data);
       } else {
-        setCategories(defaultCategories);
+        setCategories([]);
       }
 
       if (itemRes.status === "fulfilled" && itemRes.value.data?.data) {
         setMenuItems(itemRes.value.data.data);
       } else {
-        setMenuItems(defaultItems);
+        setMenuItems([]);
       }
 
       if (tableRes.status === "fulfilled" && tableRes.value.data?.data) {
         const tbls = tableRes.value.data.data;
         setTables(tbls);
-        if (tbls.length > 0) setSelectedTable(tbls[0]);
+        if (tbls.length > 0 && !selectedTable) {
+          setSelectedTable(tbls[0]);
+        }
       } else {
-        setTables(defaultTables);
-        setSelectedTable(defaultTables[0]);
+        setTables([]);
       }
     } catch {
-      setCategories(defaultCategories);
-      setMenuItems(defaultItems);
-      setTables(defaultTables);
-      setSelectedTable(defaultTables[0]);
+      setCategories([]);
+      setMenuItems([]);
+      setTables([]);
+    } finally {
+      setCatalogLoading(false);
     }
-  };
+  }, [selectedTable]);
+
+  useEffect(() => {
+    loadCatalogAndTables();
+
+    // Listen to real-time events to refresh table statuses
+    const handleOrderEvents = () => {
+      loadCatalogAndTables();
+    };
+
+    window.addEventListener("sapru:order-created", handleOrderEvents);
+    window.addEventListener("sapru:order-ready", handleOrderEvents);
+    window.addEventListener("sapru:payment-completed", handleOrderEvents);
+
+    return () => {
+      window.removeEventListener("sapru:order-created", handleOrderEvents);
+      window.removeEventListener("sapru:order-ready", handleOrderEvents);
+      window.removeEventListener("sapru:payment-completed", handleOrderEvents);
+    };
+  }, [loadCatalogAndTables]);
 
   const addToCart = (prod: MenuItem) => {
     setCart((prev) => {
@@ -125,15 +137,16 @@ export default function PosTerminalPage() {
   }, 0);
   const grandTotal = subtotal + totalTax;
 
+  // Send Order to Kitchen (KOT)
   const handleSendKot = async () => {
     if (cart.length === 0) return;
     setLoading(true);
     setOrderSuccessMsg(null);
 
     const payload = {
-      orderType: "DINE_IN",
-      tableId: selectedTable?.id,
-      customerName: "Walk-in Guest",
+      orderType: orderType,
+      tableId: orderType === "DINE_IN" ? selectedTable?.id : null,
+      customerName: customerName || "Walk-in Guest",
       items: cart.map((i) => ({
         menuItemId: i.menuItem.id,
         quantity: i.qty,
@@ -143,61 +156,132 @@ export default function PosTerminalPage() {
 
     try {
       const res = await apiClient.post("/orders", payload);
-      const orderNumber = res.data?.data?.orderNumber || "ORD-SUCCESS";
-      setOrderSuccessMsg(`KOT Sent! Order #${orderNumber} generated & sent to Kitchen.`);
+      const placedOrder = res.data?.data;
+      setLastPlacedOrder(placedOrder);
+      setOrderSuccessMsg(`✨ KOT Sent! Order #${placedOrder?.orderNumber || "NEW"} dispatched to Kitchen.`);
       setCart([]);
-    } catch {
-      setOrderSuccessMsg(`KOT Sent! Order #ORD-${Math.floor(1000 + Math.random() * 9000)} sent to kitchen.`);
-      setCart([]);
+      loadCatalogAndTables();
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Failed to create order");
     } finally {
       setLoading(false);
     }
   };
 
+  // Instant Settle Payment
+  const handleSettlePayment = async () => {
+    if (!lastPlacedOrder?.id && cart.length === 0) return;
+    setPaymentProcessing(true);
+
+    try {
+      let targetOrder = lastPlacedOrder;
+
+      // If cart has items but not submitted as KOT yet, create order first
+      if (cart.length > 0) {
+        const payload = {
+          orderType: orderType,
+          tableId: orderType === "DINE_IN" ? selectedTable?.id : null,
+          customerName: customerName || "Walk-in Guest",
+          items: cart.map((i) => ({
+            menuItemId: i.menuItem.id,
+            quantity: i.qty,
+            notes: i.notes || "",
+          })),
+        };
+        const orderRes = await apiClient.post("/orders", payload);
+        targetOrder = orderRes.data?.data;
+      }
+
+      if (targetOrder?.id) {
+        await apiClient.post("/payments/settle", {
+          orderId: targetOrder.id,
+          amount: targetOrder.grandTotal,
+          paymentMethod: paymentMethod,
+          transactionReference: `TXN-${Date.now().toString().slice(-6)}`
+        });
+
+        setOrderSuccessMsg(`💳 Payment of ${formatCurrency(targetOrder.grandTotal)} received! Order #${targetOrder.orderNumber} settled & Table released.`);
+        setShowPaymentModal(false);
+        setCart([]);
+        setLastPlacedOrder(null);
+        loadCatalogAndTables();
+      }
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Failed to process payment");
+    } finally {
+      setPaymentProcessing(false);
+    }
+  };
+
   const filteredItems = menuItems.filter((item) => {
     const matchesCategory = activeCategoryId === "ALL" || item.categoryId === activeCategoryId;
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
   return (
-    <div className="h-full flex">
+    <div className="h-full flex overflow-hidden">
       {/* Left: Menu & Catalog */}
-      <div className="flex-1 flex flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-        {/* Table & Search Bar */}
-        <div className="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 bg-slate-50 dark:bg-slate-900/50">
+      <div className="flex-1 flex flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+        {/* Table, Channel & Search Bar */}
+        <div className="p-3 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-50 dark:bg-slate-900/50">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-500">Active Table:</span>
             <select
-              value={selectedTable?.id || ""}
-              onChange={(e) => {
-                const t = tables.find((tbl) => tbl.id === e.target.value);
-                if (t) setSelectedTable(t);
-              }}
-              className="px-2.5 py-1 text-xs font-bold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              value={orderType}
+              onChange={(e) => setOrderType(e.target.value as any)}
+              className="px-2.5 py-1.5 text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 rounded-lg focus:outline-none"
             >
-              {tables.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.tableNumber} ({t.section || "Floor"} - {t.status})
-                </option>
-              ))}
+              <option value="DINE_IN">🍽️ Dine-In</option>
+              <option value="TAKEAWAY">🛍️ Takeaway</option>
+              <option value="DELIVERY">🛵 Delivery</option>
             </select>
+
+            {orderType === "DINE_IN" && (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-semibold text-slate-500">Table:</span>
+                <select
+                  value={selectedTable?.id || ""}
+                  onChange={(e) => {
+                    const t = tables.find((tbl) => tbl.id === e.target.value);
+                    if (t) setSelectedTable(t);
+                  }}
+                  className="px-2.5 py-1.5 text-xs font-bold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                >
+                  {tables.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.tableNumber} ({t.section || "Floor"} - {t.status})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
 
-          <div className="relative w-60">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
-            <input
-              type="text"
-              placeholder="Search food & beverages..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-xs bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            />
+          <div className="flex items-center gap-2 flex-1 max-w-xs justify-end">
+            <div className="relative w-full">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+              <input
+                type="text"
+                placeholder="Search food, drinks..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-8 pr-3 py-1.5 text-xs bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
+              />
+            </div>
+
+            <button
+              onClick={loadCatalogAndTables}
+              className="p-1.5 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500"
+              title="Refresh Menu Catalog"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${catalogLoading ? "animate-spin" : ""}`} />
+            </button>
           </div>
         </div>
 
         {/* Category Tabs */}
-        <div className="px-3 py-2 border-b border-slate-200 dark:border-slate-800 flex gap-1.5 overflow-x-auto">
+        <div className="px-3 py-2 border-b border-slate-200 dark:border-slate-800 flex gap-1.5 overflow-x-auto shrink-0 bg-white dark:bg-slate-900">
           <button
             onClick={() => setActiveCategoryId("ALL")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
@@ -206,7 +290,7 @@ export default function PosTerminalPage() {
                 : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
             }`}
           >
-            All Items
+            All Items ({menuItems.length})
           </button>
           {categories.map((cat) => (
             <button
@@ -215,90 +299,125 @@ export default function PosTerminalPage() {
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
                 activeCategoryId === cat.id
                   ? "bg-indigo-600 text-white shadow-sm"
-                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
               }`}
             >
-              {cat.name}
+              {cat.name} ({menuItems.filter(i => i.categoryId === cat.id).length})
             </button>
           ))}
         </div>
 
         {/* Product Cards Grid */}
         <div className="flex-1 p-4 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 content-start">
-          {filteredItems.map((prod) => (
-            <button
-              key={prod.id}
-              onClick={() => addToCart(prod)}
-              className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/80 dark:border-slate-700/80 hover:border-indigo-500 text-left transition flex flex-col justify-between h-28 group"
-            >
-              <div className="flex items-start justify-between">
-                <span className="text-xs font-bold text-slate-900 dark:text-slate-100 line-clamp-2">
-                  {prod.name}
-                </span>
-                <span
-                  className={`w-2 h-2 rounded-full mt-1 flex-shrink-0 ${
-                    prod.isVeg ? "bg-emerald-500" : "bg-rose-500"
-                  }`}
-                  title={prod.isVeg ? "Vegetarian" : "Non-Vegetarian"}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                  {formatCurrency(prod.price)}
-                </span>
-                <span className="p-1 rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition">
-                  <Plus className="w-3.5 h-3.5" />
-                </span>
-              </div>
-            </button>
-          ))}
+          {filteredItems.length === 0 ? (
+            <div className="col-span-full py-16 text-center text-slate-400 space-y-2">
+              <Utensils className="w-10 h-10 mx-auto text-slate-500 opacity-40" />
+              <p className="text-xs font-semibold">No menu items found</p>
+              <p className="text-[11px] text-slate-500">Go to Menu Management in Admin to create dishes.</p>
+            </div>
+          ) : (
+            filteredItems.map((prod) => (
+              <button
+                key={prod.id}
+                onClick={() => addToCart(prod)}
+                disabled={!prod.isAvailable}
+                className={`p-3 rounded-xl border text-left transition flex flex-col justify-between h-28 group relative ${
+                  prod.isAvailable
+                    ? "bg-slate-50 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700/80 hover:border-indigo-500 hover:shadow-md cursor-pointer"
+                    : "bg-slate-100 dark:bg-slate-850 border-slate-200 dark:border-slate-800 opacity-50 cursor-not-allowed"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-1">
+                  <span className="text-xs font-bold text-slate-900 dark:text-slate-100 line-clamp-2 leading-snug">
+                    {prod.name}
+                  </span>
+                  <span
+                    className={`w-2 h-2 rounded-full mt-1 flex-shrink-0 ${
+                      prod.isVeg ? "bg-emerald-500" : "bg-rose-500"
+                    }`}
+                    title={prod.isVeg ? "Vegetarian" : "Non-Vegetarian"}
+                  />
+                </div>
+
+                {!prod.isAvailable && (
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-500 self-start">
+                    86&apos;d (Out of stock)
+                  </span>
+                )}
+
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 font-mono">
+                    {formatCurrency(prod.price)}
+                  </span>
+                  <span className="p-1 rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition">
+                    <Plus className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </button>
+            ))
+          )}
         </div>
       </div>
 
       {/* Right: Order Cart & Billing Console */}
-      <div className="w-96 flex flex-col bg-slate-50 dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800">
-        <div className="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+      <div className="w-96 flex flex-col bg-slate-50 dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 overflow-hidden">
+        {/* Table & Guest Details */}
+        <div className="p-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
           <div>
-            <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
-              Table {selectedTable?.tableNumber || "T-01"} ({selectedTable?.section || "Dine In"})
+            <span className="text-xs font-extrabold text-slate-900 dark:text-slate-100 block">
+              {orderType === "DINE_IN" ? `Table ${selectedTable?.tableNumber || "T-01"} (${selectedTable?.section || "Floor"})` : orderType}
             </span>
-            <span className="text-[10px] text-slate-500 block">Cap: {selectedTable?.capacity || 4} Guests</span>
+            <input
+              type="text"
+              placeholder="Guest Name (optional)"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              className="text-[11px] text-slate-500 bg-transparent border-none p-0 focus:outline-none focus:ring-0 placeholder-slate-400"
+            />
           </div>
-          <button
-            onClick={() => setCart([])}
-            className="text-[11px] text-rose-500 hover:text-rose-600 font-medium"
-          >
-            Clear Cart
-          </button>
+          {cart.length > 0 && (
+            <button
+              onClick={() => setCart([])}
+              className="text-[11px] text-rose-500 hover:text-rose-600 font-semibold"
+            >
+              Clear Cart
+            </button>
+          )}
         </div>
 
         {orderSuccessMsg && (
-          <div className="m-3 p-2.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 rounded-lg text-xs text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 flex-shrink-0" />
-            <span>{orderSuccessMsg}</span>
+          <div className="m-3 p-3 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800 rounded-xl text-xs text-emerald-800 dark:text-emerald-200 flex items-start gap-2 animate-in fade-in">
+            <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <span>{orderSuccessMsg}</span>
+            </div>
+            <button onClick={() => setOrderSuccessMsg(null)} className="text-emerald-500 hover:text-emerald-700">
+              <X className="w-3.5 h-3.5" />
+            </button>
           </div>
         )}
 
         {/* Cart Items List */}
         <div className="flex-1 p-3 overflow-y-auto space-y-2">
           {cart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-slate-400 text-xs">
-              <Receipt className="w-8 h-8 mb-2 opacity-40" />
-              <span>No items selected yet</span>
+            <div className="h-full flex flex-col items-center justify-center text-slate-400 text-xs text-center p-6 space-y-2">
+              <Receipt className="w-10 h-10 text-slate-500 opacity-40 mb-1" />
+              <span className="font-semibold text-slate-300">Cart is Empty</span>
+              <p className="text-[11px] text-slate-500">Tap items on the left to add food &amp; drinks to the current table order.</p>
             </div>
           ) : (
             cart.map((item) => (
               <div
                 key={item.menuItem.id}
-                className="p-2.5 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 flex items-center justify-between"
+                className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between"
               >
                 <div className="flex-1 min-w-0 pr-2">
-                  <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
+                  <p className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
                     {item.menuItem.name}
                   </p>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-slate-500 font-mono">
                     {formatCurrency(item.menuItem.price)} × {item.qty} ={" "}
-                    <span className="font-semibold text-slate-700 dark:text-slate-300">
+                    <span className="font-bold text-slate-800 dark:text-slate-200">
                       {formatCurrency(item.menuItem.price * item.qty)}
                     </span>
                   </p>
@@ -324,8 +443,8 @@ export default function PosTerminalPage() {
         </div>
 
         {/* Totals & Actions */}
-        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 space-y-3">
-          <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 space-y-3 shrink-0">
+          <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400 font-mono">
             <div className="flex justify-between">
               <span>Subtotal</span>
               <span className="font-semibold">{formatCurrency(subtotal)}</span>
@@ -334,9 +453,9 @@ export default function PosTerminalPage() {
               <span>GST (5%)</span>
               <span className="font-semibold">{formatCurrency(totalTax)}</span>
             </div>
-            <div className="flex justify-between text-sm font-bold text-slate-900 dark:text-slate-100 pt-1.5 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex justify-between text-sm font-bold text-slate-900 dark:text-slate-100 pt-2 border-t border-slate-100 dark:border-slate-800">
               <span>Grand Total</span>
-              <span className="text-indigo-600 dark:text-indigo-400">
+              <span className="text-indigo-600 dark:text-indigo-400 font-bold">
                 {formatCurrency(grandTotal)}
               </span>
             </div>
@@ -346,15 +465,15 @@ export default function PosTerminalPage() {
             <button
               onClick={handleSendKot}
               disabled={cart.length === 0 || loading}
-              className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 text-xs font-semibold hover:bg-indigo-100 transition disabled:opacity-40"
+              className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-md transition disabled:opacity-40"
             >
               <Send className="w-3.5 h-3.5" />
               Send KOT
             </button>
             <button
-              onClick={handleSendKot}
-              disabled={cart.length === 0 || loading}
-              className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 shadow-sm shadow-emerald-600/20 transition disabled:opacity-40"
+              onClick={() => setShowPaymentModal(true)}
+              disabled={(cart.length === 0 && !lastPlacedOrder) || loading}
+              className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-900/30 transition disabled:opacity-40"
             >
               <CreditCard className="w-3.5 h-3.5" />
               Settle Bill
@@ -362,6 +481,106 @@ export default function PosTerminalPage() {
           </div>
         </div>
       </div>
+
+      {/* POS Quick Settlement Modal */}
+      {showPaymentModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-800">
+              <div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">
+                  Collect Payment &amp; Settle Bill
+                </h3>
+                <p className="text-xs text-slate-500">
+                  {orderType === "DINE_IN" ? `Table ${selectedTable?.tableNumber}` : orderType} • {customerName}
+                </p>
+              </div>
+              <button
+                onClick={() => setShowPaymentModal(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Bill Summary */}
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-mono text-xs space-y-2">
+              <div className="flex justify-between text-slate-500">
+                <span>Items Subtotal:</span>
+                <span>{formatCurrency(subtotal > 0 ? subtotal : (lastPlacedOrder?.subtotal || 0))}</span>
+              </div>
+              <div className="flex justify-between text-slate-500">
+                <span>Taxes &amp; GST (5%):</span>
+                <span>{formatCurrency(totalTax > 0 ? totalTax : (lastPlacedOrder?.taxAmount || 0))}</span>
+              </div>
+              <div className="flex justify-between font-bold text-base text-emerald-600 dark:text-emerald-400 pt-2 border-t border-slate-200 dark:border-slate-700">
+                <span>Payable Amount:</span>
+                <span>{formatCurrency(grandTotal > 0 ? grandTotal : (lastPlacedOrder?.grandTotal || 0))}</span>
+              </div>
+            </div>
+
+            {/* Payment Method Selector */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                Select Payment Mode
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: "CASH", label: "💵 Cash", desc: "Counter Cash" },
+                  { id: "UPI", label: "📱 UPI / QR", desc: "GPay/PhonePe" },
+                  { id: "CARD", label: "💳 Card", desc: "POS Swipe" }
+                ].map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setPaymentMethod(m.id as any)}
+                    className={`p-3 rounded-2xl border text-center transition flex flex-col items-center justify-center ${
+                      paymentMethod === m.id
+                        ? "bg-indigo-600 text-white border-indigo-600 shadow-md font-bold"
+                        : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100"
+                    }`}
+                  >
+                    <span className="text-xs">{m.label}</span>
+                    <span className={`text-[10px] mt-0.5 ${paymentMethod === m.id ? "text-indigo-100" : "text-slate-400"}`}>
+                      {m.desc}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {paymentMethod === "UPI" && (
+              <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-center space-y-2">
+                <QrCode className="w-16 h-16 mx-auto text-indigo-600 dark:text-indigo-400" />
+                <p className="text-xs font-bold text-indigo-900 dark:text-indigo-200">
+                  Scan to Pay ₹{(grandTotal > 0 ? grandTotal : (lastPlacedOrder?.grandTotal || 0)).toFixed(2)}
+                </p>
+                <p className="text-[10px] text-slate-500 font-mono">UPI ID: royalbistro@icici</p>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex items-center gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowPaymentModal(false)}
+                className="flex-1 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSettlePayment}
+                disabled={paymentProcessing}
+                className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-emerald-900/30 transition flex items-center justify-center gap-1.5"
+              >
+                <CheckCircle className="w-4 h-4" />
+                {paymentProcessing ? "Processing..." : "Confirm & Settle"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

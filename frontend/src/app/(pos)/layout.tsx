@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Wifi, Building2 } from "lucide-react";
+import NotificationBell from "@/components/NotificationBell";
 
 export default function PosLayout({
   children,
@@ -40,12 +41,13 @@ export default function PosLayout({
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-xs">
+        <div className="flex items-center gap-3 text-xs">
           <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Live Dispatch Active</span>
           </div>
-          <span className="text-slate-400 text-xs font-medium">The Royal Bistro • Flagship</span>
+          <span className="text-slate-400 text-xs font-medium hidden md:inline">The Royal Bistro • Flagship</span>
+          <NotificationBell />
         </div>
       </header>
 

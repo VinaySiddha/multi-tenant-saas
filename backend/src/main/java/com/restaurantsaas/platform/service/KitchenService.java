@@ -65,6 +65,10 @@ public class KitchenService {
                 orderReadyPayload.put("orderNumber", order.getOrderNumber());
                 orderReadyPayload.put("status", order.getStatus().name());
                 orderReadyPayload.put("tableId", order.getTableId());
+                orderReadyPayload.put("tableNumber", ticket.getTableNumber());
+                orderReadyPayload.put("kotNumber", ticket.getKotNumber());
+                orderReadyPayload.put("orderType", order.getOrderType() != null ? order.getOrderType().name() : "DINE_IN");
+                orderReadyPayload.put("itemsSummary", ticket.getItemsSummary());
                 orderReadyPayload.put("grandTotal", order.getGrandTotal());
                 notificationService.sendOrderReadyEvent(tenantId, ticket.getBranchId(), orderReadyPayload);
             }

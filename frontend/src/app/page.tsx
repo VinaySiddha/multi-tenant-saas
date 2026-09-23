@@ -22,6 +22,12 @@ import {
   LineChart,
   Cpu,
   ChevronRight,
+  Receipt,
+  ChefHat,
+  QrCode,
+  Package,
+  Users,
+  Check,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -37,11 +43,11 @@ export default function HomePage() {
       {/* ========================================================================= */}
       <FloatingNavbar
         links={[
-          { label: "Product", href: "#product-os" },
-          { label: "Solutions", href: "#stories" },
-          { label: "Intelligence", href: "#intelligence" },
-          { label: "Resources", href: "#integrations" },
-          { label: "Pricing", href: "#pricing" },
+          { label: "Product", href: "#workspace" },
+          { label: "Capabilities", href: "#capabilities" },
+          { label: "Why Sapru", href: "#why-sapru" },
+          { label: "How It Works", href: "#how-it-works" },
+          { label: "Terminal", href: "/terminal" },
         ]}
         email="hello@sapru.io"
       />
@@ -59,7 +65,7 @@ export default function HomePage() {
             {/* Eyebrow Pill */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#E5E7EB] text-[11px] font-bold tracking-widest text-[#0F3D2E] uppercase shadow-xs">
               <span className="w-2 h-2 rounded-full bg-[#FF6A3D] animate-pulse" />
-              <span>THE RESTAURANT OPERATING SYSTEM</span>
+              <span>RESTAURANT MANAGEMENT SOFTWARE</span>
             </div>
 
             {/* Main Headline */}
@@ -241,18 +247,18 @@ export default function HomePage() {
       {/* ========================================================================= */}
       {/* SECTION 1 — WHAT SAPRU PROVIDES                                           */}
       {/* ========================================================================= */}
-      <section className="py-24 sm:py-32 lg:py-36 bg-[#FAFAF8] border-t border-[#E5E7EB]">
+      <section id="capabilities" className="py-24 sm:py-32 lg:py-36 bg-[#FAFAF8] border-t border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="max-w-3xl mb-20 space-y-4">
             <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
-              CAPABILITIES
+              ALL-IN-ONE CAPABILITIES
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F3D2E] font-poppins leading-tight">
               Everything you need to run your restaurant.
             </h2>
             <p className="text-base sm:text-lg text-[#0B0B0B]/70 font-normal leading-relaxed">
-              Sapru brings the essential parts of your restaurant operation together in one clear workspace.
+              Sapru brings your daily billing, kitchen workflow, and business reports into one clear, easy-to-use software.
             </p>
           </div>
 
@@ -262,27 +268,27 @@ export default function HomePage() {
               {
                 index: "01",
                 title: "RUN",
-                description: "Manage the everyday operation.",
+                description: "Fast POS billing, quick order punching, and smooth floor service.",
               },
               {
                 index: "02",
                 title: "UNDERSTAND",
-                description: "See what is happening across your business.",
+                description: "Live visibility into daily sales, peak hours, and order volumes.",
               },
               {
                 index: "03",
                 title: "CONTROL",
-                description: "Keep everything organized and connected.",
+                description: "Keep your kitchen, table seating, and inventory organized.",
               },
               {
                 index: "04",
                 title: "IMPROVE",
-                description: "Make clearer decisions from your business information.",
+                description: "Clear numbers and reports that help you make better daily decisions.",
               },
               {
                 index: "05",
                 title: "GROW",
-                description: "Build a stronger foundation for the future.",
+                description: "Reliable software built to support your restaurant as you expand.",
               },
             ].map((item) => (
               <div
@@ -314,13 +320,13 @@ export default function HomePage() {
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
             <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
-              THE WORKSPACE
+              UNIFIED SOFTWARE
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-poppins leading-tight">
               One place for your entire operation.
             </h2>
             <p className="text-base sm:text-lg text-[#E5E7EB]/80 font-normal leading-relaxed">
-              Sapru brings your restaurant’s everyday operations and business information together in one clean workspace.
+              No more jumping between separate billing machines and manual logs. Everything stays synchronized in real time.
             </p>
 
             {/* Navigation Filter Tabs */}
@@ -328,9 +334,9 @@ export default function HomePage() {
               {[
                 { key: "overview", label: "Overview" },
                 { key: "performance", label: "Performance" },
-                { key: "activity", label: "Activity" },
-                { key: "insights", label: "Insights" },
-                { key: "operations", label: "Operations" },
+                { key: "activity", label: "Live Activity" },
+                { key: "insights", label: "Daily Insights" },
+                { key: "operations", label: "Stations & Status" },
               ].map((tab) => (
                 <button
                   key={tab.key}
@@ -358,17 +364,17 @@ export default function HomePage() {
                 </div>
                 <div>
                   <span className="text-sm font-bold text-white block">
-                    Sapru Operating System
+                    Sapru Restaurant Platform
                   </span>
                   <span className="text-[11px] text-[#E5E7EB]/60 font-mono">
-                    Workspace synchronized • Status: Healthy
+                    All terminals active • System status: Live
                   </span>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 text-xs font-mono text-[#E5E7EB]/70">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="hidden sm:inline">Real-time telemetry</span>
+                <span className="hidden sm:inline">Real-time sync</span>
               </div>
             </div>
 
@@ -379,37 +385,37 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742]">
                     <span className="text-xs font-mono text-[#E5E7EB]/70 block mb-1">
-                      Gross Operational Flow
+                      Today's Gross Sales
                     </span>
                     <span className="text-2xl font-bold font-mono text-white block">
                       ₹48,320
                     </span>
                     <span className="text-[11px] text-emerald-400 font-medium mt-1 inline-block">
-                      +18.4% vs baseline
+                      +18.4% vs yesterday
                     </span>
                   </div>
 
                   <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742]">
                     <span className="text-xs font-mono text-[#E5E7EB]/70 block mb-1">
-                      Active Floor &amp; Remote Load
+                      Orders Fulfilled
                     </span>
                     <span className="text-2xl font-bold font-mono text-white block">
-                      124 Units
+                      124 Tickets
                     </span>
                     <span className="text-[11px] text-[#E5E7EB]/60 font-medium mt-1 inline-block">
-                      100% fulfill rate
+                      100% order accuracy
                     </span>
                   </div>
 
                   <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742]">
                     <span className="text-xs font-mono text-[#E5E7EB]/70 block mb-1">
-                      Pacing Efficiency
+                      Average Kitchen Time
                     </span>
                     <span className="text-2xl font-bold font-mono text-white block">
                       11m 40s
                     </span>
                     <span className="text-[11px] text-[#FF6A3D] font-medium mt-1 inline-block">
-                      Optimal cycle time
+                      Fast ticket turnaround
                     </span>
                   </div>
                 </div>
@@ -417,8 +423,8 @@ export default function HomePage() {
                 {/* Main Abstract Graph & Flow Preview */}
                 <div className="p-6 rounded-2xl bg-[#0F3D2E]/40 border border-[#165742] space-y-4">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-white">Business Trajectory &amp; Service Velocity</span>
-                    <span className="font-mono text-[#E5E7EB]/60">Past 24 Hours</span>
+                    <span className="font-semibold text-white">Daily Sales &amp; Order Volume Flow</span>
+                    <span className="font-mono text-[#E5E7EB]/60">Live Past 24 Hours</span>
                   </div>
 
                   {/* Abstract Clean SVG Graph */}
@@ -441,11 +447,11 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742] space-y-3">
                     <span className="text-xs font-mono text-[#E5E7EB]/70 block">
-                      Channel Balance
+                      Order Breakdown by Channel
                     </span>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#E5E7EB]">Dine-In Operations</span>
+                        <span className="text-[#E5E7EB]">Dine-In Orders</span>
                         <span className="font-mono text-white font-bold">58%</span>
                       </div>
                       <div className="h-1.5 w-full bg-[#165742] rounded-full overflow-hidden">
@@ -454,7 +460,7 @@ export default function HomePage() {
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#E5E7EB]">Digital Self-Orders</span>
+                        <span className="text-[#E5E7EB]">QR Self-Ordering</span>
                         <span className="font-mono text-white font-bold">28%</span>
                       </div>
                       <div className="h-1.5 w-full bg-[#165742] rounded-full overflow-hidden">
@@ -463,7 +469,7 @@ export default function HomePage() {
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#E5E7EB]">Takeaway &amp; Delivery</span>
+                        <span className="text-[#E5E7EB]">Takeaway &amp; Pickup</span>
                         <span className="font-mono text-white font-bold">14%</span>
                       </div>
                       <div className="h-1.5 w-full bg-[#165742] rounded-full overflow-hidden">
@@ -475,15 +481,15 @@ export default function HomePage() {
                   <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742] flex flex-col justify-between">
                     <div>
                       <span className="text-xs font-mono text-[#E5E7EB]/70 block mb-2">
-                        Margin Trajectory
+                        Kitchen Efficiency Summary
                       </span>
                       <p className="text-sm text-[#E5E7EB]/90 leading-relaxed font-normal">
-                        Fulfillment efficiency is tracking at optimal capacity. Pacing metrics indicate balanced kitchen loading during peak service periods.
+                        Order fulfillment is tracking smoothly. Kitchen display timers indicate zero bottleneck during peak lunch and dinner hours.
                       </p>
                     </div>
                     <div className="pt-4 border-t border-[#165742] flex items-center justify-between text-xs font-mono">
-                      <span className="text-[#E5E7EB]/60">Operational Health Index</span>
-                      <span className="text-emerald-400 font-bold">98.2 / 100</span>
+                      <span className="text-[#E5E7EB]/60">Daily Service Score</span>
+                      <span className="text-emerald-400 font-bold">98.5% on-time</span>
                     </div>
                   </div>
                 </div>
@@ -493,10 +499,10 @@ export default function HomePage() {
             {workspaceTab === "activity" && (
               <div className="space-y-3 pt-6">
                 {[
-                  { time: "Just now", event: "Settlement verified and register audited", status: "Completed" },
-                  { time: "4 mins ago", event: "Station pacing benchmark reached across all channels", status: "Optimal" },
-                  { time: "18 mins ago", event: "Multi-point ordering dispatch synchronized", status: "Active" },
-                  { time: "32 mins ago", event: "Floor occupancy rebalanced across service zones", status: "Recorded" },
+                  { time: "Just now", event: "Bill settled via UPI at Table 4 (₹1,480)", status: "Settled" },
+                  { time: "3 mins ago", event: "Kitchen marked Order #1049 ready for takeaway", status: "Ready" },
+                  { time: "12 mins ago", event: "New guest order placed via Table QR code", status: "In Kitchen" },
+                  { time: "28 mins ago", event: "Cash drawer shift balanced with zero discrepancy", status: "Audited" },
                 ].map((act, i) => (
                   <div
                     key={i}
@@ -520,15 +526,15 @@ export default function HomePage() {
                 <div className="p-5 rounded-2xl bg-[#0F3D2E]/80 border border-[#FF6A3D]/30 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF6A3D]">
-                      STRUCTURED INTELLIGENCE BRIEF
+                      DAILY EXECUTIVE SUMMARY
                     </span>
-                    <span className="text-[11px] font-mono text-[#E5E7EB]/60">Live Signal</span>
+                    <span className="text-[11px] font-mono text-[#E5E7EB]/60">Today's Highlight</span>
                   </div>
                   <p className="text-sm sm:text-base text-white font-medium leading-relaxed">
-                    “Dinner operational velocity increased 18% this term. Resource utilization remained balanced throughout peak rush periods.”
+                    “Dinner revenue grew 18% this week. Table turnover was 22 minutes faster on QR-enabled sections.”
                   </p>
                   <p className="text-xs text-[#E5E7EB]/70">
-                    Calculated autonomously from consolidated business telemetry.
+                    Generated automatically at the end of each shift for restaurant owners.
                   </p>
                 </div>
               </div>
@@ -537,10 +543,10 @@ export default function HomePage() {
             {workspaceTab === "operations" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-6">
                 {[
-                  { name: "Terminal Console", role: "Point of Sale", state: "Live" },
-                  { name: "Kitchen Display", role: "Pacing Stream", state: "Connected" },
-                  { name: "Digital Floorplan", role: "Seating Matrix", state: "Active" },
-                  { name: "Stock Intelligence", role: "Depletion Log", state: "Audited" },
+                  { name: "POS Terminal", role: "Cashier Billing", state: "Live" },
+                  { name: "Kitchen Display (KDS)", role: "Kitchen Pacing", state: "Connected" },
+                  { name: "Table Floorplan", role: "Floor Seating", state: "Active" },
+                  { name: "Inventory Alerts", role: "Stock Tracking", state: "Audited" },
                 ].map((mod, i) => (
                   <div
                     key={i}
@@ -561,94 +567,127 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 3 — SIMPLE BY DESIGN                                              */}
+      {/* SECTION 3 — SIMPLE BY DESIGN (Simpler & Benefit-Driven)                    */}
       {/* ========================================================================= */}
-      <section className="py-24 sm:py-32 lg:py-36 bg-[#FAFAF8] border-t border-[#E5E7EB]">
+      <section id="why-sapru" className="py-24 sm:py-32 lg:py-36 bg-[#FAFAF8] border-t border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
-          <div className="max-w-3xl mb-20 space-y-4">
+          <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
             <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
-              DESIGN PHILOSOPHY
+              WHY RESTAURANTS CHOOSE SAPRU
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F3D2E] font-poppins leading-tight">
-              Less complexity. More clarity.
+              Simplicity meets performance.
             </h2>
             <p className="text-base sm:text-lg text-[#0B0B0B]/70 font-normal leading-relaxed">
-              Everything you need, without everything getting in the way.
+              Designed for speed, ease of use, and complete peace of mind during your busiest rush hours.
             </p>
           </div>
 
-          {/* 3 Simple Principles */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          {/* 3 Simple, High-Impact Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
             {[
               {
-                title: "EVERYTHING TOGETHER",
-                desc: "One connected workspace for your operation.",
+                icon: Zap,
+                title: "Fast & Easy to Learn",
+                headline: "Zero complicated training.",
+                desc: "Your cashier, servers, and kitchen team can start taking orders and billing in minutes on any tablet, desktop, or mobile screen.",
+                points: ["Quick touch interface", "Staff PIN logins", "Instant receipt printing"],
               },
               {
-                title: "CLEAR BY DESIGN",
-                desc: "Information that is easy to understand.",
+                icon: Layers,
+                title: "Everything Connected",
+                headline: "One single reliable software.",
+                desc: "Orders from dining tables, takeaways, and QR scans flow directly to your kitchen and billing screens with zero manual delays or lost tickets.",
+                points: ["Live kitchen display sync", "Table status indicators", "Multi-payment support"],
               },
               {
-                title: "BUILT FOR OWNERS",
-                desc: "Spend less time managing systems and more time running the business.",
+                icon: BarChart3,
+                title: "Total Owner Visibility",
+                headline: "Know your numbers anytime.",
+                desc: "Track daily revenue, best-selling items, and stock depletion in real time. Spend less time managing software and more time delighting your guests.",
+                points: ["Automatic daily reports", "Low-stock warning alerts", "Clear sales breakdowns"],
               },
-            ].map((p) => (
-              <div
-                key={p.title}
-                className="p-8 rounded-3xl bg-white border border-[#E5E7EB] shadow-xs flex flex-col justify-between space-y-6"
-              >
-                <div className="space-y-4">
-                  <div className="w-2 h-2 rounded-full bg-[#FF6A3D]" />
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#0F3D2E] font-poppins tracking-tight">
-                    {p.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-[#0B0B0B]/70 font-normal leading-relaxed">
-                    {p.desc}
-                  </p>
+            ].map((card) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={card.title}
+                  className="p-8 rounded-3xl bg-white border border-[#E5E7EB] hover:border-[#FF6A3D]/40 transition-all duration-300 shadow-sm flex flex-col justify-between space-y-8 group"
+                >
+                  <div className="space-y-5">
+                    <div className="w-12 h-12 rounded-2xl bg-[#FF6A3D]/10 border border-[#FF6A3D]/20 flex items-center justify-center text-[#FF6A3D] group-hover:scale-105 transition-transform">
+                      <Icon className="w-6 h-6" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#FF6A3D] block">
+                        {card.title}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-bold text-[#0F3D2E] font-poppins tracking-tight">
+                        {card.headline}
+                      </h3>
+                      <p className="text-sm text-[#0B0B0B]/70 font-normal leading-relaxed pt-1">
+                        {card.desc}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-[#E5E7EB] space-y-2.5">
+                    {card.points.map((pt, i) => (
+                      <div key={i} className="flex items-center gap-2.5 text-xs text-[#0F3D2E] font-medium">
+                        <Check className="w-3.5 h-3.5 text-[#FF6A3D] shrink-0" />
+                        <span>{pt}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 4 — HOW SAPRU HELPS                                               */}
+      {/* SECTION 4 — HOW SAPRU HELPS (Simple Workflow)                              */}
       {/* ========================================================================= */}
-      <section className="py-24 sm:py-32 lg:py-36 bg-white border-t border-b border-[#E5E7EB]">
+      <section id="how-it-works" className="py-24 sm:py-32 lg:py-36 bg-white border-t border-b border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
             <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
-              OPERATIONAL PROGRESSION
+              HOW IT WORKS
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F3D2E] font-poppins leading-tight">
-              How Sapru helps.
+              How Sapru powers your everyday service.
             </h2>
             <p className="text-base sm:text-lg text-[#0B0B0B]/70 font-normal leading-relaxed">
-              Sapru connects the everyday work of your restaurant with the information you need to make better decisions.
+              A smooth, reliable workflow from the moment a guest orders to the end-of-day summary.
             </p>
           </div>
 
-          {/* Visual Progression: OPERATE → UNDERSTAND → DECIDE → GROW */}
+          {/* Visual Progression: 4-step workflow */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
             {[
               {
-                step: "OPERATE",
-                desc: "Coordinate everyday service across every station with clarity.",
+                step: "01",
+                title: "Take Orders Faster",
+                desc: "Punch dine-in, takeaway, or QR orders in seconds with lightning-fast search and item selection.",
               },
               {
-                step: "UNDERSTAND",
-                desc: "See exact operational patterns and performance as they happen.",
+                step: "02",
+                title: "Kitchen Sync",
+                desc: "Orders instantly route to your kitchen display with preparation timers and zero lost tickets.",
               },
               {
-                step: "DECIDE",
-                desc: "Act on clean, consolidated business information with confidence.",
+                step: "03",
+                title: "Quick Settlement",
+                desc: "Accept Cash, UPI, or Card payments in one tap with split billing and printed GST invoices.",
               },
               {
-                step: "GROW",
-                desc: "Build a solid, repeatable foundation for sustainable scale.",
+                step: "04",
+                title: "Review & Grow",
+                desc: "Automatic end-of-day reports showing total revenue, top-selling items, and inventory status.",
               },
             ].map((phase, idx) => (
               <div
@@ -657,14 +696,14 @@ export default function HomePage() {
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono font-bold text-[#FF6A3D]">
-                    STEP 0{idx + 1}
+                    STEP {phase.step}
                   </span>
                   {idx < 3 && (
                     <ChevronRight className="w-4 h-4 text-[#6B7280] hidden md:block" />
                   )}
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold text-[#0F3D2E] font-poppins tracking-tight">
-                  {phase.step}
+                  {phase.title}
                 </h3>
                 <p className="text-xs sm:text-sm text-[#0B0B0B]/70 font-normal leading-relaxed">
                   {phase.desc}
@@ -683,13 +722,13 @@ export default function HomePage() {
           {/* Section Header */}
           <div className="max-w-3xl mb-16 space-y-4">
             <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
-              PRODUCT PREVIEW
+              DESIGNED FOR CLARITY
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-poppins leading-tight">
-              Designed to keep your business clear.
+              Built to keep your business running smoothly.
             </h2>
             <p className="text-base sm:text-lg text-[#E5E7EB]/80 font-normal leading-relaxed">
-              Consolidated business telemetry, activity streams, and structured intelligence in one cohesive view.
+              Consolidated reports, live activity tracking, and intelligent summaries in one clean interface.
             </p>
           </div>
 
@@ -701,10 +740,10 @@ export default function HomePage() {
               <div className="p-6 sm:p-8 rounded-3xl bg-[#0F3D2E] border border-[#165742] space-y-4 shadow-xl">
                 <div className="flex items-center justify-between pb-4 border-b border-[#165742]">
                   <span className="text-xs font-mono font-bold uppercase text-[#E5E7EB]/70">
-                    Live Operational Velocity
+                    Live Operational Performance
                   </span>
                   <span className="text-xs font-mono text-emerald-400 font-semibold">
-                    Optimal Capacity
+                    100% Service Uptime
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4 pt-2">
@@ -713,8 +752,8 @@ export default function HomePage() {
                     <span className="text-2xl font-bold font-mono text-white mt-1 block">98.8%</span>
                   </div>
                   <div>
-                    <span className="text-xs text-[#E5E7EB]/60 block font-mono">Operational Variance</span>
-                    <span className="text-2xl font-bold font-mono text-[#FF6A3D] mt-1 block">±0.2%</span>
+                    <span className="text-xs text-[#E5E7EB]/60 block font-mono">Register Audit</span>
+                    <span className="text-2xl font-bold font-mono text-[#FF6A3D] mt-1 block">₹0 Discrepancy</span>
                   </div>
                 </div>
               </div>
@@ -722,12 +761,12 @@ export default function HomePage() {
               {/* Real-time Activity Stream Fragment */}
               <div className="p-6 rounded-3xl bg-[#0F3D2E]/60 border border-[#165742] space-y-3 shadow-lg">
                 <span className="text-xs font-mono font-bold uppercase text-[#E5E7EB]/70 block mb-2">
-                  Unified System Log
+                  Live Floor &amp; Station Log
                 </span>
                 {[
-                  { tag: "FLOOR", msg: "All dining room stations balanced and operational", time: "1m ago" },
-                  { tag: "TELEMETRY", msg: "Consolidated register audit synchronized", time: "9m ago" },
-                  { tag: "INSIGHT", msg: "Daily service brief prepared for review", time: "24m ago" },
+                  { tag: "POS", msg: "Table 4 settled via UPI with printed receipt", time: "1m ago" },
+                  { tag: "KITCHEN", msg: "Order #1049 marked ready on kitchen display", time: "5m ago" },
+                  { tag: "REPORTS", msg: "Daily revenue briefing generated for manager", time: "20m ago" },
                 ].map((item, idx) => (
                   <div
                     key={idx}
@@ -752,19 +791,19 @@ export default function HomePage() {
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <h3 className="text-xl font-bold text-white font-poppins">
-                  Structured Business Insights
+                  Clear Daily Insights
                 </h3>
                 <p className="text-sm text-[#E5E7EB]/80 leading-relaxed font-normal">
-                  Sapru continuously evaluates your business data to surface clear operational patterns, helping you make informed decisions effortlessly.
+                  Sapru automatically compiles your daily sales, peak rush hours, and stock depletion into clear summaries so you always know how your restaurant is doing.
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-[#0A291F] border border-[#165742] space-y-2">
                 <span className="text-[10px] font-mono font-bold text-[#FF6A3D] uppercase">
-                  Automated Digest
+                  Automated shift summary
                 </span>
                 <p className="text-xs text-[#E5E7EB] font-mono">
-                  Everything connected. Nothing missed.
+                  Everything connected. Clear &amp; simple.
                 </p>
               </div>
             </div>
@@ -782,7 +821,7 @@ export default function HomePage() {
           </h2>
 
           <p className="text-lg sm:text-xl text-[#0B0B0B]/70 max-w-xl mx-auto font-normal leading-relaxed">
-            Bring your restaurant’s operations together with Sapru.
+            Start managing your billing, kitchen, and business effortlessly with Sapru.
           </p>
 
           <div>
@@ -798,7 +837,7 @@ export default function HomePage() {
           <div className="pt-8">
             <div className="inline-flex items-center gap-2 text-xs font-mono text-[#6B7280]">
               <span className="w-2 h-2 rounded-full bg-[#0F3D2E]" />
-              <span>SAPRU OPERATING SYSTEM</span>
+              <span>SAPRU RESTAURANT PLATFORM</span>
             </div>
           </div>
         </div>
@@ -815,12 +854,14 @@ export default function HomePage() {
             </div>
             <span className="text-sm font-bold text-[#0F3D2E] font-poppins">Sapru</span>
             <span className="text-xs text-[#6B7280]">
-              — Restaurant intelligence, built beautifully.
+              — Restaurant management software, built beautifully.
             </span>
           </div>
 
           <div className="flex items-center gap-6 text-xs text-[#0B0B0B]/70 font-medium">
-            <a href="#workspace" className="hover:text-[#FF6A3D] transition">Workspace</a>
+            <a href="#workspace" className="hover:text-[#FF6A3D] transition">Platform</a>
+            <a href="#capabilities" className="hover:text-[#FF6A3D] transition">Capabilities</a>
+            <a href="#why-sapru" className="hover:text-[#FF6A3D] transition">Why Sapru</a>
             <Link href="/login" className="hover:text-[#FF6A3D] transition">Sign In</Link>
             <Link href="/terminal" className="hover:text-[#FF6A3D] transition">Terminal</Link>
           </div>

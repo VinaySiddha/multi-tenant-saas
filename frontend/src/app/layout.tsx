@@ -5,8 +5,8 @@ import { NotificationProvider } from "@/context/NotificationContext";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Sapru — The Intelligent Restaurant Operating System",
-  description: "Cloud-native all-in-one operating system for modern restaurants: POS, Live KDS, Contactless QR Ordering, Inventory & Revenue Intelligence.",
+  title: "Sapru — All-in-One Restaurant Management Software",
+  description: "Cloud-native restaurant management platform for modern food businesses: Fast Billing POS, Kitchen Display, QR Ordering, Inventory & Daily Reports.",
 };
 
 export default function RootLayout({

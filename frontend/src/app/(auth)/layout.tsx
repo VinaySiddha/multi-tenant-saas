@@ -26,7 +26,7 @@ export default function AuthLayout({
               Sapru<span className="text-xs text-[#FF6A3D] ml-0.5 -mt-3">™</span>
             </span>
             <span className="text-[10px] text-[#0B0B0B]/60 font-bold uppercase tracking-widest mt-0.5">
-              Restaurant Operating System
+              Restaurant Management Software
             </span>
           </div>
         </Link>

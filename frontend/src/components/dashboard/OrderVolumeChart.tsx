@@ -20,10 +20,10 @@ interface OrderVolumeChartProps {
 }
 
 export default function OrderVolumeChart({
-  categories = ["12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM"],
-  dineInData = [18, 42, 58, 24, 12, 16, 45, 78, 92, 84, 38],
-  takeawayData = [8, 16, 22, 10, 6, 8, 18, 30, 36, 28, 14],
-  qrSelfOrderData = [12, 28, 35, 15, 8, 10, 26, 48, 55, 46, 20],
+  categories,
+  dineInData,
+  takeawayData,
+  qrSelfOrderData,
 }: OrderVolumeChartProps) {
   const [mounted, setMounted] = useState(false);
   const [timeframe, setTimeframe] = useState("TODAY");
@@ -32,6 +32,12 @@ export default function OrderVolumeChart({
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const defaultCategories = ["11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM"];
+  const dynamicCategories = categories && categories.length > 0 ? categories : defaultCategories;
+  const dynamicDineInData = dineInData && dineInData.length > 0 ? dineInData : new Array(dynamicCategories.length).fill(0);
+  const dynamicTakeawayData = takeawayData && takeawayData.length > 0 ? takeawayData : new Array(dynamicCategories.length).fill(0);
+  const dynamicQrData = qrSelfOrderData && qrSelfOrderData.length > 0 ? qrSelfOrderData : new Array(dynamicCategories.length).fill(0);
 
   const isDark = resolvedTheme === "dark";
 
@@ -88,7 +94,7 @@ export default function OrderVolumeChart({
       },
     },
     xaxis: {
-      categories: categories,
+      categories: dynamicCategories,
       axisBorder: { show: false },
       axisTicks: { show: false },
       labels: {
@@ -110,15 +116,15 @@ export default function OrderVolumeChart({
   const series = [
     {
       name: "Dine-In Orders",
-      data: dineInData,
+      data: dynamicDineInData,
     },
     {
       name: "QR Self-Orders",
-      data: qrSelfOrderData,
+      data: dynamicQrData,
     },
     {
       name: "Takeaway & Delivery",
-      data: takeawayData,
+      data: dynamicTakeawayData,
     },
   ];
 

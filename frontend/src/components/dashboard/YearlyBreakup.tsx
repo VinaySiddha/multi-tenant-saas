@@ -21,12 +21,12 @@ interface YearlyBreakupProps {
 }
 
 export default function YearlyBreakup({
-  totalAmount = 436358,
-  growthPercentage = 14.8,
+  totalAmount = 0,
+  growthPercentage = 0,
   breakdown = [
-    { label: "Dine-In Orders", value: 55, color: "#0F3D2E" },
-    { label: "QR Self-Orders", value: 30, color: "#FF6A3D" },
-    { label: "Takeaways", value: 15, color: "#71717A" },
+    { label: "Dine-In Orders", value: 0, color: "#0F3D2E" },
+    { label: "QR Self-Orders", value: 0, color: "#FF6A3D" },
+    { label: "Takeaways", value: 0, color: "#71717A" },
   ],
 }: YearlyBreakupProps) {
   const [mounted, setMounted] = useState(false);
@@ -37,6 +37,9 @@ export default function YearlyBreakup({
   }, []);
 
   const isDark = resolvedTheme === "dark";
+  const hasData = breakdown.some((b) => b.value > 0);
+  const chartColors = hasData ? breakdown.map((b) => b.color) : [isDark ? "#165742" : "#E5E7EB"];
+  const series = hasData ? breakdown.map((b) => b.value) : [1];
 
   const chartOptions: any = {
     chart: {
@@ -47,7 +50,7 @@ export default function YearlyBreakup({
       height: 145,
       background: "transparent",
     },
-    colors: breakdown.map((b) => b.color),
+    colors: chartColors,
     plotOptions: {
       pie: {
         startAngle: 0,
@@ -59,6 +62,7 @@ export default function YearlyBreakup({
       },
     },
     tooltip: {
+      enabled: hasData,
       theme: isDark ? "dark" : "light",
       fillSeriesColor: false,
     },
@@ -84,8 +88,6 @@ export default function YearlyBreakup({
       },
     ],
   };
-
-  const series = breakdown.map((b) => b.value);
 
   return (
     <DashboardCard title="Channel Breakdown" subtitle="Revenue split by fulfillment mode">

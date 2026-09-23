@@ -21,9 +21,9 @@ interface MonthlyEarningsProps {
 }
 
 export default function MonthlyEarnings({
-  amount = 86820,
-  growthPercentage = 12.4,
-  sparklineData = [25, 66, 41, 78, 52, 88, 70, 95],
+  amount = 0,
+  growthPercentage = 0,
+  sparklineData,
 }: MonthlyEarningsProps) {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
@@ -31,6 +31,10 @@ export default function MonthlyEarnings({
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const dynamicSparkline = sparklineData && sparklineData.length > 0
+    ? sparklineData
+    : [0, 0, 0, 0, 0, 0, 0, 0];
 
   const isDark = resolvedTheme === "dark";
 
@@ -78,7 +82,7 @@ export default function MonthlyEarnings({
       theme: isDark ? "dark" : "light",
       x: { show: false },
       y: {
-        formatter: (val: number) => `₹${val * 1000}`,
+        formatter: (val: number) => formatCurrency(val),
       },
     },
   };
@@ -86,7 +90,7 @@ export default function MonthlyEarnings({
   const series = [
     {
       name: "Daily Revenue Trend",
-      data: sparklineData,
+      data: dynamicSparkline,
     },
   ];
 

@@ -20,9 +20,9 @@ interface SalesOverviewProps {
 }
 
 export default function SalesOverview({
-  categories = ["16/09", "17/09", "18/09", "19/09", "20/09", "21/09", "22/09", "23/09"],
-  salesData = [14200, 18500, 13800, 22400, 28900, 34500, 31200, 29800],
-  expenseData = [8500, 9200, 7800, 11000, 14500, 16800, 15200, 14100],
+  categories,
+  salesData,
+  expenseData,
   currencySymbol = "₹",
 }: SalesOverviewProps) {
   const [mounted, setMounted] = useState(false);
@@ -32,6 +32,22 @@ export default function SalesOverview({
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const dynamicCategories = categories && categories.length > 0
+    ? categories
+    : Array.from({ length: 7 }, (_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (6 - i));
+        return d.toLocaleDateString("en-IN", { day: "2-digit", month: "2-digit" });
+      });
+
+  const dynamicSalesData = salesData && salesData.length > 0
+    ? salesData
+    : new Array(dynamicCategories.length).fill(0);
+
+  const dynamicExpenseData = expenseData && expenseData.length > 0
+    ? expenseData
+    : new Array(dynamicCategories.length).fill(0);
 
   const isDark = resolvedTheme === "dark";
 
@@ -104,7 +120,7 @@ export default function SalesOverview({
       },
     },
     xaxis: {
-      categories: categories,
+      categories: dynamicCategories,
       axisBorder: {
         show: false,
       },
@@ -132,11 +148,11 @@ export default function SalesOverview({
   const series = [
     {
       name: "Gross Sales",
-      data: salesData,
+      data: dynamicSalesData,
     },
     {
       name: "Operating Costs",
-      data: expenseData,
+      data: dynamicExpenseData,
     },
   ];
 

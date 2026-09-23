@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import apiClient from "@/lib/api-client";
 import { DiningTable } from "@/types";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 export default function TablesManagementPage() {
   const [tables, setTables] = useState<DiningTable[]>([]);
@@ -173,22 +174,26 @@ export default function TablesManagementPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <MorphButton
+            size="sm"
             onClick={fetchTables}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm transition"
+            className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
-          </button>
-          <button
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            <span>Refresh</span>
+          </MorphButton>
+          <MorphButton
+            size="sm"
             onClick={() => {
               setEditingTable(null);
               setTableForm({ tableNumber: `T-0${tables.length + 1}`, section: "Ground Floor AC", capacity: 4 });
               setShowTableModal(true);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-md hover:shadow-indigo-500/25 transition"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
           >
-            <Plus className="w-4 h-4" /> Add Table
-          </button>
+            <Plus className="w-4 h-4" />
+            <span>Add Table</span>
+          </MorphButton>
         </div>
       </div>
 
@@ -421,12 +426,13 @@ export default function TablesManagementPage() {
                 >
                   Cancel
                 </button>
-                <button
+                <MorphButton
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md transition"
+                  size="sm"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
                 >
-                  {editingTable ? "Save Table" : "Create Table"}
-                </button>
+                  <span>{editingTable ? "Save Table" : "Create Table"}</span>
+                </MorphButton>
               </div>
             </form>
           </div>
@@ -469,20 +475,22 @@ export default function TablesManagementPage() {
             {/* Quick Link Actions */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <button
+                <MorphButton
+                  size="sm"
                   onClick={() => copyQrLink(activeQrTable.id)}
-                  className="flex-1 py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition"
+                  className="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs"
                 >
                   {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                  {copiedLink ? "Copied Link!" : "Copy Order URL"}
-                </button>
-                <button
+                  <span>{copiedLink ? "Copied Link!" : "Copy Order URL"}</span>
+                </MorphButton>
+                <MorphButton
+                  size="sm"
                   onClick={() => handleRegenerateQr(activeQrTable.id)}
-                  className="py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-semibold rounded-xl text-xs flex items-center gap-1 transition"
-                  title="Regenerate Token"
+                  className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-semibold text-xs"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" /> Token
-                </button>
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Token</span>
+                </MorphButton>
               </div>
 
               <a

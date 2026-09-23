@@ -19,6 +19,7 @@ import {
 import apiClient from "@/lib/api-client";
 import { formatCurrency } from "@/lib/utils";
 import { InventoryItem } from "@/types";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 export default function InventoryPage() {
   const [items, setItems] = useState<InventoryItem[]>([]);
@@ -172,18 +173,22 @@ export default function InventoryPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <MorphButton
+            size="sm"
             onClick={fetchInventory}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm transition"
+            className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
-          </button>
-          <button
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            <span>Refresh</span>
+          </MorphButton>
+          <MorphButton
+            size="sm"
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-md hover:shadow-indigo-500/25 transition"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md hover:shadow-indigo-500/25"
           >
-            <Plus className="w-4 h-4" /> Add Item
-          </button>
+            <Plus className="w-4 h-4" />
+            <span>Add Item</span>
+          </MorphButton>
         </div>
       </div>
 
@@ -345,16 +350,18 @@ export default function InventoryPage() {
                       </td>
                       <td className="px-5 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <button
+                          <MorphButton
+                            size="sm"
                             onClick={() => {
                               setSelectedItem(item);
                               setShowAdjustModal(true);
                             }}
-                            className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-400 rounded-lg font-semibold text-[11px] flex items-center gap-1 transition"
+                            className="bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-400 font-semibold text-[11px]"
                             title="Adjust Stock"
                           >
-                            <ArrowUpDown className="w-3 h-3" /> Adjust
-                          </button>
+                            <ArrowUpDown className="w-3 h-3" />
+                            <span>Adjust</span>
+                          </MorphButton>
                           <button
                             onClick={() => handleDeleteItem(item.id)}
                             className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-lg transition"
@@ -475,12 +482,13 @@ export default function InventoryPage() {
                 >
                   Cancel
                 </button>
-                <button
+                <MorphButton
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md transition"
+                  size="sm"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
                 >
-                  Save Material
-                </button>
+                  <span>Save Material</span>
+                </MorphButton>
               </div>
             </form>
           </div>
@@ -569,12 +577,13 @@ export default function InventoryPage() {
                 >
                   Cancel
                 </button>
-                <button
+                <MorphButton
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md transition"
+                  size="sm"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
                 >
-                  Apply Stock Update
-                </button>
+                  <span>Apply Stock Update</span>
+                </MorphButton>
               </div>
             </form>
           </div>

@@ -23,6 +23,7 @@ import { formatCurrency } from "@/lib/utils";
 import apiClient from "@/lib/api-client";
 import { Category, MenuItem, DiningTable, Order } from "@/types";
 import { useNotifications } from "@/context/NotificationContext";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 interface CartItem {
   menuItem: MenuItem;
@@ -270,13 +271,13 @@ export default function PosTerminalPage() {
               />
             </div>
 
-            <button
+            <MorphButton
+              size="sm"
               onClick={loadCatalogAndTables}
-              className="p-1.5 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500"
-              title="Refresh Menu Catalog"
+              className="bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-300 dark:border-slate-700"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${catalogLoading ? "animate-spin" : ""}`} />
-            </button>
+            </MorphButton>
           </div>
         </div>
 
@@ -462,22 +463,24 @@ export default function PosTerminalPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-2 pt-1">
-            <button
-              onClick={handleSendKot}
+            <MorphButton
+              onAction={handleSendKot}
               disabled={cart.length === 0 || loading}
-              className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-md transition disabled:opacity-40"
+              loadingLabel="Sending KOT..."
+              successLabel="KOT Sent!"
+              className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-md"
             >
               <Send className="w-3.5 h-3.5" />
-              Send KOT
-            </button>
-            <button
+              <span>Send KOT</span>
+            </MorphButton>
+            <MorphButton
               onClick={() => setShowPaymentModal(true)}
               disabled={(cart.length === 0 && !lastPlacedOrder) || loading}
-              className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-900/30 transition disabled:opacity-40"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-900/30"
             >
               <CreditCard className="w-3.5 h-3.5" />
-              Settle Bill
-            </button>
+              <span>Settle Bill</span>
+            </MorphButton>
           </div>
         </div>
       </div>
@@ -568,15 +571,16 @@ export default function PosTerminalPage() {
               >
                 Cancel
               </button>
-              <button
-                type="button"
-                onClick={handleSettlePayment}
+              <MorphButton
+                onAction={handleSettlePayment}
                 disabled={paymentProcessing}
-                className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-emerald-900/30 transition flex items-center justify-center gap-1.5"
+                loadingLabel="Settling..."
+                successLabel="Settled!"
+                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-lg shadow-emerald-900/30"
               >
                 <CheckCircle className="w-4 h-4" />
-                {paymentProcessing ? "Processing..." : "Confirm & Settle"}
-              </button>
+                <span>Confirm &amp; Settle</span>
+              </MorphButton>
             </div>
           </div>
         </div>

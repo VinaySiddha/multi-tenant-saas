@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import apiClient from "@/lib/api-client";
 import { StaffMember, UserRole } from "@/types";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 export default function StaffManagementPage() {
   const [staffList, setStaffList] = useState<StaffMember[]>([]);
@@ -172,22 +173,26 @@ export default function StaffManagementPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <MorphButton
+            size="sm"
             onClick={fetchStaff}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm transition"
+            className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
-          </button>
-          <button
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            <span>Refresh</span>
+          </MorphButton>
+          <MorphButton
+            size="sm"
             onClick={() => {
               setEditingStaff(null);
               setStaffForm({ fullName: "", email: "", phoneNumber: "", role: "WAITER", password: "" });
               setShowStaffModal(true);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-md hover:shadow-indigo-500/25 transition"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
           >
-            <Plus className="w-4 h-4" /> Add Team Member
-          </button>
+            <Plus className="w-4 h-4" />
+            <span>Add Team Member</span>
+          </MorphButton>
         </div>
       </div>
 
@@ -452,12 +457,13 @@ export default function StaffManagementPage() {
                 >
                   Cancel
                 </button>
-                <button
+                <MorphButton
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md transition"
+                  size="sm"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md"
                 >
-                  {editingStaff ? "Save Changes" : "Create Account"}
-                </button>
+                  <span>{editingStaff ? "Save Changes" : "Create Account"}</span>
+                </MorphButton>
               </div>
             </form>
           </div>

@@ -26,6 +26,7 @@ import apiClient from "@/lib/api-client";
 import { formatCurrency } from "@/lib/utils";
 import { Order, DiningTable, MenuItem } from "@/types";
 import { useNotifications } from "@/context/NotificationContext";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 export default function OrdersManagementPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -137,12 +138,14 @@ export default function OrdersManagementPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <MorphButton
+            size="sm"
             onClick={fetchOrders}
-            className="flex items-center gap-1.5 px-3 py-2 bg-slate-900 border border-slate-700 text-xs font-semibold rounded-xl text-slate-300 hover:bg-slate-800 transition"
+            className="bg-slate-900 border border-slate-700 text-xs font-semibold text-slate-300 hover:bg-slate-800"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
-          </button>
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            <span>Refresh</span>
+          </MorphButton>
         </div>
       </div>
 
@@ -323,25 +326,29 @@ export default function OrdersManagementPage() {
                       <td className="px-5 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
                           {!isPaid && (
-                            <button
+                            <MorphButton
+                              size="sm"
                               onClick={() => {
                                 setSettlingOrder(order);
                                 setShowSettleModal(true);
                               }}
-                              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-[11px] inline-flex items-center gap-1 shadow-md shadow-emerald-950/40 transition"
+                              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shadow-md shadow-emerald-950/40"
                             >
-                              <CreditCard className="w-3.5 h-3.5" /> Settle Bill
-                            </button>
+                              <CreditCard className="w-3.5 h-3.5" />
+                              <span>Settle Bill</span>
+                            </MorphButton>
                           )}
-                          <button
+                          <MorphButton
+                            size="sm"
                             onClick={() => {
                               setSelectedOrder(order);
                               setShowInvoiceModal(true);
                             }}
-                            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-[11px] inline-flex items-center gap-1 border border-slate-700 transition"
+                            className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-[11px] border border-slate-700"
                           >
-                            <Eye className="w-3.5 h-3.5" /> View Bill
-                          </button>
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>View Bill</span>
+                          </MorphButton>
                         </div>
                       </td>
                     </tr>
@@ -458,15 +465,16 @@ export default function OrdersManagementPage() {
               >
                 Cancel
               </button>
-              <button
-                type="button"
-                onClick={handleProcessPayment}
+              <MorphButton
+                onAction={handleProcessPayment}
                 disabled={isSettling}
-                className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-emerald-950/40 transition flex items-center justify-center gap-1.5"
+                loadingLabel="Settling..."
+                successLabel="Settled!"
+                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950/40"
               >
                 <CheckCircle2 className="w-4 h-4" />
-                {isSettling ? "Recording Payment..." : "Confirm & Settle"}
-              </button>
+                <span>Confirm &amp; Settle</span>
+              </MorphButton>
             </div>
           </div>
         </div>
@@ -550,12 +558,13 @@ export default function OrdersManagementPage() {
 
             {/* Print Action */}
             <div className="flex items-center gap-2">
-              <button
+              <MorphButton
                 onClick={() => window.print()}
-                className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition"
+                className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg"
               >
-                <Printer className="w-4 h-4" /> Print Thermal Receipt
-              </button>
+                <Printer className="w-4 h-4" />
+                <span>Print Thermal Receipt</span>
+              </MorphButton>
             </div>
           </div>
         </div>

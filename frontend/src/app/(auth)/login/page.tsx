@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Lock, Mail, ArrowRight, AlertCircle } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import apiClient from "@/lib/api-client";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -135,14 +136,16 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <button
+        <MorphButton
           type="submit"
           disabled={loading}
-          className="w-full mt-4 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold shadow-md shadow-indigo-500/20 transition disabled:opacity-50"
+          state={loading ? "loading" : undefined}
+          loadingLabel="Authenticating..."
+          className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20"
         >
-          {loading ? "Authenticating..." : "Continue to Dashboard"}
-          <ArrowRight className="w-4 h-4" />
-        </button>
+          <span>Continue to Dashboard</span>
+          <ArrowRight className="w-4 h-4 ml-1" />
+        </MorphButton>
       </form>
 
       <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 text-center">

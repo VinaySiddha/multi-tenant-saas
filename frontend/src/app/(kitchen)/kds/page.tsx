@@ -17,6 +17,7 @@ import {
 import apiClient from "@/lib/api-client";
 import { KitchenTicket } from "@/types";
 import { useNotifications } from "@/context/NotificationContext";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 export default function KdsPage() {
   const [tickets, setTickets] = useState<any[]>([]);
@@ -113,12 +114,14 @@ export default function KdsPage() {
             <span>{soundEnabled ? "Audio On" : "Muted"}</span>
           </button>
 
-          <button
+          <MorphButton
+            size="sm"
             onClick={fetchTickets}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold rounded-xl text-slate-200 transition"
+            className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
-          </button>
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            <span>Refresh</span>
+          </MorphButton>
         </div>
       </div>
 
@@ -214,38 +217,45 @@ export default function KdsPage() {
                 {/* Interactive Workflow Actions */}
                 <div className="p-3 bg-slate-950/90 border-t border-slate-800 rounded-b-2xl space-y-2">
                   {isPending && (
-                    <button
-                      onClick={() => updateStatus(ticket.id, "IN_PROGRESS")}
-                      className="w-full py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-amber-950/40"
+                    <MorphButton
+                      onAction={() => updateStatus(ticket.id, "IN_PROGRESS")}
+                      loadingLabel="Starting..."
+                      successLabel="Cooking!"
+                      className="w-full bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-lg shadow-amber-950/40"
                     >
                       <Flame className="w-4 h-4" />
-                      Start Cooking
-                    </button>
+                      <span>Start Cooking</span>
+                    </MorphButton>
                   )}
 
                   {isProgress && (
-                    <button
-                      onClick={() => updateStatus(ticket.id, "READY")}
-                      className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40"
+                    <MorphButton
+                      onAction={() => updateStatus(ticket.id, "READY")}
+                      loadingLabel="Notifying..."
+                      successLabel="Ready!"
+                      className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950/40"
                     >
                       <CheckCircle2 className="w-4 h-4" />
-                      Mark KOT Ready (Notify Waiter)
-                    </button>
+                      <span>Mark KOT Ready (Notify Server)</span>
+                    </MorphButton>
                   )}
 
                   {isReady && (
                     <div className="space-y-2">
                       <div className="flex items-center justify-center gap-1.5 py-1 text-emerald-400 text-xs font-bold bg-emerald-950/30 rounded-lg border border-emerald-900/40">
                         <CheckCircle2 className="w-4 h-4" />
-                        Ready • Waiter Notified
+                        Ready • Server Notified
                       </div>
-                      <button
-                        onClick={() => updateStatus(ticket.id, "SERVED")}
-                        className="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition flex items-center justify-center gap-1.5 border border-slate-700"
+                      <MorphButton
+                        size="sm"
+                        onAction={() => updateStatus(ticket.id, "SERVED")}
+                        loadingLabel="Serving..."
+                        successLabel="Served!"
+                        className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700"
                       >
                         <CheckCheck className="w-3.5 h-3.5" />
-                        Mark Served (Dismiss)
-                      </button>
+                        <span>Mark Served (Dismiss)</span>
+                      </MorphButton>
                     </div>
                   )}
                 </div>

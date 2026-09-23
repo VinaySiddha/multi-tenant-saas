@@ -20,6 +20,7 @@ import {
 import { formatCurrency } from "@/lib/utils";
 import apiClient from "@/lib/api-client";
 import { MenuItem, Category, DiningTable } from "@/types";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 export default function QrMenuPage() {
   const params = useParams();
@@ -180,12 +181,12 @@ export default function QrMenuPage() {
         </div>
 
         <div className="max-w-md mx-auto w-full pt-6">
-          <button
+          <MorphButton
             onClick={() => setPlacedOrder(null)}
-            className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl transition"
+            className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs"
           >
-            Order More Dishes &amp; Drinks
-          </button>
+            <span>Order More Dishes &amp; Drinks</span>
+          </MorphButton>
         </div>
       </div>
     );
@@ -329,13 +330,16 @@ export default function QrMenuPage() {
                 </span>
                 <span className="text-[10px] text-slate-400">Includes 5% GST</span>
               </div>
-              <button
-                onClick={handlePlaceOrder}
-                disabled={isSubmitting}
-                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-950/50 disabled:opacity-50"
+              <MorphButton
+                onAction={handlePlaceOrder}
+                disabled={isSubmitting || totalItemsCount === 0}
+                loadingLabel="Sending to Kitchen..."
+                successLabel="Order Sent!"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-950/50"
               >
-                {isSubmitting ? "Sending..." : "Submit to Kitchen"} <ArrowRight className="w-4 h-4" />
-              </button>
+                <span>Submit to Kitchen</span>
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </MorphButton>
             </div>
           </div>
         </div>

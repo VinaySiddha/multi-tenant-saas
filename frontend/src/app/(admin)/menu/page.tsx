@@ -20,6 +20,7 @@ import {
 import apiClient from "@/lib/api-client";
 import { formatCurrency } from "@/lib/utils";
 import { MenuItem, Category } from "@/types";
+import { MorphButton } from "@/components/spectrumui/morph-button";
 
 export default function MenuManagementPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -199,19 +200,24 @@ export default function MenuManagementPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <MorphButton
+            size="sm"
             onClick={fetchMenuData}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm transition"
+            className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
-          </button>
-          <button
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            <span>Refresh</span>
+          </MorphButton>
+          <MorphButton
+            size="sm"
             onClick={() => setShowCategoryModal(true)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl transition"
+            className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold"
           >
-            <Layers className="w-4 h-4" /> Add Category
-          </button>
-          <button
+            <Layers className="w-4 h-4" />
+            <span>Add Category</span>
+          </MorphButton>
+          <MorphButton
+            size="sm"
             onClick={() => {
               setEditingItem(null);
               setItemForm({
@@ -227,10 +233,11 @@ export default function MenuManagementPage() {
               });
               setShowItemModal(true);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-md hover:shadow-indigo-500/25 transition"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
           >
-            <Plus className="w-4 h-4" /> Add Menu Item
-          </button>
+            <Plus className="w-4 h-4" />
+            <span>Add Menu Item</span>
+          </MorphButton>
         </div>
       </div>
 
@@ -514,12 +521,13 @@ export default function MenuManagementPage() {
                 >
                   Cancel
                 </button>
-                <button
+                <MorphButton
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md transition"
+                  size="sm"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
                 >
-                  {editingItem ? "Save Changes" : "Create Item"}
-                </button>
+                  <span>{editingItem ? "Save Changes" : "Create Item"}</span>
+                </MorphButton>
               </div>
             </form>
           </div>
@@ -589,12 +597,13 @@ export default function MenuManagementPage() {
                 >
                   Cancel
                 </button>
-                <button
+                <MorphButton
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md transition"
+                  size="sm"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
                 >
-                  Save Category
-                </button>
+                  <span>Save Category</span>
+                </MorphButton>
               </div>
             </form>
           </div>

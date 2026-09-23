@@ -1,8 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { Client } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Bell, CheckCircle2, Flame, Receipt, Utensils, X, AlertTriangle } from "lucide-react";
 import Link from "next/link";
@@ -84,56 +82,75 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   }, []);
 
   useEffect(() => {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1";
-    const wsUrl = apiBaseUrl.replace(/\/api\/v1\/?$/, "") + "/api/v1/ws";
+    if (typeof window === "undefined") return;
 
-    let stompClient: Client | null = null;
+    let isMounted = true;
+    let stompClient: any = null;
 
-    try {
-      stompClient = new Client({
-        webSocketFactory: () => new SockJS(wsUrl),
-        reconnectDelay: 5000,
-        heartbeatIncoming: 10000,
-        heartbeatOutgoing: 10000,
-        debug: () => {},
-        onConnect: () => {
-          // Subscribe to general and tenant/branch topics
-          const topics = [
-            "/topic/orders",
-            "/topic/kot",
-            "/topic/notifications",
-            "/topic/payments"
-          ];
+    const initStomp = async () => {
+      try {
+        const [{ Client }, SockJSModule] = await Promise.all([
+          import("@stomp/stompjs"),
+          import("sockjs-client"),
+        ]);
+        const SockJS = SockJSModule.default || SockJSModule;
 
-          if (tenant?.id && branch?.id) {
-            topics.push(
-              `/topic/tenant/${tenant.id}/branch/${branch.id}/orders`,
-              `/topic/tenant/${tenant.id}/branch/${branch.id}/kot`,
-              `/topic/tenant/${tenant.id}/branch/${branch.id}/payments`
-            );
-          }
+        if (!isMounted) return;
 
-          topics.forEach((topic) => {
-            stompClient?.subscribe(topic, (message) => {
-              try {
-                const payload = JSON.parse(message.body);
-                handleIncomingEvent(payload);
-              } catch (e) {
-                // Ignore parse errors
-              }
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1";
+        const wsUrl = apiBaseUrl.replace(/\/api\/v1\/?$/, "") + "/api/v1/ws";
+
+        stompClient = new Client({
+          webSocketFactory: () => new SockJS(wsUrl),
+          reconnectDelay: 5000,
+          heartbeatIncoming: 10000,
+          heartbeatOutgoing: 10000,
+          debug: () => {},
+          onConnect: () => {
+            const topics = [
+              "/topic/orders",
+              "/topic/kot",
+              "/topic/notifications",
+              "/topic/payments",
+            ];
+
+            if (tenant?.id && branch?.id) {
+              topics.push(
+                `/topic/tenant/${tenant.id}/branch/${branch.id}/orders`,
+                `/topic/tenant/${tenant.id}/branch/${branch.id}/kot`,
+                `/topic/tenant/${tenant.id}/branch/${branch.id}/payments`
+              );
+            }
+
+            topics.forEach((topic) => {
+              stompClient?.subscribe(topic, (message: any) => {
+                try {
+                  const payload = JSON.parse(message.body);
+                  handleIncomingEvent(payload);
+                } catch {
+                  // Ignore parse errors
+                }
+              });
             });
-          });
-        },
-      });
+          },
+        });
 
-      stompClient.activate();
-    } catch {
-      // WebSocket fallback handling
-    }
+        stompClient.activate();
+      } catch {
+        // Fallback gracefully if websocket connection fails
+      }
+    };
+
+    initStomp();
 
     return () => {
+      isMounted = false;
       if (stompClient) {
-        stompClient.deactivate();
+        try {
+          stompClient.deactivate();
+        } catch {
+          // ignore
+        }
       }
     };
   }, [tenant?.id, branch?.id, token]);

@@ -124,28 +124,28 @@ const Services = () => {
               ))}
             </div>
             {/* cta */}
-            <div className="bg-gray-950 border rounded-2xl p-8 flex flex-col lg:flex-row items-center justify-between gap-12 w-full animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-200 ease-in-out fill-mode-both">
+            <div className="bg-[#0F3D2E] border border-[#E5E7EB]/20 rounded-2xl p-8 flex flex-col lg:flex-row items-center justify-between gap-12 w-full animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-200 ease-in-out fill-mode-both">
               <div className="text-center md:text-start">
-                <p className="text-2xl font-medium text-white">
+                <p className="text-2xl font-medium text-[#FAFAF8]">
                   See Our Work in Action.{" "}
                 </p>
-                <p className="text-2xl font-medium text-white">
+                <p className="text-2xl font-medium text-[#FAFAF8]">
                   Start Your Creative Journey with Us!
                 </p>
               </div>
               <div className="flex md:flex-row flex-col items-center gap-4">
-                <Button className="group text-sm font-medium text-black bg-white hover:text-black dark:hover:text-black hover:bg-white/90 rounded-full flex items-center gap-4 p-1 ps-5 w-fit h-12 cursor-pointer">
+                <Button className="group text-sm font-medium text-[#0B0B0B] bg-[#FAFAF8] hover:text-[#0B0B0B] hover:bg-[#FAFAF8]/90 rounded-full flex items-center gap-4 p-1 ps-5 w-fit h-12 cursor-pointer shadow-sm">
                   <a href="#" className="flex items-center gap-4">
                     <span>Let’s Collaborate</span>
-                    <div className="p-3 bg-black text-white rounded-full group-hover:rotate-45 transition-transform duration-300 ease-in-out">
+                    <div className="p-3 bg-[#FF6A3D] text-white rounded-full group-hover:rotate-45 transition-transform duration-300 ease-in-out">
                       <ArrowUpRight size={16} />
                     </div>
                   </a>
                 </Button>
-                <Button className="group text-sm font-medium text-white bg-gray-950 hover:text-white dark:hover:text-white hover:bg-gray-950/90 rounded-full border border-white/50 flex items-center gap-4 p-1 ps-5 w-fit h-12 cursor-pointer">
+                <Button className="group text-sm font-medium text-[#FAFAF8] bg-transparent hover:text-white hover:bg-white/10 rounded-full border border-white/30 flex items-center gap-4 p-1 ps-5 w-fit h-12 cursor-pointer">
                   <a href="#" className="flex items-center gap-4">
                     <span>View Portfolio</span>
-                    <div className="p-3 bg-white text-black rounded-full group-hover:rotate-45 transition-transform duration-300 ease-in-out">
+                    <div className="p-3 bg-[#FAFAF8] text-[#0F3D2E] rounded-full group-hover:rotate-45 transition-transform duration-300 ease-in-out">
                       <ArrowUpRight size={16} />
                     </div>
                   </a>

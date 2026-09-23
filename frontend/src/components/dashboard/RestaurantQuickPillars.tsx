@@ -11,9 +11,7 @@ interface PillarItem {
   description: string;
   href: string;
   badge: string;
-  badgeColor: string;
   icon: React.ComponentType<{ className?: string }>;
-  accentColor: string;
 }
 
 const pillars: PillarItem[] = [
@@ -24,9 +22,7 @@ const pillars: PillarItem[] = [
     description: "Touch optimized billing interface with quick item search, table transfers, and instant GST invoice settlement.",
     href: "/terminal",
     badge: "Terminal Active",
-    badgeColor: "bg-amber-500/10 text-amber-500 border-amber-500/30",
     icon: Receipt,
-    accentColor: "from-amber-500/20 to-orange-500/5",
   },
   {
     id: "2",
@@ -35,9 +31,7 @@ const pillars: PillarItem[] = [
     description: "Live real-time KOT bump bar with preparation timers, course pacing, and automated server chime notifications.",
     href: "/kds",
     badge: "Live Audio Sync",
-    badgeColor: "bg-rose-500/10 text-rose-500 border-rose-500/30",
     icon: ChefHat,
-    accentColor: "from-rose-500/20 to-red-500/5",
   },
   {
     id: "3",
@@ -46,9 +40,7 @@ const pillars: PillarItem[] = [
     description: "Digital mobile ordering standees with live 86-ing menu sync, special requests, and zero app download required.",
     href: "/tables",
     badge: "Mobile Web Ready",
-    badgeColor: "bg-[#5D87FF]/10 text-[#5D87FF] border-[#5D87FF]/30",
     icon: QrCode,
-    accentColor: "from-[#5D87FF]/20 to-indigo-500/5",
   },
   {
     id: "4",
@@ -57,9 +49,7 @@ const pillars: PillarItem[] = [
     description: "Automated consumption deduction on order placement, low stock alerts, and vendor restock management.",
     href: "/inventory",
     badge: "Real-Time Tracking",
-    badgeColor: "bg-emerald-500/10 text-emerald-500 border-emerald-500/30",
     icon: Package,
-    accentColor: "from-emerald-500/20 to-teal-500/5",
   },
 ];
 
@@ -68,11 +58,11 @@ export default function RestaurantQuickPillars() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-base font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Restaurant Operations Hub
+          <h3 className="text-sm sm:text-base font-bold tracking-tight text-[#0F3D2E] dark:text-[#FAFAF8]">
+            Core Operational Modules
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Integrated modules connecting front desk, kitchen station, and inventory
+          <p className="text-xs text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70">
+            Direct consoles for point-of-sale cashiering, kitchen bump bar, floor QR &amp; inventory
           </p>
         </div>
       </div>
@@ -84,36 +74,32 @@ export default function RestaurantQuickPillars() {
             <Link
               key={item.id}
               href={item.href}
-              className="group rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm hover:border-[#5D87FF]/50 hover:shadow-md transition-all duration-200 flex flex-col justify-between"
+              className="group rounded-xl border border-[#E5E7EB] dark:border-[#165742]/40 bg-white dark:bg-[#0A291F] p-5 hover:border-[#FF6A3D]/60 hover:shadow-md transition-all duration-150 flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div
-                    className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.accentColor} border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-center text-slate-900 dark:text-white group-hover:scale-110 transition-transform`}
-                  >
-                    <Icon className="w-5 h-5" />
+                  <div className="w-8 h-8 rounded-lg bg-[#FF6A3D]/10 border border-[#FF6A3D]/20 flex items-center justify-center text-[#FF6A3D] group-hover:scale-105 transition-transform">
+                    <Icon className="w-4 h-4" />
                   </div>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${item.badgeColor}`}
-                  >
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium border bg-[#FAFAF8] dark:bg-[#165742] text-[#0F3D2E] dark:text-[#FAFAF8] border-[#E5E7EB] dark:border-[#165742]">
                     {item.badge}
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#6B7280] block mb-1 font-semibold">
                     {item.category}
                   </span>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#5D87FF] transition-colors leading-snug">
+                  <h4 className="text-sm font-bold text-[#0F3D2E] dark:text-white group-hover:text-[#FF6A3D] transition-colors leading-snug">
                     {item.title}
                   </h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70 mt-1.5 line-clamp-2 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-4 mt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-[#5D87FF]">
+              <div className="pt-4 mt-3 border-t border-[#E5E7EB] dark:border-[#165742]/40 flex items-center justify-between text-xs font-semibold text-[#0F3D2E] dark:text-[#E5E7EB] group-hover:text-[#FF6A3D] transition-colors">
                 <span>Launch Console</span>
                 <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>

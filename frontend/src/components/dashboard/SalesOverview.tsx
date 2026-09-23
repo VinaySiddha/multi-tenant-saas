@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import DashboardCard from "./DashboardCard";
 
-// Dynamic import for ApexCharts to disable SSR
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+const Chart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[350px] animate-pulse bg-slate-100 dark:bg-slate-800/50 rounded-xl" />
+  ),
+});
 
 interface SalesOverviewProps {
   categories?: string[];
@@ -21,8 +25,14 @@ export default function SalesOverview({
   expenseData = [8500, 9200, 7800, 11000, 14500, 16800, 15200, 14100],
   currencySymbol = "₹",
 }: SalesOverviewProps) {
+  const [mounted, setMounted] = useState(false);
   const [period, setPeriod] = useState("THIS_WEEK");
   const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const isDark = resolvedTheme === "dark";
 
   // Modernize brand palette colors
@@ -33,26 +43,26 @@ export default function SalesOverview({
     chart: {
       type: "bar",
       fontFamily: "inherit",
-      foreColor: isDark ? "#94a3b8" : "#64748b",
+      foreColor: "#71717A",
       toolbar: {
         show: false,
       },
       height: 350,
       background: "transparent",
     },
-    colors: [primaryColor, secondaryColor],
+    colors: ["#FF6A3D", "#0F3D2E"],
     plotOptions: {
       bar: {
         horizontal: false,
         barHeight: "60%",
-        columnWidth: "42%",
-        borderRadius: 6,
+        columnWidth: "38%",
+        borderRadius: 4,
         borderRadiusApplication: "end",
       },
     },
     stroke: {
       show: true,
-      width: 4,
+      width: 3,
       colors: ["transparent"],
     },
     dataLabels: {
@@ -63,15 +73,23 @@ export default function SalesOverview({
       position: "top",
       horizontalAlign: "right",
       labels: {
-        colors: isDark ? "#cbd5e1" : "#475569",
+        colors: isDark ? "#E5E7EB" : "#0B0B0B",
+      },
+      markers: {
+        radius: 2,
       },
     },
     grid: {
-      borderColor: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
+      borderColor: isDark ? "#165742" : "#E5E7EB",
       strokeDashArray: 3,
       xaxis: {
         lines: {
           show: false,
+        },
+      },
+      yaxis: {
+        lines: {
+          show: true,
         },
       },
     },
@@ -80,7 +98,8 @@ export default function SalesOverview({
       labels: {
         formatter: (val: number) => `${currencySymbol}${val.toLocaleString()}`,
         style: {
-          colors: isDark ? "#94a3b8" : "#64748b",
+          colors: isDark ? "#E5E7EB" : "#6B7280",
+          fontSize: "11px",
         },
       },
     },
@@ -94,12 +113,16 @@ export default function SalesOverview({
       },
       labels: {
         style: {
-          colors: isDark ? "#94a3b8" : "#64748b",
+          colors: isDark ? "#E5E7EB" : "#6B7280",
+          fontSize: "11px",
         },
       },
     },
     tooltip: {
       theme: isDark ? "dark" : "light",
+      style: {
+        fontSize: "12px",
+      },
       y: {
         formatter: (val: number) => `${currencySymbol}${val.toLocaleString()}`,
       },
@@ -108,24 +131,24 @@ export default function SalesOverview({
 
   const series = [
     {
-      name: "Gross Sales Revenue",
+      name: "Gross Sales",
       data: salesData,
     },
     {
-      name: "Net Operating Margin",
+      name: "Operating Costs",
       data: expenseData,
     },
   ];
 
   return (
     <DashboardCard
-      title="Sales & Revenue Overview"
-      subtitle="Comparative trajectory of daily dining and digital takeouts"
+      title="Revenue & Sales Trajectory"
+      subtitle="Daily gross receipts vs operational fulfillment cost"
       action={
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value)}
-          className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#5D87FF]"
+          className="px-2.5 py-1 rounded-lg text-xs font-medium bg-white dark:bg-[#0A291F] border border-[#E5E7EB] dark:border-[#165742] text-[#0B0B0B] dark:text-[#FAFAF8] focus:outline-none focus:border-[#FF6A3D] transition"
         >
           <option value="THIS_WEEK">Past 7 Days</option>
           <option value="THIS_MONTH">Current Month</option>
@@ -133,9 +156,11 @@ export default function SalesOverview({
         </select>
       }
     >
-      <div className="w-full h-[350px]">
-        {typeof window !== "undefined" && (
-          <Chart options={options} series={series} type="bar" height={350} width="100%" />
+      <div className="w-full h-[320px]">
+        {mounted ? (
+          <Chart options={options} series={series} type="bar" height={320} width="100%" />
+        ) : (
+          <div className="w-full h-[320px] animate-pulse bg-[#18181B] rounded-lg" />
         )}
       </div>
     </DashboardCard>

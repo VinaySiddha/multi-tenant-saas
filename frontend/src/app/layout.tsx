@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { poppins, manrope } from "./fonts";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Sapru — Next-Gen Enterprise Restaurant Operating System",
-  description: "Cloud-native Multi-Tenant POS, Real-Time Kitchen Display (KDS), QR Ordering & Restaurant Intelligence Platform",
+  title: "Sapru — The Intelligent Restaurant Operating System",
+  description: "Cloud-native all-in-one operating system for modern restaurants: POS, Live KDS, Contactless QR Ordering, Inventory & Revenue Intelligence.",
 };
 
 export default function RootLayout({
@@ -14,11 +15,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className="h-full antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+    <html lang="en" className={`h-full ${poppins.variable} ${manrope.variable}`} suppressHydrationWarning>
+      <body className={`h-full font-sans antialiased bg-[#FAFAF8] text-[#0B0B0B] dark:bg-[#0A291F] dark:text-[#FAFAF8] selection:bg-[#FF6A3D] selection:text-white ${poppins.className}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >

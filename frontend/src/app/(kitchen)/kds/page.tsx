@@ -35,7 +35,6 @@ export default function KdsPage() {
         setTickets([]);
       }
     } catch {
-      // Clean error state - zero mock fallback
       setTickets([]);
     } finally {
       setLoading(false);
@@ -45,7 +44,6 @@ export default function KdsPage() {
   useEffect(() => {
     fetchTickets();
 
-    // Listen to real-time events dispatched from WebSocket NotificationContext
     const handleOrderCreated = () => {
       fetchTickets();
       if (soundEnabled) playNotificationSound();
@@ -58,7 +56,6 @@ export default function KdsPage() {
     window.addEventListener("sapru:order-created", handleOrderCreated);
     window.addEventListener("sapru:kot-updated", handleKotUpdated);
 
-    // 10-second polling fallback
     const interval = setInterval(fetchTickets, 10000);
 
     return () => {
@@ -82,19 +79,19 @@ export default function KdsPage() {
   return (
     <div className="space-y-4">
       {/* Header Info Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 backdrop-blur-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-[#0A291F] p-3.5 rounded-2xl border border-[#E5E7EB] dark:border-[#165742] shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400">
+          <div className="p-2 rounded-xl bg-[#FF6A3D]/10 border border-[#FF6A3D]/20 text-[#FF6A3D]">
             <ChefHat className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+            <h2 className="text-sm font-extrabold text-[#0F3D2E] dark:text-[#FAFAF8] flex items-center gap-2">
               Live Kitchen Expediter Line
-              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#FAFAF8] dark:bg-[#165742] text-[#0F3D2E] dark:text-[#FAFAF8] border border-[#E5E7EB] dark:border-[#165742] font-mono font-bold">
                 {activeTickets.length} active tickets
               </span>
             </h2>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70">
               Real-time orders received from POS terminals and guest QR mobile scans
             </p>
           </div>
@@ -105,19 +102,19 @@ export default function KdsPage() {
             onClick={() => setSoundEnabled(!soundEnabled)}
             className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl border transition ${
               soundEnabled
-                ? "bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700"
-                : "bg-rose-950/40 text-rose-400 border-rose-900"
+                ? "bg-[#FAFAF8] dark:bg-[#165742] text-[#0F3D2E] dark:text-[#FAFAF8] border-[#E5E7EB] dark:border-[#165742] hover:bg-white"
+                : "bg-rose-50 text-rose-600 border-rose-200"
             }`}
             title="Toggle audio alerts"
           >
-            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-emerald-400" /> : <VolumeX className="w-3.5 h-3.5 text-rose-400" />}
+            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-emerald-500" /> : <VolumeX className="w-3.5 h-3.5 text-rose-500" />}
             <span>{soundEnabled ? "Audio On" : "Muted"}</span>
           </button>
 
           <MorphButton
             size="sm"
             onClick={fetchTickets}
-            className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200"
+            className="bg-[#FAFAF8] dark:bg-[#165742] hover:bg-white text-[#0F3D2E] dark:text-white border border-[#E5E7EB] dark:border-[#165742] text-xs font-semibold"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
@@ -127,13 +124,13 @@ export default function KdsPage() {
 
       {/* Tickets Row */}
       {activeTickets.length === 0 ? (
-        <div className="p-16 text-center rounded-3xl bg-slate-900/50 border border-dashed border-slate-800 flex flex-col items-center justify-center text-slate-400 space-y-3">
-          <div className="w-16 h-16 rounded-3xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-slate-500 shadow-inner">
-            <CheckCheck className="w-8 h-8 text-emerald-400" />
+        <div className="p-16 text-center rounded-3xl bg-white dark:bg-[#0A291F] border border-dashed border-[#E5E7EB] dark:border-[#165742] flex flex-col items-center justify-center text-[#6B7280] space-y-3">
+          <div className="w-16 h-16 rounded-3xl bg-[#FAFAF8] dark:bg-[#165742] border border-[#E5E7EB] dark:border-[#165742] flex items-center justify-center text-emerald-500 shadow-xs">
+            <CheckCheck className="w-8 h-8 text-emerald-500" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-white">Kitchen Queue is Clear</h3>
-            <p className="text-xs text-slate-400 max-w-sm">
+            <h3 className="text-base font-bold text-[#0F3D2E] dark:text-[#FAFAF8]">Kitchen Queue is Clear</h3>
+            <p className="text-xs text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70 max-w-sm">
               All tickets are prepared and served. New customer orders from POS or QR menu will appear here automatically with audio alerts.
             </p>
           </div>
@@ -149,33 +146,33 @@ export default function KdsPage() {
             return (
               <div
                 key={ticket.id}
-                className={`w-80 flex-shrink-0 rounded-2xl flex flex-col border shadow-xl transition-all duration-200 ${
+                className={`w-80 flex-shrink-0 rounded-2xl flex flex-col border shadow-md transition-all duration-200 bg-white dark:bg-[#0A291F] ${
                   isReady
-                    ? "bg-slate-900 border-emerald-500 ring-2 ring-emerald-500/20 shadow-emerald-950/40"
+                    ? "border-emerald-500 ring-2 ring-emerald-500/20"
                     : isLate
-                    ? "bg-slate-900 border-rose-500 ring-2 ring-rose-500/30 shadow-rose-950/40"
+                    ? "border-rose-500 ring-2 ring-rose-500/30"
                     : isProgress
-                    ? "bg-slate-900 border-amber-500/60 shadow-amber-950/20"
-                    : "bg-slate-900 border-slate-800 hover:border-slate-700"
+                    ? "border-[#FF6A3D] ring-2 ring-[#FF6A3D]/20"
+                    : "border-[#E5E7EB] dark:border-[#165742] hover:border-[#FF6A3D]/40"
                 }`}
               >
                 {/* Ticket Header */}
                 <div
                   className={`p-4 rounded-t-2xl border-b flex items-center justify-between ${
                     isReady
-                      ? "bg-emerald-950/40 border-emerald-900/50"
+                      ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900/50"
                       : isLate
-                      ? "bg-rose-950/40 border-rose-900/50"
+                      ? "bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900/50"
                       : isProgress
-                      ? "bg-amber-950/30 border-amber-900/40"
-                      : "bg-slate-800/60 border-slate-800"
+                      ? "bg-[#FF6A3D]/10 border-[#FF6A3D]/20"
+                      : "bg-[#FAFAF8] dark:bg-[#165742]/40 border-[#E5E7EB] dark:border-[#165742]"
                   }`}
                 >
                   <div>
-                    <span className="font-extrabold text-base text-white tracking-tight">
+                    <span className="font-extrabold text-base text-[#0F3D2E] dark:text-white tracking-tight">
                       {ticket.kotNumber}
                     </span>
-                    <span className="text-xs text-slate-400 block font-medium mt-0.5">
+                    <span className="text-xs text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70 block font-medium mt-0.5">
                       {ticket.tableNumber ? `Table ${ticket.tableNumber}` : "Direct Takeaway"} • {ticket.orderType}
                     </span>
                   </div>
@@ -187,8 +184,8 @@ export default function KdsPage() {
                         : isLate
                         ? "bg-rose-500 text-white border-rose-400 animate-pulse"
                         : isProgress
-                        ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
-                        : "bg-slate-800 text-slate-300 border-slate-700"
+                        ? "bg-[#FF6A3D] text-white border-[#FF6A3D]"
+                        : "bg-white dark:bg-[#165742] text-[#0F3D2E] dark:text-[#FAFAF8] border-[#E5E7EB] dark:border-[#165742]"
                     }`}
                   >
                     <Clock className="w-3.5 h-3.5" />
@@ -198,30 +195,30 @@ export default function KdsPage() {
 
                 {/* Items Content */}
                 <div className="p-4 flex-1 space-y-3">
-                  <div className="text-xs text-slate-200 leading-relaxed font-mono whitespace-pre-line bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 shadow-inner">
+                  <div className="text-xs text-[#0B0B0B] dark:text-slate-200 leading-relaxed font-mono whitespace-pre-line bg-[#FAFAF8] dark:bg-[#165742]/30 p-3.5 rounded-xl border border-[#E5E7EB] dark:border-[#165742] shadow-inner">
                     {ticket.itemsSummary || "No special item breakdown"}
                   </div>
 
                   {ticket.specialInstructions && (
-                    <div className="p-2.5 rounded-lg bg-amber-950/30 border border-amber-900/40 text-[11px] text-amber-300">
+                    <div className="p-2.5 rounded-lg bg-[#FF6A3D]/10 border border-[#FF6A3D]/20 text-[11px] text-[#0F3D2E] dark:text-[#FF6A3D]">
                       <strong>Cooking Note:</strong> {ticket.specialInstructions}
                     </div>
                   )}
 
-                  <div className="text-[10px] text-slate-500 flex items-center justify-between pt-1">
+                  <div className="text-[10px] text-[#6B7280] dark:text-[#E5E7EB]/60 flex items-center justify-between pt-1 font-mono">
                     <span>Placed: {ticket.createdAt ? new Date(ticket.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now"}</span>
-                    <span className="font-semibold text-slate-400">Status: {ticket.status}</span>
+                    <span className="font-semibold text-[#0F3D2E] dark:text-white">Status: {ticket.status}</span>
                   </div>
                 </div>
 
                 {/* Interactive Workflow Actions */}
-                <div className="p-3 bg-slate-950/90 border-t border-slate-800 rounded-b-2xl space-y-2">
+                <div className="p-3 bg-[#FAFAF8] dark:bg-[#165742]/40 border-t border-[#E5E7EB] dark:border-[#165742] rounded-b-2xl space-y-2">
                   {isPending && (
                     <MorphButton
                       onAction={() => updateStatus(ticket.id, "IN_PROGRESS")}
                       loadingLabel="Starting..."
                       successLabel="Cooking!"
-                      className="w-full bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-lg shadow-amber-950/40"
+                      className="w-full bg-[#FF6A3D] hover:bg-[#FF5522] text-white text-xs font-bold shadow-md shadow-[#FF6A3D]/25"
                     >
                       <Flame className="w-4 h-4" />
                       <span>Start Cooking</span>
@@ -233,7 +230,7 @@ export default function KdsPage() {
                       onAction={() => updateStatus(ticket.id, "READY")}
                       loadingLabel="Notifying..."
                       successLabel="Ready!"
-                      className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950/40"
+                      className="w-full bg-[#0F3D2E] hover:bg-[#165742] text-white text-xs font-bold shadow-md shadow-[#0F3D2E]/25"
                     >
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Mark KOT Ready (Notify Server)</span>
@@ -242,7 +239,7 @@ export default function KdsPage() {
 
                   {isReady && (
                     <div className="space-y-2">
-                      <div className="flex items-center justify-center gap-1.5 py-1 text-emerald-400 text-xs font-bold bg-emerald-950/30 rounded-lg border border-emerald-900/40">
+                      <div className="flex items-center justify-center gap-1.5 py-1 text-emerald-600 dark:text-emerald-400 text-xs font-bold bg-emerald-50 dark:bg-emerald-950/30 rounded-lg border border-emerald-200 dark:border-emerald-900/40">
                         <CheckCircle2 className="w-4 h-4" />
                         Ready • Server Notified
                       </div>
@@ -251,7 +248,7 @@ export default function KdsPage() {
                         onAction={() => updateStatus(ticket.id, "SERVED")}
                         loadingLabel="Serving..."
                         successLabel="Served!"
-                        className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700"
+                        className="w-full bg-white dark:bg-[#165742] hover:bg-[#FAFAF8] text-[#0F3D2E] dark:text-white text-xs font-semibold border border-[#E5E7EB] dark:border-[#165742]"
                       >
                         <CheckCheck className="w-3.5 h-3.5" />
                         <span>Mark Served (Dismiss)</span>

@@ -128,11 +128,11 @@ export default function OrdersManagementPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-            <Receipt className="w-7 h-7 text-indigo-400" />
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F3D2E] flex items-center gap-2">
+            <Receipt className="w-7 h-7 text-[#FF6A3D]" />
             Orders &amp; Billing Settlement Hub
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#0B0B0B]/70 mt-1">
             Real-time POS and QR orders, live kitchen states, bill settlements, and official Tax Invoice printing.
           </p>
         </div>
@@ -141,7 +141,7 @@ export default function OrdersManagementPage() {
           <MorphButton
             size="sm"
             onClick={fetchOrders}
-            className="bg-slate-900 border border-slate-700 text-xs font-semibold text-slate-300 hover:bg-slate-800"
+            className="bg-white border border-[#E5E7EB] text-xs font-semibold text-[#0B0B0B] hover:bg-[#FAFAF8] shadow-xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
@@ -150,12 +150,12 @@ export default function OrdersManagementPage() {
       </div>
 
       {settleSuccessMsg && (
-        <div className="p-4 bg-emerald-950/60 border border-emerald-500 rounded-2xl text-xs text-emerald-200 flex items-start justify-between gap-2 shadow-lg shadow-emerald-950/30 animate-in fade-in">
+        <div className="p-4 bg-[#0F3D2E]/10 border border-[#0F3D2E]/30 rounded-2xl text-xs text-[#0F3D2E] flex items-start justify-between gap-2 shadow-xs animate-in fade-in">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
-            <span>{settleSuccessMsg}</span>
+            <CheckCircle2 className="w-5 h-5 text-[#0F3D2E] shrink-0" />
+            <span className="font-semibold">{settleSuccessMsg}</span>
           </div>
-          <button onClick={() => setSettleSuccessMsg(null)} className="text-emerald-400 hover:text-white">
+          <button onClick={() => setSettleSuccessMsg(null)} className="text-[#0F3D2E] hover:text-[#0B0B0B]">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -163,55 +163,55 @@ export default function OrdersManagementPage() {
 
       {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 shadow-md">
-          <span className="text-xs font-semibold text-slate-400">Total Orders Placed</span>
+        <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
+          <span className="text-xs font-semibold text-[#0B0B0B]/70">Total Orders Placed</span>
           <div className="flex items-baseline justify-between mt-2">
-            <span className="text-2xl font-black text-white">{orders.length}</span>
-            <span className="text-xs font-semibold text-indigo-400">All Channels</span>
+            <span className="text-2xl font-black text-[#0B0B0B]">{orders.length}</span>
+            <span className="text-xs font-semibold text-[#0F3D2E]">All Channels</span>
           </div>
         </div>
 
-        <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 shadow-md">
-          <span className="text-xs font-semibold text-slate-400">Collected Gross Revenue</span>
+        <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
+          <span className="text-xs font-semibold text-[#0B0B0B]/70">Collected Gross Revenue</span>
           <div className="flex items-baseline justify-between mt-2">
-            <span className="text-2xl font-black text-emerald-400">
+            <span className="text-2xl font-black text-[#0F3D2E]">
               {formatCurrency(totalSales)}
             </span>
-            <span className="text-xs font-semibold text-emerald-400">Paid Invoices</span>
+            <span className="text-xs font-semibold text-[#0F3D2E]">Paid Invoices</span>
           </div>
         </div>
 
-        <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 shadow-md">
-          <span className="text-xs font-semibold text-slate-400">Orders Ready for Serving &amp; Billing</span>
+        <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
+          <span className="text-xs font-semibold text-[#0B0B0B]/70">Ready for Serving &amp; Billing</span>
           <div className="flex items-baseline justify-between mt-2">
-            <span className={`text-2xl font-black ${readyOrdersCount > 0 ? "text-emerald-400 animate-pulse" : "text-white"}`}>
+            <span className={`text-2xl font-black ${readyOrdersCount > 0 ? "text-[#FF6A3D] animate-pulse" : "text-[#0B0B0B]"}`}>
               {readyOrdersCount}
             </span>
-            <span className="text-xs font-semibold text-emerald-400">From Kitchen</span>
+            <span className="text-xs font-semibold text-[#FF6A3D]">From Kitchen</span>
           </div>
         </div>
 
-        <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 shadow-md">
-          <span className="text-xs font-semibold text-slate-400">Active Kitchen Orders</span>
+        <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
+          <span className="text-xs font-semibold text-[#0B0B0B]/70">Active Kitchen Orders</span>
           <div className="flex items-baseline justify-between mt-2">
-            <span className="text-2xl font-black text-amber-400">
+            <span className="text-2xl font-black text-amber-600">
               {activeOrdersCount}
             </span>
-            <span className="text-xs font-semibold text-amber-400">Live Prep Line</span>
+            <span className="text-xs font-semibold text-amber-600">Live Prep Line</span>
           </div>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-xs">
         <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#0B0B0B]/40" />
           <input
             type="text"
             placeholder="Search order #, table, customer..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs text-[#0B0B0B] placeholder-[#0B0B0B]/40 focus:outline-none focus:ring-2 focus:ring-[#FF6A3D]"
           />
         </div>
 
@@ -229,8 +229,8 @@ export default function OrdersManagementPage() {
               onClick={() => setFilterStatus(tab.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
                 filterStatus === tab.id
-                  ? "bg-indigo-600 text-white shadow-sm font-bold"
-                  : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white"
+                  ? "bg-[#FF6A3D] text-white shadow-xs font-bold"
+                  : "bg-[#FAFAF8] border border-[#E5E7EB] text-[#0B0B0B]/70 hover:bg-[#E5E7EB]"
               }`}
             >
               {tab.label}
@@ -240,10 +240,10 @@ export default function OrdersManagementPage() {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-slate-900 rounded-2xl border border-slate-800 shadow-md overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-950 text-slate-400 border-b border-slate-800 font-bold uppercase tracking-wider">
+            <thead className="bg-[#FAFAF8] text-[#0B0B0B]/70 border-b border-[#E5E7EB] font-bold uppercase tracking-wider">
               <tr>
                 <th className="px-5 py-3.5">Order ID</th>
                 <th className="px-4 py-3.5">Channel / Table</th>
@@ -254,13 +254,13 @@ export default function OrdersManagementPage() {
                 <th className="px-5 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800 text-slate-300">
+            <tbody className="divide-y divide-[#E5E7EB] text-[#0B0B0B]">
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-5 py-12 text-center text-slate-500">
-                    <Receipt className="w-10 h-10 mx-auto text-slate-600 opacity-40 mb-2" />
-                    <span className="font-semibold block text-slate-300">No orders found</span>
-                    <span className="text-[11px] text-slate-500">Place an order from POS terminal or scan Table QR to start the live flow.</span>
+                  <td colSpan={7} className="px-5 py-12 text-center text-[#0B0B0B]/50">
+                    <Receipt className="w-10 h-10 mx-auto text-[#0F3D2E] opacity-30 mb-2" />
+                    <span className="font-semibold block text-[#0B0B0B]">No orders found</span>
+                    <span className="text-[11px] text-[#0B0B0B]/60">Place an order from POS terminal or scan Table QR to start the live flow.</span>
                   </td>
                 </tr>
               ) : (
@@ -274,40 +274,40 @@ export default function OrdersManagementPage() {
                       key={order.id}
                       className={`transition ${
                         isReady
-                          ? "bg-emerald-950/20 hover:bg-emerald-950/30"
-                          : "hover:bg-slate-800/50"
+                          ? "bg-[#FF6A3D]/5 hover:bg-[#FF6A3D]/10"
+                          : "hover:bg-[#FAFAF8]"
                       }`}
                     >
-                      <td className="px-5 py-4 font-mono font-bold text-white">
+                      <td className="px-5 py-4 font-mono font-bold text-[#0F3D2E]">
                         {order.orderNumber}
-                        <div className="text-[10px] font-normal text-slate-400">
+                        <div className="text-[10px] font-normal text-[#0B0B0B]/60">
                           {order.createdAt ? new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now"}
                         </div>
                       </td>
                       <td className="px-4 py-4">
-                        <span className="inline-flex items-center gap-1 font-bold text-slate-200">
+                        <span className="inline-flex items-center gap-1 font-bold text-[#0B0B0B]">
                           {order.orderType === "QR_ORDER" ? "📱 QR Mobile" : order.orderType === "TAKEAWAY" ? "🛍️ Takeaway" : "🍽️ Dine-In"}
                           {order.tableName && ` (${order.tableName})`}
                         </span>
                         {order.customerName && (
-                          <div className="text-[10px] text-slate-400">{order.customerName}</div>
+                          <div className="text-[10px] text-[#0B0B0B]/60">{order.customerName}</div>
                         )}
                       </td>
-                      <td className="px-4 py-4 text-slate-300 max-w-xs truncate font-mono text-[11px]">
+                      <td className="px-4 py-4 text-[#0B0B0B]/80 max-w-xs truncate font-mono text-[11px]">
                         {order.items?.map(i => `${i.quantity}x ${i.menuItemName || (i as any).itemName}`).join(", ") || "No items"}
                       </td>
-                      <td className="px-4 py-4 font-bold text-white font-mono">
+                      <td className="px-4 py-4 font-bold text-[#0F3D2E] font-mono">
                         {formatCurrency(order.grandTotal)}
                       </td>
                       <td className="px-4 py-4">
                         <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1 border ${
                           isReady
-                            ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30 animate-pulse"
+                            ? "bg-[#FF6A3D]/15 text-[#FF6A3D] border-[#FF6A3D]/30 animate-pulse"
                             : isCooking
-                            ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
+                            ? "bg-amber-50 text-amber-700 border-amber-200"
                             : order.status === "COMPLETED"
-                            ? "bg-slate-800 text-slate-300 border-slate-700"
-                            : "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
+                            ? "bg-[#FAFAF8] text-[#0B0B0B]/70 border-[#E5E7EB]"
+                            : "bg-[#0F3D2E]/10 text-[#0F3D2E] border-[#0F3D2E]/20"
                         }`}>
                           {isReady && <CheckCircle2 className="w-3 h-3" />}
                           {isCooking && <Flame className="w-3 h-3" />}
@@ -317,8 +317,8 @@ export default function OrdersManagementPage() {
                       <td className="px-4 py-4">
                         <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black border ${
                           isPaid
-                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                            : "bg-rose-500/10 text-rose-400 border-rose-500/20 animate-pulse"
+                            ? "bg-[#0F3D2E]/10 text-[#0F3D2E] border-[#0F3D2E]/25"
+                            : "bg-rose-50 text-rose-600 border-rose-200 animate-pulse"
                         }`}>
                           {order.paymentStatus}
                         </span>
@@ -332,7 +332,7 @@ export default function OrdersManagementPage() {
                                 setSettlingOrder(order);
                                 setShowSettleModal(true);
                               }}
-                              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shadow-md shadow-emerald-950/40"
+                              className="bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-[11px] shadow-md shadow-[#FF6A3D]/25"
                             >
                               <CreditCard className="w-3.5 h-3.5" />
                               <span>Settle Bill</span>
@@ -344,7 +344,7 @@ export default function OrdersManagementPage() {
                               setSelectedOrder(order);
                               setShowInvoiceModal(true);
                             }}
-                            className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-[11px] border border-slate-700"
+                            className="bg-[#FAFAF8] hover:bg-[#E5E7EB] text-[#0B0B0B] font-semibold text-[11px] border border-[#E5E7EB]"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             <span>View Bill</span>
@@ -363,13 +363,13 @@ export default function OrdersManagementPage() {
       {/* Bill Settlement Modal */}
       {showSettleModal && settlingOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-          <div className="bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-b pb-3 border-slate-800">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#E5E7EB] space-y-4 animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between border-b pb-3 border-[#E5E7EB]">
               <div>
-                <h3 className="font-bold text-base text-white">
+                <h3 className="font-bold text-base text-[#0F3D2E]">
                   Settle Bill &amp; Complete Order
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-[#0B0B0B]/60">
                   {settlingOrder.orderNumber} • {settlingOrder.tableName ? `Table ${settlingOrder.tableName}` : settlingOrder.orderType}
                 </p>
               </div>
@@ -378,17 +378,17 @@ export default function OrdersManagementPage() {
                   setShowSettleModal(false);
                   setSettlingOrder(null);
                 }}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="p-1 rounded-lg text-[#0B0B0B]/40 hover:text-[#0B0B0B]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Order Items Breakdown */}
-            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 font-mono text-xs space-y-2">
+            <div className="p-4 rounded-2xl bg-[#FAFAF8] border border-[#E5E7EB] font-mono text-xs space-y-2">
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {settlingOrder.items?.map((item, idx) => (
-                  <div key={idx} className="flex justify-between text-slate-300 text-[11px]">
+                  <div key={idx} className="flex justify-between text-[#0B0B0B] text-[11px]">
                     <span className="truncate max-w-[200px]">
                       {item.quantity}x {item.menuItemName || (item as any).itemName}
                     </span>
@@ -397,7 +397,7 @@ export default function OrdersManagementPage() {
                 ))}
               </div>
 
-              <div className="pt-2 border-t border-slate-800 space-y-1 text-slate-400 text-[11px]">
+              <div className="pt-2 border-t border-[#E5E7EB] space-y-1 text-[#0B0B0B]/70 text-[11px]">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
                   <span>{formatCurrency(settlingOrder.subtotal)}</span>
@@ -406,7 +406,7 @@ export default function OrdersManagementPage() {
                   <span>GST &amp; Taxes:</span>
                   <span>{formatCurrency(settlingOrder.taxAmount)}</span>
                 </div>
-                <div className="flex justify-between font-bold text-sm text-emerald-400 pt-1 border-t border-slate-800">
+                <div className="flex justify-between font-bold text-sm text-[#0F3D2E] pt-1 border-t border-[#E5E7EB]">
                   <span>Total Payable:</span>
                   <span>{formatCurrency(settlingOrder.grandTotal)}</span>
                 </div>
@@ -415,7 +415,7 @@ export default function OrdersManagementPage() {
 
             {/* Payment Method Selector */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-300">
+              <label className="block text-xs font-bold text-[#0B0B0B]">
                 Select Payment Mode
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -430,12 +430,12 @@ export default function OrdersManagementPage() {
                     onClick={() => setPaymentMethod(m.id as any)}
                     className={`p-3 rounded-2xl border text-center transition flex flex-col items-center justify-center ${
                       paymentMethod === m.id
-                        ? "bg-indigo-600 text-white border-indigo-500 shadow-md font-bold"
-                        : "bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-800"
+                        ? "bg-[#FF6A3D] text-white border-[#FF6A3D] shadow-xs font-bold"
+                        : "bg-[#FAFAF8] border-[#E5E7EB] text-[#0B0B0B] hover:bg-[#E5E7EB]"
                     }`}
                   >
                     <span className="text-xs">{m.label}</span>
-                    <span className={`text-[10px] mt-0.5 ${paymentMethod === m.id ? "text-indigo-100" : "text-slate-500"}`}>
+                    <span className={`text-[10px] mt-0.5 ${paymentMethod === m.id ? "text-white/90" : "text-[#0B0B0B]/60"}`}>
                       {m.desc}
                     </span>
                   </button>
@@ -444,12 +444,12 @@ export default function OrdersManagementPage() {
             </div>
 
             {paymentMethod === "UPI" && (
-              <div className="p-4 rounded-2xl bg-slate-950 border border-indigo-500/30 text-center space-y-2">
-                <QrCode className="w-16 h-16 mx-auto text-indigo-400" />
-                <p className="text-xs font-bold text-indigo-300">
+              <div className="p-4 rounded-2xl bg-[#FAFAF8] border border-[#E5E7EB] text-center space-y-2">
+                <QrCode className="w-16 h-16 mx-auto text-[#0F3D2E]" />
+                <p className="text-xs font-bold text-[#0F3D2E]">
                   Scan to Pay ₹{settlingOrder.grandTotal.toFixed(2)}
                 </p>
-                <p className="text-[10px] text-slate-500 font-mono">UPI: royalbistro@icici</p>
+                <p className="text-[10px] text-[#0B0B0B]/60 font-mono">UPI: royalbistro@icici</p>
               </div>
             )}
 
@@ -461,7 +461,7 @@ export default function OrdersManagementPage() {
                   setShowSettleModal(false);
                   setSettlingOrder(null);
                 }}
-                className="flex-1 py-2.5 rounded-xl border border-slate-700 text-xs font-semibold text-slate-300 hover:bg-slate-800 transition"
+                className="flex-1 py-2.5 rounded-xl border border-[#E5E7EB] text-xs font-semibold text-[#0B0B0B]/70 hover:bg-[#FAFAF8] transition"
               >
                 Cancel
               </button>
@@ -470,7 +470,7 @@ export default function OrdersManagementPage() {
                 disabled={isSettling}
                 loadingLabel="Settling..."
                 successLabel="Settled!"
-                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950/40"
+                className="flex-1 bg-[#FF6A3D] hover:bg-[#FF5522] text-white text-xs font-bold shadow-md shadow-[#FF6A3D]/25"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Confirm &amp; Settle</span>
@@ -482,33 +482,33 @@ export default function OrdersManagementPage() {
 
       {/* Bill / Tax Invoice Modal */}
       {showInvoiceModal && selectedOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-          <div className="bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4">
-            <div className="flex items-center justify-between border-b pb-3 border-slate-800">
-              <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Restaurant Tax Invoice</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B0B0B]/60 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#E5E7EB] space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-[#E5E7EB]">
+              <span className="text-xs font-bold text-[#0F3D2E] uppercase tracking-wider">Restaurant Tax Invoice</span>
               <button
                 onClick={() => {
                   setShowInvoiceModal(false);
                   setSelectedOrder(null);
                 }}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="p-1 rounded-lg text-[#0B0B0B]/40 hover:text-[#0B0B0B]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Thermal Receipt Preview */}
-            <div className="p-5 bg-white text-slate-900 rounded-2xl font-mono text-xs space-y-4 border shadow-inner">
+            <div className="p-5 bg-[#FAFAF8] text-[#0B0B0B] rounded-2xl font-mono text-xs space-y-4 border border-[#E5E7EB] shadow-inner">
               <div className="text-center space-y-1">
-                <h2 className="font-extrabold text-base tracking-tight text-slate-950">THE ROYAL BISTRO</h2>
-                <p className="text-[11px] text-slate-600">100 Feet Road, Indiranagar, Bengaluru</p>
-                <p className="text-[10px] text-slate-500">GSTIN: 29AAAAA0000A1Z5 • FSSAI: 11223344556677</p>
+                <h2 className="font-extrabold text-base tracking-tight text-[#0F3D2E]">THE ROYAL BISTRO</h2>
+                <p className="text-[11px] text-[#0B0B0B]/70">100 Feet Road, Indiranagar, Bengaluru</p>
+                <p className="text-[10px] text-[#0B0B0B]/60">GSTIN: 29AAAAA0000A1Z5 • FSSAI: 11223344556677</p>
               </div>
 
-              <div className="border-t border-b border-dashed border-slate-400 py-2 flex justify-between text-[11px]">
+              <div className="border-t border-b border-dashed border-[#E5E7EB] py-2 flex justify-between text-[11px]">
                 <div>
-                  <p><span className="text-slate-500">Invoice #:</span> {selectedOrder.orderNumber}</p>
-                  <p><span className="text-slate-500">Table / Channel:</span> {selectedOrder.tableName || selectedOrder.orderType}</p>
+                  <p><span className="text-[#0B0B0B]/60">Invoice #:</span> {selectedOrder.orderNumber}</p>
+                  <p><span className="text-[#0B0B0B]/60">Table / Channel:</span> {selectedOrder.tableName || selectedOrder.orderType}</p>
                 </div>
                 <div className="text-right">
                   <p>{selectedOrder.createdAt ? new Date(selectedOrder.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</p>
@@ -518,13 +518,13 @@ export default function OrdersManagementPage() {
 
               {/* Items List */}
               <div className="space-y-1.5">
-                <div className="flex justify-between font-bold text-[11px] text-slate-700 pb-1 border-b border-slate-200">
+                <div className="flex justify-between font-bold text-[11px] text-[#0B0B0B] pb-1 border-b border-[#E5E7EB]">
                   <span>Item</span>
                   <span>Qty × Rate</span>
                   <span>Total</span>
                 </div>
                 {selectedOrder.items?.map((item, idx) => (
-                  <div key={idx} className="flex justify-between text-[11px] text-slate-800">
+                  <div key={idx} className="flex justify-between text-[11px] text-[#0B0B0B]">
                     <span className="truncate max-w-[170px]">{item.menuItemName || (item as any).itemName}</span>
                     <span>{item.quantity} × {item.unitPrice}</span>
                     <span className="font-semibold">{formatCurrency(item.totalPrice)}</span>
@@ -533,24 +533,24 @@ export default function OrdersManagementPage() {
               </div>
 
               {/* Bill Totals */}
-              <div className="border-t border-dashed border-slate-400 pt-2 space-y-1">
+              <div className="border-t border-dashed border-[#E5E7EB] pt-2 space-y-1">
                 <div className="flex justify-between text-[11px]">
-                  <span className="text-slate-600">Subtotal:</span>
+                  <span className="text-[#0B0B0B]/70">Subtotal:</span>
                   <span>{formatCurrency(selectedOrder.subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-[11px]">
-                  <span className="text-slate-600">CGST (2.5%) + SGST (2.5%):</span>
+                  <span className="text-[#0B0B0B]/70">CGST (2.5%) + SGST (2.5%):</span>
                   <span>{formatCurrency(selectedOrder.taxAmount)}</span>
                 </div>
-                <div className="flex justify-between font-extrabold text-sm text-slate-950 border-t border-slate-300 pt-1.5">
+                <div className="flex justify-between font-extrabold text-sm text-[#0F3D2E] border-t border-[#E5E7EB] pt-1.5">
                   <span>Grand Total:</span>
                   <span>{formatCurrency(selectedOrder.grandTotal)}</span>
                 </div>
               </div>
 
-              <div className="text-center pt-2 text-[10px] text-slate-500 border-t border-dashed border-slate-300">
+              <div className="text-center pt-2 text-[10px] text-[#0B0B0B]/60 border-t border-dashed border-[#E5E7EB]">
                 <p>Thank you for dining with us!</p>
-                <p className="font-bold text-emerald-700 mt-0.5">
+                <p className="font-bold text-[#0F3D2E] mt-0.5">
                   Payment Status: {selectedOrder.paymentStatus}
                 </p>
               </div>
@@ -560,7 +560,7 @@ export default function OrdersManagementPage() {
             <div className="flex items-center gap-2">
               <MorphButton
                 onClick={() => window.print()}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg"
+                className="flex-1 bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-xs shadow-md shadow-[#FF6A3D]/25"
               >
                 <Printer className="w-4 h-4" />
                 <span>Print Thermal Receipt</span>

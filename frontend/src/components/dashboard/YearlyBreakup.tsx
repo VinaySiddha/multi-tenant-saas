@@ -1,13 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { ArrowUpRight } from "lucide-react";
 import DashboardCard from "./DashboardCard";
 import { formatCurrency } from "@/lib/utils";
 
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+const Chart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[150px] animate-pulse bg-slate-100 dark:bg-slate-800/50 rounded-full" />
+  ),
+});
 
 interface YearlyBreakupProps {
   totalAmount?: number;
@@ -19,21 +24,27 @@ export default function YearlyBreakup({
   totalAmount = 436358,
   growthPercentage = 14.8,
   breakdown = [
-    { label: "Dine-In Orders", value: 55, color: "#5D87FF" },
-    { label: "QR Self-Orders", value: 30, color: "#13DEB9" },
-    { label: "Takeaways", value: 15, color: "#FFAE1F" },
+    { label: "Dine-In Orders", value: 55, color: "#0F3D2E" },
+    { label: "QR Self-Orders", value: 30, color: "#FF6A3D" },
+    { label: "Takeaways", value: 15, color: "#71717A" },
   ],
 }: YearlyBreakupProps) {
+  const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const isDark = resolvedTheme === "dark";
 
   const chartOptions: any = {
     chart: {
       type: "donut",
       fontFamily: "inherit",
-      foreColor: isDark ? "#94a3b8" : "#64748b",
+      foreColor: "#71717A",
       toolbar: { show: false },
-      height: 155,
+      height: 145,
       background: "transparent",
     },
     colors: breakdown.map((b) => b.color),
@@ -42,7 +53,7 @@ export default function YearlyBreakup({
         startAngle: 0,
         endAngle: 360,
         donut: {
-          size: "72%",
+          size: "74%",
           background: "transparent",
         },
       },
@@ -52,7 +63,9 @@ export default function YearlyBreakup({
       fillSeriesColor: false,
     },
     stroke: {
-      show: false,
+      show: true,
+      width: 2,
+      colors: [isDark ? "#0A291F" : "#FFFFFF"],
     },
     dataLabels: {
       enabled: false,
@@ -75,37 +88,37 @@ export default function YearlyBreakup({
   const series = breakdown.map((b) => b.value);
 
   return (
-    <DashboardCard title="Annual Revenue Breakup" subtitle="Channel distribution">
-      <div className="grid grid-cols-12 gap-2 items-center">
-        <div className="col-span-7 space-y-3">
+    <DashboardCard title="Channel Breakdown" subtitle="Revenue split by fulfillment mode">
+      <div className="grid grid-cols-12 gap-3 items-center">
+        <div className="col-span-7 space-y-2.5">
           <div>
-            <h4 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+            <h4 className="text-xl font-bold tracking-tight text-[#0F3D2E] dark:text-[#FAFAF8] font-mono">
               {formatCurrency(totalAmount)}
             </h4>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold">
-                <ArrowUpRight className="w-3.5 h-3.5" />
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-[#FF6A3D]/10 text-[#FF6A3D] text-xs font-semibold border border-[#FF6A3D]/20">
+                <ArrowUpRight className="w-3 h-3" />
               </span>
-              <span className="text-xs font-bold text-emerald-500">
+              <span className="text-xs font-semibold text-[#FF6A3D]">
                 +{growthPercentage}%
               </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
+              <span className="text-[11px] text-[#6B7280]">
                 vs last term
               </span>
             </div>
           </div>
 
-          <div className="space-y-1.5 pt-2">
+          <div className="space-y-1.5 pt-1">
             {breakdown.map((item) => (
               <div key={item.label} className="flex items-center gap-2 text-xs">
                 <span
-                  className="w-2.5 h-2.5 rounded-full shrink-0"
+                  className="w-2 h-2 rounded-sm shrink-0"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="text-slate-600 dark:text-slate-400 truncate">
+                <span className="text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70 text-[11px] truncate">
                   {item.label}
                 </span>
-                <span className="ml-auto font-bold text-slate-900 dark:text-slate-200">
+                <span className="ml-auto font-mono text-[11px] font-semibold text-[#0B0B0B] dark:text-white">
                   {item.value}%
                 </span>
               </div>
@@ -114,14 +127,16 @@ export default function YearlyBreakup({
         </div>
 
         <div className="col-span-5 flex justify-center">
-          {typeof window !== "undefined" && (
+          {mounted ? (
             <Chart
               options={chartOptions}
               series={series}
               type="donut"
-              height={150}
+              height={145}
               width="100%"
             />
+          ) : (
+            <div className="w-[110px] h-[110px] rounded-full animate-pulse bg-slate-100 dark:bg-[#165742]" />
           )}
         </div>
       </div>

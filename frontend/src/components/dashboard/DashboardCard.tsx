@@ -25,21 +25,21 @@ export default function DashboardCard({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-900 shadow-sm transition-all duration-200 overflow-hidden flex flex-col justify-between",
+        "rounded-xl border border-[#E5E7EB] dark:border-[#165742]/40 bg-white dark:bg-[#0A291F] shadow-xs transition-all duration-150 overflow-hidden flex flex-col justify-between",
         className
       )}
     >
-      <div className={cn("p-6 flex-1", bodyClassName)}>
+      <div className={cn("p-5 sm:p-6 flex-1", bodyClassName)}>
         {(title || action) && (
-          <div className="flex items-start justify-between gap-4 mb-5">
+          <div className="flex items-start justify-between gap-4 mb-4">
             <div>
               {title && (
-                <h3 className="text-base font-bold tracking-tight text-slate-900 dark:text-slate-100">
+                <h3 className="text-sm sm:text-base font-bold tracking-tight text-[#0F3D2E] dark:text-[#FAFAF8]">
                   {title}
                 </h3>
               )}
               {subtitle && (
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                <p className="text-xs text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70 mt-0.5 font-normal">
                   {subtitle}
                 </p>
               )}
@@ -50,7 +50,7 @@ export default function DashboardCard({
         {children}
       </div>
       {footer && (
-        <div className="border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-950/30 px-6 py-3">
+        <div className="border-t border-[#E5E7EB] dark:border-[#165742]/40 bg-[#FAFAF8] dark:bg-[#0A291F]/80 px-5 sm:px-6 py-3">
           {footer}
         </div>
       )}

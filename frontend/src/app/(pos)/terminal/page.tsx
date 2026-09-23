@@ -224,14 +224,14 @@ export default function PosTerminalPage() {
   return (
     <div className="h-full flex overflow-hidden">
       {/* Left: Menu & Catalog */}
-      <div className="flex-1 flex flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+      <div className="flex-1 flex flex-col border-r border-[#E5E7EB] dark:border-[#165742]/40 bg-[#FAFAF8] dark:bg-[#0A291F] overflow-hidden">
         {/* Table, Channel & Search Bar */}
-        <div className="p-3 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-50 dark:bg-slate-900/50">
+        <div className="p-3 border-b border-[#E5E7EB] dark:border-[#165742]/40 flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#0A291F]">
           <div className="flex items-center gap-2">
             <select
               value={orderType}
               onChange={(e) => setOrderType(e.target.value as any)}
-              className="px-2.5 py-1.5 text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 rounded-lg focus:outline-none"
+              className="px-2.5 py-1.5 text-xs font-bold bg-[#0F3D2E]/10 text-[#0F3D2E] dark:bg-[#165742] dark:text-[#FAFAF8] border border-[#0F3D2E]/20 dark:border-[#165742] rounded-lg focus:outline-none"
             >
               <option value="DINE_IN">🍽️ Dine-In</option>
               <option value="TAKEAWAY">🛍️ Takeaway</option>
@@ -240,14 +240,14 @@ export default function PosTerminalPage() {
 
             {orderType === "DINE_IN" && (
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-slate-500">Table:</span>
+                <span className="text-xs font-semibold text-[#6B7280]">Table:</span>
                 <select
                   value={selectedTable?.id || ""}
                   onChange={(e) => {
                     const t = tables.find((tbl) => tbl.id === e.target.value);
                     if (t) setSelectedTable(t);
                   }}
-                  className="px-2.5 py-1.5 text-xs font-bold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  className="px-2.5 py-1.5 text-xs font-bold bg-[#FAFAF8] dark:bg-[#165742] border border-[#E5E7EB] dark:border-[#165742] rounded-lg focus:ring-2 focus:ring-[#FF6A3D] text-[#0B0B0B] dark:text-white"
                 >
                   {tables.map((t) => (
                     <option key={t.id} value={t.id}>
@@ -261,20 +261,20 @@ export default function PosTerminalPage() {
 
           <div className="flex items-center gap-2 flex-1 max-w-xs justify-end">
             <div className="relative w-full">
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-[#6B7280] absolute left-2.5 top-2.5" />
               <input
                 type="text"
                 placeholder="Search food, drinks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-8 pr-3 py-1.5 text-xs bg-white dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-slate-900 dark:text-slate-100"
+                className="w-full pl-8 pr-3 py-1.5 text-xs bg-[#FAFAF8] dark:bg-[#165742] rounded-lg border border-[#E5E7EB] dark:border-[#165742] focus:outline-none focus:ring-1 focus:ring-[#FF6A3D] text-[#0B0B0B] dark:text-[#FAFAF8]"
               />
             </div>
 
             <MorphButton
               size="sm"
               onClick={loadCatalogAndTables}
-              className="bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-300 dark:border-slate-700"
+              className="bg-white dark:bg-[#165742] text-[#0F3D2E] dark:text-white border border-[#E5E7EB] dark:border-[#165742]"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${catalogLoading ? "animate-spin" : ""}`} />
             </MorphButton>
@@ -282,13 +282,13 @@ export default function PosTerminalPage() {
         </div>
 
         {/* Category Tabs */}
-        <div className="px-3 py-2 border-b border-slate-200 dark:border-slate-800 flex gap-1.5 overflow-x-auto shrink-0 bg-white dark:bg-slate-900">
+        <div className="px-3 py-2 border-b border-[#E5E7EB] dark:border-[#165742]/40 flex gap-1.5 overflow-x-auto shrink-0 bg-white dark:bg-[#0A291F]">
           <button
             onClick={() => setActiveCategoryId("ALL")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
               activeCategoryId === "ALL"
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
+                ? "bg-[#FF6A3D] text-white shadow-xs font-bold"
+                : "bg-[#FAFAF8] dark:bg-[#165742] text-[#0B0B0B]/70 dark:text-[#E5E7EB] hover:bg-[#E5E7EB]"
             }`}
           >
             All Items ({menuItems.length})
@@ -299,8 +299,8 @@ export default function PosTerminalPage() {
               onClick={() => setActiveCategoryId(cat.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
                 activeCategoryId === cat.id
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
+                  ? "bg-[#FF6A3D] text-white shadow-xs font-bold"
+                  : "bg-[#FAFAF8] dark:bg-[#165742] text-[#0B0B0B]/70 dark:text-[#E5E7EB] hover:bg-[#E5E7EB]"
               }`}
             >
               {cat.name} ({menuItems.filter(i => i.categoryId === cat.id).length})
@@ -311,10 +311,10 @@ export default function PosTerminalPage() {
         {/* Product Cards Grid */}
         <div className="flex-1 p-4 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 content-start">
           {filteredItems.length === 0 ? (
-            <div className="col-span-full py-16 text-center text-slate-400 space-y-2">
-              <Utensils className="w-10 h-10 mx-auto text-slate-500 opacity-40" />
+            <div className="col-span-full py-16 text-center text-[#6B7280] space-y-2">
+              <Utensils className="w-10 h-10 mx-auto text-[#6B7280] opacity-40" />
               <p className="text-xs font-semibold">No menu items found</p>
-              <p className="text-[11px] text-slate-500">Go to Menu Management in Admin to create dishes.</p>
+              <p className="text-[11px] text-[#6B7280]">Go to Menu Management in Admin to create dishes.</p>
             </div>
           ) : (
             filteredItems.map((prod) => (
@@ -324,12 +324,12 @@ export default function PosTerminalPage() {
                 disabled={!prod.isAvailable}
                 className={`p-3 rounded-xl border text-left transition flex flex-col justify-between h-28 group relative ${
                   prod.isAvailable
-                    ? "bg-slate-50 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700/80 hover:border-indigo-500 hover:shadow-md cursor-pointer"
-                    : "bg-slate-100 dark:bg-slate-850 border-slate-200 dark:border-slate-800 opacity-50 cursor-not-allowed"
+                    ? "bg-white dark:bg-[#165742]/50 border-[#E5E7EB] dark:border-[#165742] hover:border-[#FF6A3D] hover:shadow-md cursor-pointer"
+                    : "bg-[#FAFAF8] dark:bg-[#0A291F] border-[#E5E7EB] dark:border-[#165742]/40 opacity-50 cursor-not-allowed"
                 }`}
               >
                 <div className="flex items-start justify-between gap-1">
-                  <span className="text-xs font-bold text-slate-900 dark:text-slate-100 line-clamp-2 leading-snug">
+                  <span className="text-xs font-bold text-[#0B0B0B] dark:text-[#FAFAF8] line-clamp-2 leading-snug">
                     {prod.name}
                   </span>
                   <span
@@ -347,10 +347,10 @@ export default function PosTerminalPage() {
                 )}
 
                 <div className="flex items-center justify-between pt-1">
-                  <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 font-mono">
+                  <span className="text-xs font-bold text-[#0F3D2E] dark:text-[#FF6A3D] font-mono">
                     {formatCurrency(prod.price)}
                   </span>
-                  <span className="p-1 rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition">
+                  <span className="p-1 rounded-md bg-[#FF6A3D]/10 text-[#FF6A3D] group-hover:bg-[#FF6A3D] group-hover:text-white transition">
                     <Plus className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -361,11 +361,11 @@ export default function PosTerminalPage() {
       </div>
 
       {/* Right: Order Cart & Billing Console */}
-      <div className="w-96 flex flex-col bg-slate-50 dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="w-96 flex flex-col bg-white dark:bg-[#0A291F] border-l border-[#E5E7EB] dark:border-[#165742]/40 overflow-hidden">
         {/* Table & Guest Details */}
-        <div className="p-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
+        <div className="p-3.5 border-b border-[#E5E7EB] dark:border-[#165742]/40 flex items-center justify-between bg-[#FAFAF8] dark:bg-[#0F3D2E]">
           <div>
-            <span className="text-xs font-extrabold text-slate-900 dark:text-slate-100 block">
+            <span className="text-xs font-extrabold text-[#0F3D2E] dark:text-[#FAFAF8] block">
               {orderType === "DINE_IN" ? `Table ${selectedTable?.tableNumber || "T-01"} (${selectedTable?.section || "Floor"})` : orderType}
             </span>
             <input
@@ -444,19 +444,19 @@ export default function PosTerminalPage() {
         </div>
 
         {/* Totals & Actions */}
-        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 space-y-3 shrink-0">
-          <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400 font-mono">
+        <div className="p-4 bg-white dark:bg-[#0A291F] border-t border-[#E5E7EB] dark:border-[#165742]/40 space-y-3 shrink-0">
+          <div className="space-y-1.5 text-xs text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70 font-mono">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span className="font-semibold">{formatCurrency(subtotal)}</span>
+              <span className="font-semibold text-[#0B0B0B] dark:text-white">{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex justify-between">
               <span>GST (5%)</span>
-              <span className="font-semibold">{formatCurrency(totalTax)}</span>
+              <span className="font-semibold text-[#0B0B0B] dark:text-white">{formatCurrency(totalTax)}</span>
             </div>
-            <div className="flex justify-between text-sm font-bold text-slate-900 dark:text-slate-100 pt-2 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex justify-between text-sm font-bold text-[#0B0B0B] dark:text-white pt-2 border-t border-[#E5E7EB] dark:border-[#165742]/40">
               <span>Grand Total</span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-bold">
+              <span className="text-[#FF6A3D] font-bold">
                 {formatCurrency(grandTotal)}
               </span>
             </div>
@@ -468,7 +468,7 @@ export default function PosTerminalPage() {
               disabled={cart.length === 0 || loading}
               loadingLabel="Sending KOT..."
               successLabel="KOT Sent!"
-              className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-md"
+              className="bg-[#0F3D2E] hover:bg-[#165742] text-white font-bold text-xs shadow-md"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Send KOT</span>
@@ -476,7 +476,7 @@ export default function PosTerminalPage() {
             <MorphButton
               onClick={() => setShowPaymentModal(true)}
               disabled={(cart.length === 0 && !lastPlacedOrder) || loading}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-900/30"
+              className="bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-xs shadow-md shadow-[#FF6A3D]/25"
             >
               <CreditCard className="w-3.5 h-3.5" />
               <span>Settle Bill</span>
@@ -487,44 +487,44 @@ export default function PosTerminalPage() {
 
       {/* POS Quick Settlement Modal */}
       {showPaymentModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
-            <div className="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-[#0A291F] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#E5E7EB] dark:border-[#165742] space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-[#E5E7EB] dark:border-[#165742]/40">
               <div>
-                <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">
+                <h3 className="font-bold text-base text-[#0F3D2E] dark:text-[#FAFAF8]">
                   Collect Payment &amp; Settle Bill
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70">
                   {orderType === "DINE_IN" ? `Table ${selectedTable?.tableNumber}` : orderType} • {customerName}
                 </p>
               </div>
               <button
                 onClick={() => setShowPaymentModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+                className="p-1 rounded-lg text-[#6B7280] hover:text-[#0B0B0B] dark:hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Bill Summary */}
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-mono text-xs space-y-2">
-              <div className="flex justify-between text-slate-500">
+            <div className="p-4 rounded-2xl bg-[#FAFAF8] dark:bg-[#165742]/40 border border-[#E5E7EB] dark:border-[#165742] font-mono text-xs space-y-2">
+              <div className="flex justify-between text-[#6B7280] dark:text-[#E5E7EB]/70">
                 <span>Items Subtotal:</span>
-                <span>{formatCurrency(subtotal > 0 ? subtotal : (lastPlacedOrder?.subtotal || 0))}</span>
+                <span className="font-semibold text-[#0B0B0B] dark:text-white">{formatCurrency(subtotal > 0 ? subtotal : (lastPlacedOrder?.subtotal || 0))}</span>
               </div>
-              <div className="flex justify-between text-slate-500">
+              <div className="flex justify-between text-[#6B7280] dark:text-[#E5E7EB]/70">
                 <span>Taxes &amp; GST (5%):</span>
-                <span>{formatCurrency(totalTax > 0 ? totalTax : (lastPlacedOrder?.taxAmount || 0))}</span>
+                <span className="font-semibold text-[#0B0B0B] dark:text-white">{formatCurrency(totalTax > 0 ? totalTax : (lastPlacedOrder?.taxAmount || 0))}</span>
               </div>
-              <div className="flex justify-between font-bold text-base text-emerald-600 dark:text-emerald-400 pt-2 border-t border-slate-200 dark:border-slate-700">
+              <div className="flex justify-between font-bold text-base text-[#0F3D2E] dark:text-[#FAFAF8] pt-2 border-t border-[#E5E7EB] dark:border-[#165742]">
                 <span>Payable Amount:</span>
-                <span>{formatCurrency(grandTotal > 0 ? grandTotal : (lastPlacedOrder?.grandTotal || 0))}</span>
+                <span className="text-[#FF6A3D] font-bold">{formatCurrency(grandTotal > 0 ? grandTotal : (lastPlacedOrder?.grandTotal || 0))}</span>
               </div>
             </div>
 
             {/* Payment Method Selector */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+              <label className="block text-xs font-bold text-[#0F3D2E] dark:text-[#FAFAF8]">
                 Select Payment Mode
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -539,12 +539,12 @@ export default function PosTerminalPage() {
                     onClick={() => setPaymentMethod(m.id as any)}
                     className={`p-3 rounded-2xl border text-center transition flex flex-col items-center justify-center ${
                       paymentMethod === m.id
-                        ? "bg-indigo-600 text-white border-indigo-600 shadow-md font-bold"
-                        : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100"
+                        ? "bg-[#FF6A3D] text-white border-[#FF6A3D] shadow-md font-bold"
+                        : "bg-[#FAFAF8] dark:bg-[#165742]/40 border-[#E5E7EB] dark:border-[#165742] text-[#0B0B0B] dark:text-[#FAFAF8] hover:bg-[#E5E7EB]"
                     }`}
                   >
                     <span className="text-xs">{m.label}</span>
-                    <span className={`text-[10px] mt-0.5 ${paymentMethod === m.id ? "text-indigo-100" : "text-slate-400"}`}>
+                    <span className={`text-[10px] mt-0.5 ${paymentMethod === m.id ? "text-white/90" : "text-[#6B7280] dark:text-[#E5E7EB]/60"}`}>
                       {m.desc}
                     </span>
                   </button>
@@ -553,12 +553,12 @@ export default function PosTerminalPage() {
             </div>
 
             {paymentMethod === "UPI" && (
-              <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-center space-y-2">
-                <QrCode className="w-16 h-16 mx-auto text-indigo-600 dark:text-indigo-400" />
-                <p className="text-xs font-bold text-indigo-900 dark:text-indigo-200">
+              <div className="p-4 rounded-2xl bg-[#FF6A3D]/10 border border-[#FF6A3D]/20 text-center space-y-2">
+                <QrCode className="w-16 h-16 mx-auto text-[#FF6A3D]" />
+                <p className="text-xs font-bold text-[#0F3D2E] dark:text-white">
                   Scan to Pay ₹{(grandTotal > 0 ? grandTotal : (lastPlacedOrder?.grandTotal || 0)).toFixed(2)}
                 </p>
-                <p className="text-[10px] text-slate-500 font-mono">UPI ID: royalbistro@icici</p>
+                <p className="text-[10px] text-[#6B7280] font-mono">UPI ID: royalbistro@icici</p>
               </div>
             )}
 
@@ -567,7 +567,7 @@ export default function PosTerminalPage() {
               <button
                 type="button"
                 onClick={() => setShowPaymentModal(false)}
-                className="flex-1 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="flex-1 py-2.5 rounded-xl border border-[#E5E7EB] dark:border-[#165742] text-xs font-semibold text-[#6B7280] dark:text-[#E5E7EB] hover:bg-[#FAFAF8] dark:hover:bg-[#165742] transition"
               >
                 Cancel
               </button>
@@ -576,7 +576,7 @@ export default function PosTerminalPage() {
                 disabled={paymentProcessing}
                 loadingLabel="Settling..."
                 successLabel="Settled!"
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-lg shadow-emerald-900/30"
+                className="flex-1 bg-[#FF6A3D] hover:bg-[#FF5522] text-white text-xs font-bold shadow-lg shadow-[#FF6A3D]/25"
               >
                 <CheckCircle className="w-4 h-4" />
                 <span>Confirm &amp; Settle</span>

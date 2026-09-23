@@ -163,11 +163,11 @@ export default function InventoryPage() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <Package className="w-7 h-7 text-indigo-600" />
-            Inventory & Stock Manager
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F3D2E] flex items-center gap-2">
+            <Package className="w-7 h-7 text-[#FF6A3D]" />
+            Inventory &amp; Stock Manager
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#0B0B0B]/70 mt-1">
             Track live raw material stocks, safety thresholds, ingredient consumption, and supplier costs.
           </p>
         </div>
@@ -176,7 +176,7 @@ export default function InventoryPage() {
           <MorphButton
             size="sm"
             onClick={fetchInventory}
-            className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 shadow-sm"
+            className="bg-white border border-[#E5E7EB] text-xs font-semibold text-[#0B0B0B] hover:bg-[#FAFAF8] shadow-xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
@@ -184,7 +184,7 @@ export default function InventoryPage() {
           <MorphButton
             size="sm"
             onClick={() => setShowAddModal(true)}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md hover:shadow-indigo-500/25"
+            className="bg-[#FF6A3D] hover:bg-[#FF5522] text-white text-xs font-semibold shadow-md shadow-[#FF6A3D]/25"
           >
             <Plus className="w-4 h-4" />
             <span>Add Item</span>
@@ -194,75 +194,75 @@ export default function InventoryPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-500">Total Tracked Items</span>
-            <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600">
+            <span className="text-xs font-medium text-[#0B0B0B]/70">Total Tracked Items</span>
+            <div className="p-2 rounded-xl bg-[#0F3D2E]/10 text-[#0F3D2E]">
               <Layers className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{totalItems}</span>
-            <span className="text-xs font-semibold text-slate-500">Raw materials</span>
+            <span className="text-2xl font-bold text-[#0B0B0B]">{totalItems}</span>
+            <span className="text-xs font-semibold text-[#0B0B0B]/60">Raw materials</span>
           </div>
         </div>
 
-        <div className="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-500">Low Stock Warnings</span>
-            <div className="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600">
+            <span className="text-xs font-medium text-[#0B0B0B]/70">Low Stock Warnings</span>
+            <div className="p-2 rounded-xl bg-[#FF6A3D]/10 text-[#FF6A3D]">
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between">
-            <span className={`text-2xl font-bold ${lowStockCount > 0 ? "text-amber-600 dark:text-amber-400" : "text-slate-900 dark:text-slate-100"}`}>
+            <span className={`text-2xl font-bold ${lowStockCount > 0 ? "text-[#FF6A3D]" : "text-[#0B0B0B]"}`}>
               {lowStockCount}
             </span>
-            <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">Needs restock</span>
+            <span className="text-xs font-semibold text-[#FF6A3D]">Needs restock</span>
           </div>
         </div>
 
-        <div className="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-500">Out of Stock</span>
-            <div className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600">
+            <span className="text-xs font-medium text-[#0B0B0B]/70">Out of Stock</span>
+            <div className="p-2 rounded-xl bg-rose-50 text-rose-600">
               <TrendingDown className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between">
-            <span className={`text-2xl font-bold ${outOfStockCount > 0 ? "text-rose-600 dark:text-rose-400" : "text-slate-900 dark:text-slate-100"}`}>
+            <span className={`text-2xl font-bold ${outOfStockCount > 0 ? "text-rose-600" : "text-[#0B0B0B]"}`}>
               {outOfStockCount}
             </span>
-            <span className="text-xs font-semibold text-slate-500">Depleted</span>
+            <span className="text-xs font-semibold text-[#0B0B0B]/60">Depleted</span>
           </div>
         </div>
 
-        <div className="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-slate-500">Estimated Stock Value</span>
-            <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600">
+            <span className="text-xs font-medium text-[#0B0B0B]/70">Estimated Stock Value</span>
+            <div className="p-2 rounded-xl bg-[#0F3D2E]/10 text-[#0F3D2E]">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <span className="text-2xl font-bold text-[#0F3D2E]">
               {formatCurrency(totalValuation)}
             </span>
-            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">Asset Value</span>
+            <span className="text-xs font-semibold text-[#0F3D2E]">Asset Value</span>
           </div>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-xs">
         <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#0B0B0B]/40" />
           <input
             type="text"
             placeholder="Search stock items (e.g. Paneer, Rice)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs text-[#0B0B0B] placeholder-[#0B0B0B]/40 focus:outline-none focus:ring-2 focus:ring-[#FF6A3D]"
           />
         </div>
 
@@ -273,8 +273,8 @@ export default function InventoryPage() {
               onClick={() => setFilterTab(tab)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
                 filterTab === tab
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  ? "bg-[#FF6A3D] text-white shadow-xs font-bold"
+                  : "bg-[#FAFAF8] border border-[#E5E7EB] text-[#0B0B0B]/70 hover:bg-[#E5E7EB]"
               }`}
             >
               {tab === "ALL" && `All Items (${totalItems})`}
@@ -286,10 +286,10 @@ export default function InventoryPage() {
       </div>
 
       {/* Inventory Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 font-semibold uppercase tracking-wider">
+            <thead className="bg-[#FAFAF8] text-[#0B0B0B]/70 border-b border-[#E5E7EB] font-semibold uppercase tracking-wider">
               <tr>
                 <th className="px-5 py-3.5">Item Name</th>
                 <th className="px-4 py-3.5">Unit</th>
@@ -300,10 +300,10 @@ export default function InventoryPage() {
                 <th className="px-5 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+            <tbody className="divide-y divide-[#E5E7EB] text-[#0B0B0B]">
               {filteredItems.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-5 py-10 text-center text-slate-400">
+                  <td colSpan={7} className="px-5 py-10 text-center text-[#0B0B0B]/50">
                     No inventory items found matching your criteria.
                   </td>
                 </tr>
@@ -313,37 +313,37 @@ export default function InventoryPage() {
                   const isOut = item.currentStock <= 0;
 
                   return (
-                    <tr key={item.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition">
-                      <td className="px-5 py-4 font-semibold text-slate-900 dark:text-slate-100">
+                    <tr key={item.id} className="hover:bg-[#FAFAF8] transition">
+                      <td className="px-5 py-4 font-semibold text-[#0B0B0B]">
                         {item.name}
                       </td>
                       <td className="px-4 py-4">
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 font-mono text-[11px]">
+                        <span className="px-2 py-0.5 rounded-md bg-[#FAFAF8] border border-[#E5E7EB] font-mono text-[11px] text-[#0B0B0B]">
                           {item.unit}
                         </span>
                       </td>
                       <td className="px-4 py-4 font-bold">
-                        <span className={isOut ? "text-rose-600 dark:text-rose-400" : isLow ? "text-amber-600 dark:text-amber-400" : "text-slate-900 dark:text-slate-100"}>
+                        <span className={isOut ? "text-rose-600" : isLow ? "text-[#FF6A3D]" : "text-[#0F3D2E]"}>
                           {item.currentStock.toFixed(2)} {item.unit}
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-slate-500 font-mono">
+                      <td className="px-4 py-4 text-[#0B0B0B]/60 font-mono">
                         {item.minThreshold.toFixed(2)} {item.unit}
                       </td>
-                      <td className="px-4 py-4 font-mono">
+                      <td className="px-4 py-4 font-mono font-semibold text-[#0B0B0B]">
                         {item.costPerUnit ? formatCurrency(item.costPerUnit) : "—"}
                       </td>
                       <td className="px-4 py-4">
                         {isOut ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-600 border border-rose-200">
                             Out of Stock
                           </span>
                         ) : isLow ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#FF6A3D]/10 text-[#FF6A3D] border border-[#FF6A3D]/25">
                             <AlertTriangle className="w-3 h-3" /> Low Stock
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#0F3D2E]/10 text-[#0F3D2E] border border-[#0F3D2E]/20">
                             <CheckCircle2 className="w-3 h-3" /> In Stock
                           </span>
                         )}
@@ -356,7 +356,7 @@ export default function InventoryPage() {
                               setSelectedItem(item);
                               setShowAdjustModal(true);
                             }}
-                            className="bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-400 font-semibold text-[11px]"
+                            className="bg-[#0F3D2E]/10 hover:bg-[#0F3D2E]/15 text-[#0F3D2E] font-semibold text-[11px]"
                             title="Adjust Stock"
                           >
                             <ArrowUpDown className="w-3 h-3" />
@@ -364,7 +364,7 @@ export default function InventoryPage() {
                           </MorphButton>
                           <button
                             onClick={() => handleDeleteItem(item.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-lg transition"
+                            className="p-1.5 text-[#0B0B0B]/40 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                             title="Delete Item"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -382,13 +382,13 @@ export default function InventoryPage() {
 
       {/* Add Item Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B0B0B]/50 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#E5E7EB] space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">Add Inventory Material</h3>
+              <h3 className="font-bold text-base text-[#0F3D2E]">Add Inventory Material</h3>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+                className="p-1 rounded-lg text-[#0B0B0B]/40 hover:text-[#0B0B0B]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -396,7 +396,7 @@ export default function InventoryPage() {
 
             <form onSubmit={handleCreateItem} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
                   Item / Ingredient Name *
                 </label>
                 <input
@@ -405,19 +405,19 @@ export default function InventoryPage() {
                   placeholder="e.g. Fresh Paneer, Basmati Rice"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
                     Measurement Unit *
                   </label>
                   <select
                     value={formData.unit}
                     onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                   >
                     <option value="kg">kg (Kilograms)</option>
                     <option value="gm">gm (Grams)</option>
@@ -428,7 +428,7 @@ export default function InventoryPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
                     Initial Stock Level *
                   </label>
                   <input
@@ -438,14 +438,14 @@ export default function InventoryPage() {
                     required
                     value={formData.currentStock}
                     onChange={(e) => setFormData({ ...formData, currentStock: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
                     Min. Safety Threshold *
                   </label>
                   <input
@@ -455,12 +455,12 @@ export default function InventoryPage() {
                     required
                     value={formData.minThreshold}
                     onChange={(e) => setFormData({ ...formData, minThreshold: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
                     Cost Per Unit (₹)
                   </label>
                   <input
@@ -469,23 +469,23 @@ export default function InventoryPage() {
                     min="0"
                     value={formData.costPerUnit}
                     onChange={(e) => setFormData({ ...formData, costPerUnit: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E5E7EB]">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0B0B0B]/70 hover:bg-[#FAFAF8] transition"
                 >
                   Cancel
                 </button>
                 <MorphButton
                   type="submit"
                   size="sm"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
+                  className="bg-[#FF6A3D] hover:bg-[#FF5522] text-white text-xs font-semibold shadow-md shadow-[#FF6A3D]/25"
                 >
                   <span>Save Material</span>
                 </MorphButton>
@@ -497,49 +497,49 @@ export default function InventoryPage() {
 
       {/* Adjust Stock Modal */}
       {showAdjustModal && selectedItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B0B0B]/50 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#E5E7EB] space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">Adjust Stock Quantity</h3>
-                <p className="text-xs text-slate-500">{selectedItem.name}</p>
+                <h3 className="font-bold text-base text-[#0F3D2E]">Adjust Stock Quantity</h3>
+                <p className="text-xs text-[#0B0B0B]/60">{selectedItem.name}</p>
               </div>
               <button
                 onClick={() => {
                   setShowAdjustModal(false);
                   setSelectedItem(null);
                 }}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+                className="p-1 rounded-lg text-[#0B0B0B]/40 hover:text-[#0B0B0B]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex justify-between items-center text-xs">
-              <span className="text-slate-500">Current Stock:</span>
-              <span className="font-bold text-slate-900 dark:text-slate-100">
+            <div className="p-3 rounded-xl bg-[#FAFAF8] border border-[#E5E7EB] flex justify-between items-center text-xs">
+              <span className="text-[#0B0B0B]/70">Current Stock:</span>
+              <span className="font-bold text-[#0F3D2E]">
                 {selectedItem.currentStock.toFixed(2)} {selectedItem.unit}
               </span>
             </div>
 
             <form onSubmit={handleAdjustStock} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
                   Adjustment Type *
                 </label>
                 <select
                   value={adjustData.type}
                   onChange={(e) => setAdjustData({ ...adjustData, type: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                 >
                   <option value="RESTOCK">Restock / Received Shipment (+)</option>
-                  <option value="WASTE">Deduct / Wastage & Spoilage (-)</option>
+                  <option value="WASTE">Deduct / Wastage &amp; Spoilage (-)</option>
                   <option value="SET">Physical Count Audit (Set Exact)</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
                   Quantity ({selectedItem.unit}) *
                 </label>
                 <input
@@ -549,12 +549,12 @@ export default function InventoryPage() {
                   required
                   value={adjustData.quantity}
                   onChange={(e) => setAdjustData({ ...adjustData, quantity: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
                   Reason / Memo
                 </label>
                 <input
@@ -562,25 +562,25 @@ export default function InventoryPage() {
                   placeholder="e.g. Weekly vendor delivery PO-402, expired batch"
                   value={adjustData.reason}
                   onChange={(e) => setAdjustData({ ...adjustData, reason: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E5E7EB]">
                 <button
                   type="button"
                   onClick={() => {
                     setShowAdjustModal(false);
                     setSelectedItem(null);
                   }}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0B0B0B]/70 hover:bg-[#FAFAF8] transition"
                 >
                   Cancel
                 </button>
                 <MorphButton
                   type="submit"
                   size="sm"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md"
+                  className="bg-[#FF6A3D] hover:bg-[#FF5522] text-white text-xs font-semibold shadow-md shadow-[#FF6A3D]/25"
                 >
                   <span>Apply Stock Update</span>
                 </MorphButton>

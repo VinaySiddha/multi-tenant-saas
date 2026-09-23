@@ -81,16 +81,16 @@ export default function LoginPage() {
   return (
     <div>
       <div className="mb-6 text-center">
-        <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h2 className="text-xl font-bold tracking-tight text-[#0F3D2E]">
           Sign in to your restaurant
         </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-          Multi-tenant POS, Kitchen Display & Management console
+        <p className="text-xs text-[#0B0B0B]/70 mt-1">
+          Multi-tenant POS, Kitchen Display &amp; Management console
         </p>
       </div>
 
       {errorMsg && (
-        <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 rounded-lg flex items-center gap-2 text-xs text-rose-600 dark:text-rose-400">
+        <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-lg flex items-center gap-2 text-xs text-rose-600">
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
           <span>{errorMsg}</span>
         </div>
@@ -98,17 +98,17 @@ export default function LoginPage() {
 
       <form onSubmit={handleLogin} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+          <label className="block text-xs font-semibold text-[#0B0B0B] mb-1">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+            <Mail className="w-4 h-4 text-[#6B7280] absolute left-3 top-3" />
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[#E5E7EB] bg-white text-[#0B0B0B] focus:outline-none focus:ring-2 focus:ring-[#FF6A3D] focus:border-[#FF6A3D] transition"
               placeholder="name@restaurant.com"
             />
           </div>
@@ -116,21 +116,21 @@ export default function LoginPage() {
 
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <label className="block text-xs font-semibold text-[#0B0B0B]">
               Password
             </label>
-            <a href="#" className="text-xs text-indigo-600 hover:underline">
+            <a href="#" className="text-xs text-[#0F3D2E] hover:text-[#FF6A3D] transition underline">
               Forgot?
             </a>
           </div>
           <div className="relative">
-            <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+            <Lock className="w-4 h-4 text-[#6B7280] absolute left-3 top-3" />
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[#E5E7EB] bg-white text-[#0B0B0B] focus:outline-none focus:ring-2 focus:ring-[#FF6A3D] focus:border-[#FF6A3D] transition"
               placeholder="••••••••"
             />
           </div>
@@ -141,16 +141,16 @@ export default function LoginPage() {
           disabled={loading}
           state={loading ? "loading" : undefined}
           loadingLabel="Authenticating..."
-          className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20"
+          className="w-full mt-4 bg-[#FF6A3D] hover:bg-[#FF5522] text-white shadow-md shadow-[#FF6A3D]/25 font-bold"
         >
           <span>Continue to Dashboard</span>
           <ArrowRight className="w-4 h-4 ml-1" />
         </MorphButton>
       </form>
 
-      <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 text-center">
-        <p className="text-xs text-slate-500">
-          Demo accounts: <code className="text-indigo-600">owner@royalbistro.com</code> (Password: <code className="text-indigo-600">Admin@123</code>)
+      <div className="mt-6 pt-6 border-t border-[#E5E7EB] text-center">
+        <p className="text-xs text-[#0B0B0B]/70">
+          Demo accounts: <code className="text-[#0F3D2E] font-semibold">owner@royalbistro.com</code> (Password: <code className="text-[#0F3D2E] font-semibold">Admin@123</code>)
         </p>
       </div>
     </div>

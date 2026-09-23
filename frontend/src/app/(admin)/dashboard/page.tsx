@@ -25,6 +25,7 @@ import { formatCurrency } from "@/lib/utils";
 import apiClient from "@/lib/api-client";
 import { MorphButton } from "@/components/spectrumui/morph-button";
 import { useAuthStore } from "@/store/useAuthStore";
+import { DiningTable, InventoryItem, Order, MenuItem } from "@/types";
 
 // Sapru Minimalist SaaS Components
 import SalesOverview from "@/components/dashboard/SalesOverview";
@@ -32,7 +33,7 @@ import YearlyBreakup from "@/components/dashboard/YearlyBreakup";
 import MonthlyEarnings from "@/components/dashboard/MonthlyEarnings";
 import OrderVolumeChart from "@/components/dashboard/OrderVolumeChart";
 import TableOccupancyMatrix, { TableItem } from "@/components/dashboard/TableOccupancyMatrix";
-import OperationalAlerts from "@/components/dashboard/OperationalAlerts";
+import OperationalAlerts, { AlertItem } from "@/components/dashboard/OperationalAlerts";
 import RecentOrdersTable, { OrderTableRow } from "@/components/dashboard/RecentOrdersTable";
 import ProductPerformance from "@/components/dashboard/ProductPerformance";
 import RestaurantQuickPillars from "@/components/dashboard/RestaurantQuickPillars";
@@ -41,18 +42,20 @@ export default function AdminDashboardPage() {
   const { user, tenant, branch } = useAuthStore();
   const [greeting, setGreeting] = useState("Good day");
   const [summary, setSummary] = useState<any>({
-    todayRevenue: 38450,
-    todayOrdersCount: 46,
-    occupiedTablesCount: 6,
-    totalTablesCount: 8,
-    tableOccupancyRate: 75.0,
-    avgOrderValue: 1280,
-    pendingReservationsCount: 8,
-    avgPrepTimeMinutes: 14.5,
-    activeOrdersCount: 7
+    todayRevenue: 0,
+    todayOrdersCount: 0,
+    occupiedTablesCount: 0,
+    totalTablesCount: 0,
+    tableOccupancyRate: 0,
+    avgOrderValue: 0,
+    pendingReservationsCount: 0,
+    avgPrepTimeMinutes: 0,
+    activeOrdersCount: 0
   });
-  const [orders, setOrders] = useState<any[]>([]);
-  const [menuItems, setMenuItems] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [tables, setTables] = useState<DiningTable[]>([]);
+  const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(false);
 
   // Time-aware greeting
@@ -66,29 +69,42 @@ export default function AdminDashboardPage() {
   const fetchAnalytics = useCallback(async () => {
     try {
       setLoading(true);
-      const [sumRes, ordRes, menuRes] = await Promise.allSettled([
+      const [sumRes, ordRes, menuRes, tableRes, invRes] = await Promise.allSettled([
         apiClient.get("/analytics/summary"),
         apiClient.get("/orders"),
         apiClient.get("/menu/items"),
+        apiClient.get("/tables"),
+        apiClient.get("/inventory"),
       ]);
 
       if (sumRes.status === "fulfilled" && sumRes.value.data?.data) {
         setSummary((prev: any) => ({
           ...prev,
           ...sumRes.value.data.data,
-          avgOrderValue: sumRes.value.data.data.todayOrdersCount > 0 
-            ? Math.round(Number(sumRes.value.data.data.todayRevenue || 0) / Number(sumRes.value.data.data.todayOrdersCount))
-            : prev.avgOrderValue || 1280
         }));
       }
       if (ordRes.status === "fulfilled" && ordRes.value.data?.data) {
         setOrders(ordRes.value.data.data);
+      } else if (ordRes.status === "rejected") {
+        setOrders([]);
       }
       if (menuRes.status === "fulfilled" && menuRes.value.data?.data) {
         setMenuItems(menuRes.value.data.data);
+      } else if (menuRes.status === "rejected") {
+        setMenuItems([]);
+      }
+      if (tableRes.status === "fulfilled" && tableRes.value.data?.data) {
+        setTables(tableRes.value.data.data);
+      } else if (tableRes.status === "rejected") {
+        setTables([]);
+      }
+      if (invRes.status === "fulfilled" && invRes.value.data?.data) {
+        setInventoryItems(invRes.value.data.data);
+      } else if (invRes.status === "rejected") {
+        setInventoryItems([]);
       }
     } catch {
-      // Retain clean baseline
+      // Clean baseline on error
     } finally {
       setLoading(false);
     }
@@ -115,82 +131,206 @@ export default function AdminDashboardPage() {
     };
   }, [fetchAnalytics]);
 
-  // Executive KPI Strip
+  // Derived real-time numbers from live database records
+  const paidOrders = orders.filter((o) => o.paymentStatus === "PAID");
+  const computedTodayRevenue = summary.todayRevenue !== undefined && summary.todayRevenue > 0
+    ? Number(summary.todayRevenue)
+    : paidOrders.reduce((sum, o) => sum + Number(o.grandTotal || 0), 0);
+
+  const computedTodayOrdersCount = summary.todayOrdersCount !== undefined && summary.todayOrdersCount > 0
+    ? Number(summary.todayOrdersCount)
+    : orders.length;
+
+  const activeOrdersCount = orders.filter(
+    (o) => o.status === "PLACED" || o.status === "IN_KITCHEN" || o.status === "READY"
+  ).length;
+
+  const occupiedTablesCount = tables.filter(
+    (t) => t.status === "OCCUPIED" || t.status === "BILLING"
+  ).length;
+
+  const totalTablesCount = tables.length;
+  const tableOccupancyRate = totalTablesCount > 0
+    ? Math.round((occupiedTablesCount / totalTablesCount) * 100)
+    : 0;
+
+  const pendingReservationsCount = tables.filter((t) => t.status === "RESERVED").length;
+
+  const computedAvgOrderValue = computedTodayOrdersCount > 0
+    ? Math.round(computedTodayRevenue / computedTodayOrdersCount)
+    : 0;
+
+  // Executive KPI Strip with live values
   const kpis = [
     { 
       title: "Today's Revenue", 
-      value: formatCurrency(Number(summary.todayRevenue || 38450)), 
+      value: formatCurrency(computedTodayRevenue), 
       subtext: "Live gross billing receipts", 
       icon: DollarSign, 
-      change: "+18.4%",
+      change: `${paidOrders.length} settled`,
       isPositive: true
     },
     { 
       title: "Orders Placed", 
-      value: String(summary.todayOrdersCount || 46), 
-      subtext: `${summary.activeOrdersCount || 7} tickets in live prep`, 
+      value: String(computedTodayOrdersCount), 
+      subtext: `${activeOrdersCount} tickets in live prep`, 
       icon: ShoppingBag, 
-      change: "+12.2%",
+      change: `${activeOrdersCount} active`,
       isPositive: true
     },
     { 
       title: "Average Order Value", 
-      value: formatCurrency(Number(summary.avgOrderValue || 1280)), 
+      value: formatCurrency(computedAvgOrderValue), 
       subtext: "AOV per settled ticket", 
       icon: TrendingUp, 
-      change: "+5.6%",
+      change: "Live metric",
       isPositive: true
     },
     { 
       title: "Active Dining Tables", 
-      value: `${summary.occupiedTablesCount || 6} / ${summary.totalTablesCount || 8}`, 
-      subtext: `${summary.tableOccupancyRate || 75}% floor capacity active`, 
+      value: `${occupiedTablesCount} / ${totalTablesCount}`, 
+      subtext: `${tableOccupancyRate}% floor capacity active`, 
       icon: Utensils, 
-      change: `${summary.tableOccupancyRate || 75}%`,
+      change: `${tableOccupancyRate}%`,
       isPositive: true
     },
     { 
       title: "Pending Reservations", 
-      value: String(summary.pendingReservationsCount || 8), 
-      subtext: "Next seating in 20 mins", 
+      value: String(pendingReservationsCount), 
+      subtext: pendingReservationsCount > 0 ? "Reserved tables pending" : "No pending reservations", 
       icon: CalendarCheck, 
-      change: "8 tonight",
+      change: `${pendingReservationsCount} booked`,
       isPositive: true
     },
   ];
 
   // Map real orders to RecentOrdersTable format
-  const mappedOrders: OrderTableRow[] = orders.length > 0
-    ? orders.slice(0, 6).map((ord) => ({
-        id: ord.id,
-        orderNumber: ord.orderNumber || `#ORD-${ord.id.slice(-4)}`,
-        tableName: ord.tableName ? `Table ${ord.tableName}` : ord.orderType === "QR_ORDER" ? "QR Table" : "Direct Order",
-        orderType: (ord.orderType || "DINE_IN") as any,
-        status: (ord.status || "PLACED") as any,
-        paymentStatus: (ord.paymentStatus || "PENDING") as any,
-        itemsCount: ord.items?.length || 1,
-        itemsSummary: ord.items?.map((i: any) => `${i.quantity}x ${i.menuItem?.name || i.name}`).join(", ") || "Dining items",
-        grandTotal: Number(ord.grandTotal || 0),
-        timeAgo: ord.createdAt ? new Date(ord.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now",
-      }))
-    : undefined as any;
+  const mappedOrders: OrderTableRow[] = orders.slice(0, 6).map((ord) => ({
+    id: ord.id,
+    orderNumber: ord.orderNumber || `#ORD-${ord.id.slice(-4)}`,
+    tableName: ord.tableName ? `Table ${ord.tableName}` : ord.tableNumber ? `Table ${ord.tableNumber}` : ord.orderType === "QR_ORDER" ? "QR Table" : "Direct Order",
+    orderType: (ord.orderType || "DINE_IN") as any,
+    status: (ord.status || "PLACED") as any,
+    paymentStatus: (ord.paymentStatus === "PAID" ? "PAID" : "PENDING") as any,
+    itemsCount: ord.items?.length || 1,
+    itemsSummary: ord.items?.map((i) => `${i.quantity}x ${i.menuItemName || "Item"}`).join(", ") || "Dining items",
+    grandTotal: Number(ord.grandTotal || 0),
+    timeAgo: ord.createdAt ? new Date(ord.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now",
+  }));
 
-  // Map real menu items to Top Product Performance format
-  const mappedProducts = menuItems.length > 0
-    ? menuItems.slice(0, 5).map((item, idx) => {
-        const count = ((idx * 19 + 63) % 45) + 55;
-        return {
-          id: item.id || String(idx + 1),
-          name: item.name,
-          category: item.categoryName || "Main Menu",
-          ordersCount: count,
-          revenue: (item.price || 350) * count,
-          margin: (idx === 0 ? "Top Seller" : idx === 1 ? "High" : idx === 2 ? "Trending" : "Medium") as any,
-          isVeg: Boolean(item.isVeg),
-          status: (item.isAvailable !== false ? "IN_STOCK" : "OUT_OF_STOCK") as any
-        };
-      })
-    : undefined;
+  // Map real menu items to Top Product Performance format with real order counts
+  const mappedProducts = menuItems.slice(0, 5).map((item, idx) => {
+    let count = 0;
+    let rev = 0;
+    orders.forEach((o) => {
+      o.items?.forEach((it) => {
+        if (it.menuItemId === item.id || it.menuItemName === item.name) {
+          count += Number(it.quantity || 1);
+          rev += Number(it.totalPrice || (it.unitPrice * it.quantity) || 0);
+        }
+      });
+    });
+
+    return {
+      id: item.id || String(idx + 1),
+      name: item.name,
+      category: item.categoryName || "Main Menu",
+      ordersCount: count,
+      revenue: rev,
+      margin: (count > 10 ? "Top Seller" : count > 5 ? "High" : count > 0 ? "Trending" : "Medium") as any,
+      isVeg: Boolean(item.isVeg),
+      status: (item.isAvailable !== false ? "IN_STOCK" : "OUT_OF_STOCK") as any
+    };
+  });
+
+  // Map real tables to TableOccupancyMatrix
+  const mappedTables: TableItem[] = tables.map((t) => {
+    const activeOrder = orders.find(
+      (o) => (o.tableId === t.id || o.tableName === t.tableNumber || o.tableNumber === t.tableNumber) && 
+             o.status !== "COMPLETED" && 
+             o.status !== "CANCELLED" && 
+             o.paymentStatus !== "PAID"
+    );
+    return {
+      id: t.id,
+      name: t.tableNumber ? `T-${t.tableNumber}` : `T-${t.id.slice(-2)}`,
+      zone: t.section || "Ground Main",
+      capacity: t.capacity || 4,
+      status: (t.status || "AVAILABLE") as any,
+      orderNumber: activeOrder ? (activeOrder.orderNumber || `#ORD-${activeOrder.id.slice(-4)}`) : undefined,
+      covers: t.capacity,
+      duration: activeOrder ? "In Service" : undefined,
+      amount: activeOrder ? Number(activeOrder.grandTotal || 0) : undefined,
+    };
+  });
+
+  // Map real inventory alerts
+  const mappedAlerts: AlertItem[] = inventoryItems
+    .filter((i) => Number(i.currentStock) <= Number(i.minThreshold))
+    .slice(0, 5)
+    .map((i) => ({
+      id: i.id,
+      type: "INVENTORY",
+      severity: Number(i.currentStock) <= 0 ? "HIGH" : "MEDIUM",
+      title: `Low Stock: ${i.name}`,
+      description: `${i.currentStock} ${i.unit || "units"} remaining (minimum threshold is ${i.minThreshold} ${i.unit || "units"}).`,
+      timestamp: "Live Alert",
+      actionUrl: "/inventory",
+      actionLabel: "Restock",
+    }));
+
+  // Dynamically calculate last 7 days sales and orders
+  const dayLabels: string[] = [];
+  const salesByDay: number[] = [];
+  const expensesByDay: number[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    dayLabels.push(d.toLocaleDateString("en-IN", { day: "2-digit", month: "2-digit" }));
+
+    const dStr = d.toISOString().split("T")[0];
+    const dayTotal = orders
+      .filter((o) => o.createdAt && o.createdAt.startsWith(dStr) && o.paymentStatus === "PAID")
+      .reduce((sum, o) => sum + Number(o.grandTotal || 0), 0);
+    salesByDay.push(dayTotal);
+    expensesByDay.push(Math.round(dayTotal * 0.4));
+  }
+
+  // Dynamic channel breakdown
+  const dineInCount = orders.filter((o) => o.orderType === "DINE_IN").length;
+  const qrCount = orders.filter((o) => o.orderType === "QR_ORDER").length;
+  const takeawayCount = orders.filter((o) => o.orderType === "TAKEAWAY" || o.orderType === "DELIVERY").length;
+  const totalOrders = dineInCount + qrCount + takeawayCount;
+
+  const channelBreakdown = totalOrders > 0
+    ? [
+        { label: "Dine-In Orders", value: Math.round((dineInCount / totalOrders) * 100), color: "#0F3D2E" },
+        { label: "QR Self-Orders", value: Math.round((qrCount / totalOrders) * 100), color: "#FF6A3D" },
+        { label: "Takeaways", value: Math.round((takeawayCount / totalOrders) * 100), color: "#71717A" },
+      ]
+    : [
+        { label: "Dine-In Orders", value: 0, color: "#0F3D2E" },
+        { label: "QR Self-Orders", value: 0, color: "#FF6A3D" },
+        { label: "Takeaways", value: 0, color: "#71717A" },
+      ];
+
+  // Dynamic hourly order distribution
+  const hourlyCategories = ["11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM"];
+  const hourDineIn = new Array(12).fill(0);
+  const hourQr = new Array(12).fill(0);
+  const hourTakeaway = new Array(12).fill(0);
+
+  orders.forEach((o) => {
+    if (o.createdAt) {
+      const hour = new Date(o.createdAt).getHours();
+      const index = hour - 11;
+      if (index >= 0 && index < 12) {
+        if (o.orderType === "DINE_IN") hourDineIn[index]++;
+        else if (o.orderType === "QR_ORDER") hourQr[index]++;
+        else hourTakeaway[index]++;
+      }
+    }
+  });
 
   return (
     <div className="space-y-6">
@@ -268,33 +408,35 @@ export default function AdminDashboardPage() {
         {/* Left 8 Cols: Sales Overview Bar Chart */}
         <div className="lg:col-span-8">
           <SalesOverview
-            salesData={[18200, 22500, 19800, 26400, 31900, 38500, 34200, Number(summary.todayRevenue || 38450)]}
-            expenseData={[9500, 11200, 9800, 13000, 15500, 18800, 16200, 15100]}
+            categories={dayLabels}
+            salesData={salesByDay}
+            expenseData={expensesByDay}
           />
         </div>
 
         {/* Right 4 Cols: Channel Breakdown & Monthly Run Rate */}
         <div className="lg:col-span-4 space-y-4 sm:space-y-6">
           <YearlyBreakup
-            totalAmount={Number(summary.todayRevenue || 38450) * 30}
-            growthPercentage={14.8}
-            breakdown={[
-              { label: "Dine-In Orders", value: 58, color: "#FFFFFF" },
-              { label: "QR Self-Orders", value: 28, color: "#71717A" },
-              { label: "Takeaway Tickets", value: 14, color: "#3F3F46" },
-            ]}
+            totalAmount={computedTodayRevenue}
+            growthPercentage={0}
+            breakdown={channelBreakdown}
           />
           <MonthlyEarnings
-            amount={Number(summary.todayRevenue || 38450) * 12}
-            growthPercentage={12.4}
-            sparklineData={[35, 58, 42, 85, 62, 92, 78, 105]}
+            amount={computedTodayRevenue * 30}
+            growthPercentage={0}
+            sparklineData={salesByDay}
           />
         </div>
       </div>
 
       {/* 4. Hourly Order Volume & Kitchen Pacing Chart */}
       <div>
-        <OrderVolumeChart />
+        <OrderVolumeChart
+          categories={hourlyCategories}
+          dineInData={hourDineIn}
+          takeawayData={hourTakeaway}
+          qrSelfOrderData={hourQr}
+        />
       </div>
 
       {/* 5. Floor Operations Matrix & Operational Alerts */}
@@ -302,14 +444,15 @@ export default function AdminDashboardPage() {
         {/* Left 8 Cols: Table Occupancy Floor Matrix */}
         <div className="lg:col-span-8">
           <TableOccupancyMatrix
-            totalOccupied={summary.occupiedTablesCount || 6}
-            totalTables={summary.totalTablesCount || 8}
+            tables={mappedTables}
+            totalOccupied={occupiedTablesCount}
+            totalTables={totalTablesCount}
           />
         </div>
 
         {/* Right 4 Cols: Operational Alerts */}
         <div className="lg:col-span-4">
-          <OperationalAlerts />
+          <OperationalAlerts alerts={mappedAlerts} />
         </div>
       </div>
 

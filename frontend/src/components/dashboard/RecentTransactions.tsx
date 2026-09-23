@@ -21,49 +21,7 @@ interface RecentTransactionsProps {
 }
 
 export default function RecentTransactions({
-  transactions = [
-    {
-      id: "1",
-      time: "Just now",
-      title: "Bill Settled via UPI",
-      subtitle: "Table T-04 (Ground Floor)",
-      orderNumber: "#ORD-1048",
-      amount: 1450,
-      type: "PAYMENT",
-    },
-    {
-      id: "2",
-      time: "4 mins ago",
-      title: "Kitchen Marked KOT Ready",
-      subtitle: "Order #ORD-1047 (Direct Takeaway)",
-      type: "KOT_READY",
-    },
-    {
-      id: "3",
-      time: "12 mins ago",
-      title: "Chef Started Cooking",
-      subtitle: "KOT-09 • 2x Woodfired Pizza, 1x Pasta",
-      type: "COOKING",
-    },
-    {
-      id: "4",
-      time: "18 mins ago",
-      title: "New QR Guest Order Placed",
-      subtitle: "Table T-02 (Garden Patio)",
-      orderNumber: "#ORD-1046",
-      amount: 890,
-      type: "ORDER_PLACED",
-    },
-    {
-      id: "5",
-      time: "32 mins ago",
-      title: "Cash Bill Settled & Table Released",
-      subtitle: "Table T-01 • Cashier Counter",
-      orderNumber: "#ORD-1045",
-      amount: 2320,
-      type: "PAYMENT",
-    },
-  ],
+  transactions = [],
 }: RecentTransactionsProps) {
   const getDotStyle = (type: TransactionEvent["type"]) => {
     switch (type) {
@@ -119,55 +77,65 @@ export default function RecentTransactions({
         </Link>
       }
     >
-      <div className="relative pl-5 space-y-5 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[1px] before:bg-[#E5E7EB]">
-        {transactions.map((tx) => {
-          const style = getDotStyle(tx.type);
+      {transactions.length === 0 ? (
+        <div className="py-10 text-center border border-dashed border-[#E5E7EB] dark:border-[#165742] rounded-xl flex flex-col items-center justify-center gap-2">
+          <div className="w-9 h-9 rounded-full bg-[#FAFAF8] dark:bg-[#165742]/40 border border-[#E5E7EB] dark:border-[#165742] flex items-center justify-center text-[#6B7280]">
+            <Clock className="w-4 h-4" />
+          </div>
+          <p className="text-xs font-semibold text-[#0B0B0B] dark:text-[#FAFAF8]">No floor events recorded</p>
+          <p className="text-[11px] text-[#6B7280]">Real-time kitchen, order and payment actions will stream here.</p>
+        </div>
+      ) : (
+        <div className="relative pl-5 space-y-5 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[1px] before:bg-[#E5E7EB]">
+          {transactions.map((tx) => {
+            const style = getDotStyle(tx.type);
 
-          return (
-            <div key={tx.id} className="relative group">
-              {/* Timeline Dot Indicator */}
-              <div
-                className={`absolute -left-5 top-0.5 w-4 h-4 rounded-full border ${style.border} bg-white flex items-center justify-center`}
-              >
-                <div className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
-              </div>
+            return (
+              <div key={tx.id} className="relative group">
+                {/* Timeline Dot Indicator */}
+                <div
+                  className={`absolute -left-5 top-0.5 w-4 h-4 rounded-full border ${style.border} bg-white flex items-center justify-center`}
+                >
+                  <div className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+                </div>
 
-              {/* Event Content */}
-              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-[#0B0B0B]">
-                      {tx.title}
-                    </span>
-                    {tx.orderNumber && (
-                      <Link
-                        href="/orders"
-                        className="text-[11px] font-mono font-medium text-[#0F3D2E] hover:underline transition"
-                      >
-                        {tx.orderNumber}
-                      </Link>
+                {/* Event Content */}
+                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-[#0B0B0B]">
+                        {tx.title}
+                      </span>
+                      {tx.orderNumber && (
+                        <Link
+                          href="/orders"
+                          className="text-[11px] font-mono font-medium text-[#0F3D2E] hover:underline transition"
+                        >
+                          {tx.orderNumber}
+                        </Link>
+                      )}
+                    </div>
+                    {tx.subtitle && (
+                      <p className="text-[11px] text-[#0B0B0B]/60 mt-0.5">
+                        {tx.subtitle}
+                      </p>
                     )}
                   </div>
-                  {tx.subtitle && (
-                    <p className="text-[11px] text-[#0B0B0B]/60 mt-0.5">
-                      {tx.subtitle}
-                    </p>
-                  )}
-                </div>
 
-                <div className="flex items-center gap-2 text-[11px] text-[#0B0B0B]/50 shrink-0 font-mono">
-                  {tx.amount && (
-                    <span className="font-semibold text-[#0F3D2E]">
-                      {formatCurrency(tx.amount)}
-                    </span>
-                  )}
-                  <span>{tx.time}</span>
+                  <div className="flex items-center gap-2 text-[11px] text-[#0B0B0B]/50 shrink-0 font-mono">
+                    {tx.amount && (
+                      <span className="font-semibold text-[#0F3D2E]">
+                        {formatCurrency(tx.amount)}
+                      </span>
+                    )}
+                    <span>{tx.time}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </DashboardCard>
   );
 }

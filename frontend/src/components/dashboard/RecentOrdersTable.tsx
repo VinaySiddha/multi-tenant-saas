@@ -23,71 +23,8 @@ interface RecentOrdersTableProps {
   orders?: OrderTableRow[];
 }
 
-const defaultOrders: OrderTableRow[] = [
-  {
-    id: "1",
-    orderNumber: "#ORD-1048",
-    tableName: "Table T-01",
-    orderType: "DINE_IN",
-    status: "PAID",
-    paymentStatus: "PAID",
-    itemsCount: 4,
-    itemsSummary: "Truffle Risotto, Woodfired Margherita, Classic Tiramisu",
-    grandTotal: 2450,
-    timeAgo: "2m ago",
-  },
-  {
-    id: "2",
-    orderNumber: "#ORD-1047",
-    tableName: "Patio T-06",
-    orderType: "QR_ORDER",
-    status: "READY",
-    paymentStatus: "PENDING",
-    itemsCount: 3,
-    itemsSummary: "Smoked Chicken Quesadilla, Citrus Lemonade x2",
-    grandTotal: 1320,
-    timeAgo: "8m ago",
-  },
-  {
-    id: "3",
-    orderNumber: "#ORD-1046",
-    tableName: "Table T-03",
-    orderType: "DINE_IN",
-    status: "IN_KITCHEN",
-    paymentStatus: "PENDING",
-    itemsCount: 5,
-    itemsSummary: "Herb Butter Garlic Prawns, Aglio Olio, Mocktail Trio",
-    grandTotal: 3450,
-    timeAgo: "14m ago",
-  },
-  {
-    id: "4",
-    orderNumber: "#ORD-1045",
-    tableName: "Express Takeaway",
-    orderType: "TAKEAWAY",
-    status: "SERVED",
-    paymentStatus: "PAID",
-    itemsCount: 2,
-    itemsSummary: "Paneer Makhani Sourdough Roll, Cold Brew",
-    grandTotal: 680,
-    timeAgo: "26m ago",
-  },
-  {
-    id: "5",
-    orderNumber: "#ORD-1044",
-    tableName: "Mezzanine VIP T-08",
-    orderType: "DINE_IN",
-    status: "IN_KITCHEN",
-    paymentStatus: "PENDING",
-    itemsCount: 8,
-    itemsSummary: "Chef Tasting Platter x4, Lamb Chops, Saffron Risotto",
-    grandTotal: 8900,
-    timeAgo: "34m ago",
-  },
-];
-
 export default function RecentOrdersTable({
-  orders = defaultOrders,
+  orders = [],
 }: RecentOrdersTableProps) {
   const getStatusBadge = (status: OrderTableRow["status"], paymentStatus: OrderTableRow["paymentStatus"]) => {
     if (paymentStatus === "PAID" || status === "PAID" || status === "COMPLETED") {
@@ -158,55 +95,69 @@ export default function RecentOrdersTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-[#E5E7EB] dark:divide-[#165742]/40 text-[#0B0B0B] dark:text-[#E5E7EB]">
-            {orders.map((ord) => {
-              const status = getStatusBadge(ord.status, ord.paymentStatus);
-
-              return (
-                <tr key={ord.id} className="hover:bg-[#FAFAF8]/80 dark:hover:bg-[#165742]/30 transition-colors">
-                  <td className="px-5 sm:px-6 py-3">
-                    <Link
-                      href="/orders"
-                      className="font-mono font-bold text-[#0F3D2E] dark:text-white hover:text-[#FF6A3D] block"
-                    >
-                      {ord.orderNumber}
-                    </Link>
-                    <span className="text-[10px] text-[#6B7280] font-mono">
-                      {ord.timeAgo}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="font-semibold text-[#0B0B0B] dark:text-white block">
-                      {ord.tableName}
-                    </span>
-                    <span className="text-[10px] text-[#6B7280] dark:text-[#E5E7EB]/60 font-mono">
-                      {getChannelBadge(ord.orderType)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 max-w-xs">
-                    <span className="text-[#0B0B0B] dark:text-white truncate block text-[11px] font-medium">
-                      {ord.itemsSummary}
-                    </span>
-                    <span className="text-[10px] text-[#6B7280] dark:text-[#E5E7EB]/60">
-                      {ord.itemsCount} total line items
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] border font-mono font-medium ${status.className}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${status.dot}`} />
-                      <span>{status.label}</span>
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="py-12 text-center text-[#6B7280] dark:text-[#E5E7EB]/60">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="w-9 h-9 rounded-full bg-[#FAFAF8] dark:bg-[#165742]/40 border border-[#E5E7EB] dark:border-[#165742] flex items-center justify-center text-[#6B7280]">
+                      <Receipt className="w-4 h-4" />
                     </div>
-                  </td>
-                  <td className="px-5 sm:px-6 py-3 text-right">
-                    <span className="font-mono font-bold text-[#0F3D2E] dark:text-white block">
-                      {formatCurrency(ord.grandTotal)}
-                    </span>
-                    <span className={`text-[10px] font-mono font-semibold ${ord.paymentStatus === "PAID" ? "text-emerald-600 dark:text-emerald-400" : "text-[#6B7280]"}`}>
-                      {ord.paymentStatus === "PAID" ? "Settled" : "Unpaid"}
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
+                    <p className="text-xs font-semibold text-[#0B0B0B] dark:text-[#FAFAF8]">No active orders found</p>
+                    <p className="text-[11px] text-[#6B7280]">Orders placed via POS, QR or Delivery will show here in real time.</p>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              orders.map((ord) => {
+                const status = getStatusBadge(ord.status, ord.paymentStatus);
+
+                return (
+                  <tr key={ord.id} className="hover:bg-[#FAFAF8]/80 dark:hover:bg-[#165742]/30 transition-colors">
+                    <td className="px-5 sm:px-6 py-3">
+                      <Link
+                        href="/orders"
+                        className="font-mono font-bold text-[#0F3D2E] dark:text-white hover:text-[#FF6A3D] block"
+                      >
+                        {ord.orderNumber}
+                      </Link>
+                      <span className="text-[10px] text-[#6B7280] font-mono">
+                        {ord.timeAgo}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="font-semibold text-[#0B0B0B] dark:text-white block">
+                        {ord.tableName}
+                      </span>
+                      <span className="text-[10px] text-[#6B7280] dark:text-[#E5E7EB]/60 font-mono">
+                        {getChannelBadge(ord.orderType)}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 max-w-xs">
+                      <span className="text-[#0B0B0B] dark:text-white truncate block text-[11px] font-medium">
+                        {ord.itemsSummary}
+                      </span>
+                      <span className="text-[10px] text-[#6B7280] dark:text-[#E5E7EB]/60">
+                        {ord.itemsCount} total line items
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] border font-mono font-medium ${status.className}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${status.dot}`} />
+                        <span>{status.label}</span>
+                      </div>
+                    </td>
+                    <td className="px-5 sm:px-6 py-3 text-right">
+                      <span className="font-mono font-bold text-[#0F3D2E] dark:text-white block">
+                        {formatCurrency(ord.grandTotal)}
+                      </span>
+                      <span className={`text-[10px] font-mono font-semibold ${ord.paymentStatus === "PAID" ? "text-emerald-600 dark:text-emerald-400" : "text-[#6B7280]"}`}>
+                        {ord.paymentStatus === "PAID" ? "Settled" : "Unpaid"}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>

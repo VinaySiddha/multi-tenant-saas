@@ -51,7 +51,7 @@ export default function SapruLogo({
             SAPRU
           </span>
           <span className="text-[9px] tracking-widest text-[#E5E7EB]/80 uppercase font-semibold">
-            Restaurant OS
+            Restaurant Software
           </span>
         </div>
       )}

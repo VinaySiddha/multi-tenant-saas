@@ -15,27 +15,41 @@ interface AuthState {
   logout: () => void;
 }
 
+const safeParse = <T>(key: string): T | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    const item = localStorage.getItem(key);
+    if (!item || item === "undefined" || item === "null" || item.trim() === "") return null;
+    return JSON.parse(item) as T;
+  } catch {
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      // ignore
+    }
+    return null;
+  }
+};
+
 export const useAuthStore = create<AuthState>((set) => ({
   token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
   refreshToken: typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null,
-  user: typeof window !== "undefined" && localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")!)
-    : null,
-  tenant: typeof window !== "undefined" && localStorage.getItem("tenant")
-    ? JSON.parse(localStorage.getItem("tenant")!)
-    : null,
-  branch: typeof window !== "undefined" && localStorage.getItem("branch")
-    ? JSON.parse(localStorage.getItem("branch")!)
-    : null,
+  user: safeParse<User>("user"),
+  tenant: safeParse<Tenant>("tenant"),
+  branch: safeParse<Branch>("branch"),
   isAuthenticated: typeof window !== "undefined" ? Boolean(localStorage.getItem("token")) : false,
 
   setAuth: (token, refreshToken, user, tenant, branch) => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("token", token);
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("user", JSON.stringify(user));
-      if (tenant) localStorage.setItem("tenant", JSON.stringify(tenant));
-      if (branch) localStorage.setItem("branch", JSON.stringify(branch));
+      try {
+        localStorage.setItem("token", token);
+        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("user", JSON.stringify(user));
+        if (tenant) localStorage.setItem("tenant", JSON.stringify(tenant));
+        if (branch) localStorage.setItem("branch", JSON.stringify(branch));
+      } catch {
+        // ignore
+      }
     }
     set({
       token,
@@ -49,10 +63,14 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   setTenant: (tenant) => {
     if (typeof window !== "undefined") {
-      if (tenant) {
-        localStorage.setItem("tenant", JSON.stringify(tenant));
-      } else {
-        localStorage.removeItem("tenant");
+      try {
+        if (tenant) {
+          localStorage.setItem("tenant", JSON.stringify(tenant));
+        } else {
+          localStorage.removeItem("tenant");
+        }
+      } catch {
+        // ignore
       }
     }
     set({ tenant });
@@ -60,10 +78,14 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   setBranch: (branch) => {
     if (typeof window !== "undefined") {
-      if (branch) {
-        localStorage.setItem("branch", JSON.stringify(branch));
-      } else {
-        localStorage.removeItem("branch");
+      try {
+        if (branch) {
+          localStorage.setItem("branch", JSON.stringify(branch));
+        } else {
+          localStorage.removeItem("branch");
+        }
+      } catch {
+        // ignore
       }
     }
     set({ branch });
@@ -71,11 +93,15 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: () => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem("token");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("user");
-      localStorage.removeItem("tenant");
-      localStorage.removeItem("branch");
+      try {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
+        localStorage.removeItem("tenant");
+        localStorage.removeItem("branch");
+      } catch {
+        // ignore
+      }
     }
     set({
       token: null,

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, RefreshCw } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function KitchenLayout({
   children,
@@ -41,12 +42,13 @@ export default function KitchenLayout({
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Real-Time Ticket Stream</span>
           </div>
           <span className="text-slate-400 text-xs font-medium hidden md:inline">Head Chef: Sanjay</span>
+          <ThemeToggle />
           <NotificationBell />
         </div>
       </header>

@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import NotificationBell from "@/components/NotificationBell";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function AdminLayout({
   children,
@@ -235,6 +236,7 @@ export default function AdminLayout({
               <span>QR Menu Demo</span>
               <ArrowUpRight className="w-3 h-3 text-slate-500" />
             </Link>
+            <ThemeToggle />
             <NotificationBell />
           </div>
         </header>

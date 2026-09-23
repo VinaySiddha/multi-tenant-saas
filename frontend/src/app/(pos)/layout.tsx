@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Wifi, Building2 } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function PosLayout({
   children,
@@ -47,6 +48,7 @@ export default function PosLayout({
             <span>Live Dispatch Active</span>
           </div>
           <span className="text-slate-400 text-xs font-medium hidden md:inline">The Royal Bistro • Flagship</span>
+          <ThemeToggle />
           <NotificationBell />
         </div>
       </header>

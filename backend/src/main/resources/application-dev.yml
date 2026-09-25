@@ -36,3 +36,9 @@ logging:
     org.hibernate.SQL: INFO
     org.springframework.security: DEBUG
     org.springframework.web.socket: INFO
+
+# Local development conveniences (never used by the prod profile)
+app:
+  seed-demo-data: true
+  jwt:
+    secret: ${APP_JWT_SECRET:dev-only-secret-key-change-me-please-0123456789abcdef}

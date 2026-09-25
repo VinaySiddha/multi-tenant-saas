@@ -60,25 +60,23 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setContentType("application/json");
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write("{\"success\":false,\"message\":\"Unauthorized: " 
-                                    + authException.getMessage() + "\"}");
+                            // Do not echo the internal exception message to clients
+                            response.getWriter().write("{\"success\":false,\"message\":\"Unauthorized\"}");
                         })
                 )
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
                         .requestMatchers(
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**",
-                                "/actuator/**",
-                                "/health/**",
                                 "/auth/login",
                                 "/auth/register-restaurant",
                                 "/auth/refresh",
-                                "/qr/**",
-                                "/ws/**",
-                                "/ws-direct/**"
+                                "/qr/**"
                         ).permitAll()
+                        // Unauthenticated liveness/readiness probes for orchestrators & tests
+                        .requestMatchers("/health", "/health/**").permitAll()
+                        // Actuator: only the liveness probe is unauthenticated; the rest requires PLATFORM_ADMIN
+                        .requestMatchers("/actuator/health/liveness").permitAll()
+                        .requestMatchers("/actuator/**").hasRole("PLATFORM_ADMIN")
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Protected endpoints
                         .anyRequest().authenticated()

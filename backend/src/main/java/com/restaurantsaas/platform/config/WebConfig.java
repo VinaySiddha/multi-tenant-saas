@@ -2,16 +2,22 @@ package com.restaurantsaas.platform.config;
 
 import com.restaurantsaas.platform.tenant.TenantInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
     private final TenantInterceptor tenantInterceptor;
+
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -22,8 +28,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        // Origins are restricted to the configured allow-list (app.cors.allowed-origins);
+        // never use "*" together with allowCredentials(true).
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
+                .allowedOrigins(allowedOrigins.toArray(String[]::new))
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("X-Tenant-ID", "X-Branch-ID", "Authorization")

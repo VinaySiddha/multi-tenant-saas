@@ -21,15 +21,16 @@ server:
 
 # Application Specific Properties
 app:
+  seed-demo-data: false # Demo data seeding is opt-in only (dev profile or APP_SEED_DEMO_DATA=true)
   jwt:
-    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-    expiration-ms: 86400000 # 24 hours
-    refresh-expiration-ms: 604800000 # 7 days
+    # MUST be provided via APP_JWT_SECRET env var (min 256 bits). No default on purpose:
+    # the application fails fast at startup if the secret is missing or too short.
+    secret: ${APP_JWT_SECRET:}
+    expiration-ms: ${APP_JWT_EXPIRATION_MS:3600000} # 1 hour access tokens
+    refresh-expiration-ms: ${APP_JWT_REFRESH_EXPIRATION_MS:604800000} # 7 days
     issuer: restaurant-saas-platform
   cors:
-    allowed-origins:
-      - "http://localhost:3000"
-      - "http://127.0.0.1:3000"
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://127.0.0.1:3000}
     allowed-methods:
       - GET
       - POST
@@ -62,4 +63,15 @@ management:
         include: health,info,metrics
   endpoint:
     health:
-      show-details: always
+      show-details: when-authorized
+      # Kubernetes/LB probes use liveness/readiness groups (no dependency details)
+      group:
+        liveness:
+          include: livenessState
+        readiness:
+          include: readinessState,db
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

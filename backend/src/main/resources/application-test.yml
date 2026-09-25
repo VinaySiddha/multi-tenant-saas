@@ -16,3 +16,8 @@ logging:
   level:
     root: WARN
     com.restaurantsaas.platform: INFO
+
+app:
+  seed-demo-data: false
+  jwt:
+    secret: test-only-secret-key-for-unit-tests-0123456789abcdefghijklmnop

@@ -1,31 +1,21 @@
-# Maven & Java
-backend/target/
-backend/.mvn/
-backend/*.log
+# Java/Maven build artifacts
+target/
 *.class
-.factorypath
-.project
-.settings/
-.classpath
+*.jar
+*.war
+*.ear
 
-# Node & Next.js
-frontend/node_modules/
-frontend/.next/
-frontend/out/
-frontend/build/
-frontend/*.tsbuildinfo
-
-# IDE & OS
+# IDE and Editor files
 .idea/
 *.iml
 .vscode/
-.DS_Store
 *.swp
 *.swo
 
-# Environment Variables & Secrets
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment files
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local

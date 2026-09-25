@@ -1,21 +1,5 @@
-# Java/Maven build artifacts
-target/
-*.class
-*.jar
-*.war
-*.ear
+# Dependencies
+node_modules/
 
-# IDE and Editor files
-.idea/
-*.iml
-.vscode/
-*.swp
-*.swo
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Environment files
-.env
-.env.local
+# Build artifacts and caches
+*.tsbuildinfo

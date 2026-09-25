@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.restaurantsaas.platform.MvpIntegrationFlowTest" time="14.918" tests="1" errors="0" skipped="0" failures="1">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/workspace/backend/target/test-classes:/workspace/backend/target/classes:/root/.m2/repository/org/springframework/boot/spring-boot-starter-web/3.3.4/spring-boot-starter-web-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter/3.3.4/spring-boot-starter-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot/3.3.4/spring-boot-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/3.3.4/spring-boot-autoconfigure-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-logging/3.3.4/spring-boot-starter-logging-3.3.4.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.5.8/logback-classic-1.5.8.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.5.8/logback-core-1.5.8.jar:/root/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.23.1/log4j-to-slf4j-2.23.1.jar:/root/.m2/repository/org/apache/logging/log4j/log4j-api/2.23.1/log4j-api-2.23.1.jar:/root/.m2/repository/org/slf4j/jul-to-slf4j/2.0.16/jul-to-slf4j-2.0.16.jar:/root/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1.jar:/root/.m2/repository/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-json/3.3.4/spring-boot-starter-json-3.3.4.jar:/root/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.17.2/jackson-datatype-jdk8-2.17.2.jar:/root/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.17.2/jackson-datatype-jsr310-2.17.2.jar:/root/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.17.2/jackson-module-parameter-names-2.17.2.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/3.3.4/spring-boot-starter-tomcat-3.3.4.jar:/root/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.30/tomcat-embed-core-10.1.30.jar:/root/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/10.1.30/tomcat-embed-websocket-10.1.30.jar:/root/.m2/repository/org/springframework/spring-web/6.1.13/spring-web-6.1.13.jar:/root/.m2/repository/org/springframework/spring-beans/6.1.13/spring-beans-6.1.13.jar:/root/.m2/repository/org/springframework/spring-webmvc/6.1.13/spring-webmvc-6.1.13.jar:/root/.m2/repository/org/springframework/spring-context/6.1.13/spring-context-6.1.13.jar:/root/.m2/repository/org/springframework/spring-expression/6.1.13/spring-expression-6.1.13.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-data-jpa/3.3.4/spring-boot-starter-data-jpa-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-aop/3.3.4/spring-boot-starter-aop-3.3.4.jar:/root/.m2/repository/org/aspectj/aspectjweaver/1.9.22.1/aspectjweaver-1.9.22.1.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-jdbc/3.3.4/spring-boot-starter-jdbc-3.3.4.jar:/root/.m2/repository/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar:/root/.m2/repository/org/springframework/spring-jdbc/6.1.13/spring-jdbc-6.1.13.jar:/root/.m2/repository/org/hibernate/orm/hibernate-core/6.5.3.Final/hibernate-core-6.5.3.Final.jar:/root/.m2/repository/jakarta/persistence/jakarta.persistence-api/3.1.0/jakarta.persistence-api-3.1.0.jar:/root/.m2/repository/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.5.3.Final/jboss-logging-3.5.3.Final.jar:/root/.m2/repository/org/hibernate/common/hibernate-commons-annotations/6.0.6.Final/hibernate-commons-annotations-6.0.6.Final.jar:/root/.m2/repository/io/smallrye/jandex/3.1.2/jandex-3.1.2.jar:/root/.m2/repository/com/fasterxml/classmate/1.7.0/classmate-1.7.0.jar:/root/.m2/repository/net/bytebuddy/byte-buddy/1.14.19/byte-buddy-1.14.19.jar:/root/.m2/repository/org/glassfish/jaxb/jaxb-runtime/4.0.5/jaxb-runtime-4.0.5.jar:/root/.m2/repository/org/glassfish/jaxb/jaxb-core/4.0.5/jaxb-core-4.0.5.jar:/root/.m2/repository/org/eclipse/angus/angus-activation/2.0.2/angus-activation-2.0.2.jar:/root/.m2/repository/org/glassfish/jaxb/txw2/4.0.5/txw2-4.0.5.jar:/root/.m2/repository/com/sun/istack/istack-commons-runtime/4.1.2/istack-commons-runtime-4.1.2.jar:/root/.m2/repository/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar:/root/.m2/repository/org/antlr/antlr4-runtime/4.13.0/antlr4-runtime-4.13.0.jar:/root/.m2/repository/org/springframework/data/spring-data-jpa/3.3.4/spring-data-jpa-3.3.4.jar:/root/.m2/repository/org/springframework/data/spring-data-commons/3.3.4/spring-data-commons-3.3.4.jar:/root/.m2/repository/org/springframework/spring-orm/6.1.13/spring-orm-6.1.13.jar:/root/.m2/repository/org/springframework/spring-tx/6.1.13/spring-tx-6.1.13.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar:/root/.m2/repository/org/springframework/spring-aspects/6.1.13/spring-aspects-6.1.13.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-security/3.3.4/spring-boot-starter-security-3.3.4.jar:/root/.m2/repository/org/springframework/spring-aop/6.1.13/spring-aop-6.1.13.jar:/root/.m2/repository/org/springframework/security/spring-security-config/6.3.3/spring-security-config-6.3.3.jar:/root/.m2/repository/org/springframework/security/spring-security-web/6.3.3/spring-security-web-6.3.3.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-validation/3.3.4/spring-boot-starter-validation-3.3.4.jar:/root/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/10.1.30/tomcat-embed-el-10.1.30.jar:/root/.m2/repository/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar:/root/.m2/repository/jakarta/validation/jakarta.validation-api/3.0.2/jakarta.validation-api-3.0.2.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-websocket/3.3.4/spring-boot-starter-websocket-3.3.4.jar:/root/.m2/repository/org/springframework/spring-messaging/6.1.13/spring-messaging-6.1.13.jar:/root/.m2/repository/org/springframework/spring-websocket/6.1.13/spring-websocket-6.1.13.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-actuator/3.3.4/spring-boot-starter-actuator-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-actuator-autoconfigure/3.3.4/spring-boot-actuator-autoconfigure-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-actuator/3.3.4/spring-boot-actuator-3.3.4.jar:/root/.m2/repository/io/micrometer/micrometer-observation/1.13.4/micrometer-observation-1.13.4.jar:/root/.m2/repository/io/micrometer/micrometer-commons/1.13.4/micrometer-commons-1.13.4.jar:/root/.m2/repository/io/micrometer/micrometer-jakarta9/1.13.4/micrometer-jakarta9-1.13.4.jar:/root/.m2/repository/io/micrometer/micrometer-core/1.13.4/micrometer-core-1.13.4.jar:/root/.m2/repository/org/hdrhistogram/HdrHistogram/2.2.2/HdrHistogram-2.2.2.jar:/root/.m2/repository/org/latencyutils/LatencyUtils/2.0.3/LatencyUtils-2.0.3.jar:/root/.m2/repository/org/postgresql/postgresql/42.7.4/postgresql-42.7.4.jar:/root/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/root/.m2/repository/org/flywaydb/flyway-core/10.10.0/flyway-core-10.10.0.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-toml/2.17.2/jackson-dataformat-toml-2.17.2.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.17.2/jackson-core-2.17.2.jar:/root/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/root/.m2/repository/org/flywaydb/flyway-database-postgresql/10.10.0/flyway-database-postgresql-10.10.0.jar:/root/.m2/repository/io/jsonwebtoken/jjwt-api/0.12.6/jjwt-api-0.12.6.jar:/root/.m2/repository/io/jsonwebtoken/jjwt-impl/0.12.6/jjwt-impl-0.12.6.jar:/root/.m2/repository/io/jsonwebtoken/jjwt-jackson/0.12.6/jjwt-jackson-0.12.6.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.17.2/jackson-databind-2.17.2.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.17.2/jackson-annotations-2.17.2.jar:/root/.m2/repository/org/springdoc/springdoc-openapi-starter-webmvc-ui/2.6.0/springdoc-openapi-starter-webmvc-ui-2.6.0.jar:/root/.m2/repository/org/springdoc/springdoc-openapi-starter-webmvc-api/2.6.0/springdoc-openapi-starter-webmvc-api-2.6.0.jar:/root/.m2/repository/org/springdoc/springdoc-openapi-starter-common/2.6.0/springdoc-openapi-starter-common-2.6.0.jar:/root/.m2/repository/io/swagger/core/v3/swagger-core-jakarta/2.2.22/swagger-core-jakarta-2.2.22.jar:/root/.m2/repository/org/apache/commons/commons-lang3/3.14.0/commons-lang3-3.14.0.jar:/root/.m2/repository/io/swagger/core/v3/swagger-annotations-jakarta/2.2.22/swagger-annotations-jakarta-2.2.22.jar:/root/.m2/repository/io/swagger/core/v3/swagger-models-jakarta/2.2.22/swagger-models-jakarta-2.2.22.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.17.2/jackson-dataformat-yaml-2.17.2.jar:/root/.m2/repository/org/webjars/swagger-ui/5.17.14/swagger-ui-5.17.14.jar:/root/.m2/repository/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar:/root/.m2/repository/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-test/3.3.4/spring-boot-starter-test-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-test/3.3.4/spring-boot-test-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-test-autoconfigure/3.3.4/spring-boot-test-autoconfigure-3.3.4.jar:/root/.m2/repository/com/jayway/jsonpath/json-path/2.9.0/json-path-2.9.0.jar:/root/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.2/jakarta.xml.bind-api-4.0.2.jar:/root/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.3/jakarta.activation-api-2.1.3.jar:/root/.m2/repository/net/minidev/json-smart/2.5.1/json-smart-2.5.1.jar:/root/.m2/repository/net/minidev/accessors-smart/2.5.1/accessors-smart-2.5.1.jar:/root/.m2/repository/org/ow2/asm/asm/9.6/asm-9.6.jar:/root/.m2/repository/org/assertj/assertj-core/3.25.3/assertj-core-3.25.3.jar:/root/.m2/repository/org/awaitility/awaitility/4.2.2/awaitility-4.2.2.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.3/junit-jupiter-5.10.3.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.3/junit-jupiter-api-5.10.3.jar:/root/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/root/.m2/repository/org/junit/platform/junit-platform-commons/1.10.3/junit-platform-commons-1.10.3.jar:/root/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.3/junit-jupiter-params-5.10.3.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.3/junit-jupiter-engine-5.10.3.jar:/root/.m2/repository/org/junit/platform/junit-platform-engine/1.10.3/junit-platform-engine-1.10.3.jar:/root/.m2/repository/org/mockito/mockito-core/5.11.0/mockito-core-5.11.0.jar:/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.19/byte-buddy-agent-1.14.19.jar:/root/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/root/.m2/repository/org/mockito/mockito-junit-jupiter/5.11.0/mockito-junit-jupiter-5.11.0.jar:/root/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/root/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:/root/.m2/repository/org/springframework/spring-core/6.1.13/spring-core-6.1.13.jar:/root/.m2/repository/org/springframework/spring-jcl/6.1.13/spring-jcl-6.1.13.jar:/root/.m2/repository/org/springframework/spring-test/6.1.13/spring-test-6.1.13.jar:/root/.m2/repository/org/xmlunit/xmlunit-core/2.9.1/xmlunit-core-2.9.1.jar:/root/.m2/repository/org/springframework/security/spring-security-test/6.3.3/spring-security-test-6.3.3.jar:/root/.m2/repository/org/springframework/security/spring-security-core/6.3.3/spring-security-core-6.3.3.jar:/root/.m2/repository/org/springframework/security/spring-security-crypto/6.3.3/spring-security-crypto-6.3.3.jar:/root/.m2/repository/com/h2database/h2/2.2.224/h2-2.2.224.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="Etc/UTC"/>
+    <property name="org.jboss.logging.provider" value="slf4j"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/tmp/jdk-21.0.12.1+1/lib"/>
+    <property name="sun.java.command" value="/workspace/backend/target/surefire/surefirebooter-20260925050336347_3.jar /workspace/backend/target/surefire 2026-09-25T05-03-36_225-jvmRun1 surefire-20260925050336347_1tmp surefire_0-20260925050336347_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/workspace/backend/target/test-classes:/workspace/backend/target/classes:/root/.m2/repository/org/springframework/boot/spring-boot-starter-web/3.3.4/spring-boot-starter-web-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter/3.3.4/spring-boot-starter-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot/3.3.4/spring-boot-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/3.3.4/spring-boot-autoconfigure-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-logging/3.3.4/spring-boot-starter-logging-3.3.4.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.5.8/logback-classic-1.5.8.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.5.8/logback-core-1.5.8.jar:/root/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.23.1/log4j-to-slf4j-2.23.1.jar:/root/.m2/repository/org/apache/logging/log4j/log4j-api/2.23.1/log4j-api-2.23.1.jar:/root/.m2/repository/org/slf4j/jul-to-slf4j/2.0.16/jul-to-slf4j-2.0.16.jar:/root/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1.jar:/root/.m2/repository/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-json/3.3.4/spring-boot-starter-json-3.3.4.jar:/root/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.17.2/jackson-datatype-jdk8-2.17.2.jar:/root/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.17.2/jackson-datatype-jsr310-2.17.2.jar:/root/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.17.2/jackson-module-parameter-names-2.17.2.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/3.3.4/spring-boot-starter-tomcat-3.3.4.jar:/root/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.30/tomcat-embed-core-10.1.30.jar:/root/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/10.1.30/tomcat-embed-websocket-10.1.30.jar:/root/.m2/repository/org/springframework/spring-web/6.1.13/spring-web-6.1.13.jar:/root/.m2/repository/org/springframework/spring-beans/6.1.13/spring-beans-6.1.13.jar:/root/.m2/repository/org/springframework/spring-webmvc/6.1.13/spring-webmvc-6.1.13.jar:/root/.m2/repository/org/springframework/spring-context/6.1.13/spring-context-6.1.13.jar:/root/.m2/repository/org/springframework/spring-expression/6.1.13/spring-expression-6.1.13.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-data-jpa/3.3.4/spring-boot-starter-data-jpa-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-aop/3.3.4/spring-boot-starter-aop-3.3.4.jar:/root/.m2/repository/org/aspectj/aspectjweaver/1.9.22.1/aspectjweaver-1.9.22.1.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-jdbc/3.3.4/spring-boot-starter-jdbc-3.3.4.jar:/root/.m2/repository/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar:/root/.m2/repository/org/springframework/spring-jdbc/6.1.13/spring-jdbc-6.1.13.jar:/root/.m2/repository/org/hibernate/orm/hibernate-core/6.5.3.Final/hibernate-core-6.5.3.Final.jar:/root/.m2/repository/jakarta/persistence/jakarta.persistence-api/3.1.0/jakarta.persistence-api-3.1.0.jar:/root/.m2/repository/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.5.3.Final/jboss-logging-3.5.3.Final.jar:/root/.m2/repository/org/hibernate/common/hibernate-commons-annotations/6.0.6.Final/hibernate-commons-annotations-6.0.6.Final.jar:/root/.m2/repository/io/smallrye/jandex/3.1.2/jandex-3.1.2.jar:/root/.m2/repository/com/fasterxml/classmate/1.7.0/classmate-1.7.0.jar:/root/.m2/repository/net/bytebuddy/byte-buddy/1.14.19/byte-buddy-1.14.19.jar:/root/.m2/repository/org/glassfish/jaxb/jaxb-runtime/4.0.5/jaxb-runtime-4.0.5.jar:/root/.m2/repository/org/glassfish/jaxb/jaxb-core/4.0.5/jaxb-core-4.0.5.jar:/root/.m2/repository/org/eclipse/angus/angus-activation/2.0.2/angus-activation-2.0.2.jar:/root/.m2/repository/org/glassfish/jaxb/txw2/4.0.5/txw2-4.0.5.jar:/root/.m2/repository/com/sun/istack/istack-commons-runtime/4.1.2/istack-commons-runtime-4.1.2.jar:/root/.m2/repository/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar:/root/.m2/repository/org/antlr/antlr4-runtime/4.13.0/antlr4-runtime-4.13.0.jar:/root/.m2/repository/org/springframework/data/spring-data-jpa/3.3.4/spring-data-jpa-3.3.4.jar:/root/.m2/repository/org/springframework/data/spring-data-commons/3.3.4/spring-data-commons-3.3.4.jar:/root/.m2/repository/org/springframework/spring-orm/6.1.13/spring-orm-6.1.13.jar:/root/.m2/repository/org/springframework/spring-tx/6.1.13/spring-tx-6.1.13.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar:/root/.m2/repository/org/springframework/spring-aspects/6.1.13/spring-aspects-6.1.13.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-security/3.3.4/spring-boot-starter-security-3.3.4.jar:/root/.m2/repository/org/springframework/spring-aop/6.1.13/spring-aop-6.1.13.jar:/root/.m2/repository/org/springframework/security/spring-security-config/6.3.3/spring-security-config-6.3.3.jar:/root/.m2/repository/org/springframework/security/spring-security-web/6.3.3/spring-security-web-6.3.3.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-validation/3.3.4/spring-boot-starter-validation-3.3.4.jar:/root/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/10.1.30/tomcat-embed-el-10.1.30.jar:/root/.m2/repository/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar:/root/.m2/repository/jakarta/validation/jakarta.validation-api/3.0.2/jakarta.validation-api-3.0.2.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-websocket/3.3.4/spring-boot-starter-websocket-3.3.4.jar:/root/.m2/repository/org/springframework/spring-messaging/6.1.13/spring-messaging-6.1.13.jar:/root/.m2/repository/org/springframework/spring-websocket/6.1.13/spring-websocket-6.1.13.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-actuator/3.3.4/spring-boot-starter-actuator-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-actuator-autoconfigure/3.3.4/spring-boot-actuator-autoconfigure-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-actuator/3.3.4/spring-boot-actuator-3.3.4.jar:/root/.m2/repository/io/micrometer/micrometer-observation/1.13.4/micrometer-observation-1.13.4.jar:/root/.m2/repository/io/micrometer/micrometer-commons/1.13.4/micrometer-commons-1.13.4.jar:/root/.m2/repository/io/micrometer/micrometer-jakarta9/1.13.4/micrometer-jakarta9-1.13.4.jar:/root/.m2/repository/io/micrometer/micrometer-core/1.13.4/micrometer-core-1.13.4.jar:/root/.m2/repository/org/hdrhistogram/HdrHistogram/2.2.2/HdrHistogram-2.2.2.jar:/root/.m2/repository/org/latencyutils/LatencyUtils/2.0.3/LatencyUtils-2.0.3.jar:/root/.m2/repository/org/postgresql/postgresql/42.7.4/postgresql-42.7.4.jar:/root/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/root/.m2/repository/org/flywaydb/flyway-core/10.10.0/flyway-core-10.10.0.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-toml/2.17.2/jackson-dataformat-toml-2.17.2.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.17.2/jackson-core-2.17.2.jar:/root/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/root/.m2/repository/org/flywaydb/flyway-database-postgresql/10.10.0/flyway-database-postgresql-10.10.0.jar:/root/.m2/repository/io/jsonwebtoken/jjwt-api/0.12.6/jjwt-api-0.12.6.jar:/root/.m2/repository/io/jsonwebtoken/jjwt-impl/0.12.6/jjwt-impl-0.12.6.jar:/root/.m2/repository/io/jsonwebtoken/jjwt-jackson/0.12.6/jjwt-jackson-0.12.6.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.17.2/jackson-databind-2.17.2.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.17.2/jackson-annotations-2.17.2.jar:/root/.m2/repository/org/springdoc/springdoc-openapi-starter-webmvc-ui/2.6.0/springdoc-openapi-starter-webmvc-ui-2.6.0.jar:/root/.m2/repository/org/springdoc/springdoc-openapi-starter-webmvc-api/2.6.0/springdoc-openapi-starter-webmvc-api-2.6.0.jar:/root/.m2/repository/org/springdoc/springdoc-openapi-starter-common/2.6.0/springdoc-openapi-starter-common-2.6.0.jar:/root/.m2/repository/io/swagger/core/v3/swagger-core-jakarta/2.2.22/swagger-core-jakarta-2.2.22.jar:/root/.m2/repository/org/apache/commons/commons-lang3/3.14.0/commons-lang3-3.14.0.jar:/root/.m2/repository/io/swagger/core/v3/swagger-annotations-jakarta/2.2.22/swagger-annotations-jakarta-2.2.22.jar:/root/.m2/repository/io/swagger/core/v3/swagger-models-jakarta/2.2.22/swagger-models-jakarta-2.2.22.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.17.2/jackson-dataformat-yaml-2.17.2.jar:/root/.m2/repository/org/webjars/swagger-ui/5.17.14/swagger-ui-5.17.14.jar:/root/.m2/repository/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar:/root/.m2/repository/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar:/root/.m2/repository/org/springframework/boot/spring-boot-starter-test/3.3.4/spring-boot-starter-test-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-test/3.3.4/spring-boot-test-3.3.4.jar:/root/.m2/repository/org/springframework/boot/spring-boot-test-autoconfigure/3.3.4/spring-boot-test-autoconfigure-3.3.4.jar:/root/.m2/repository/com/jayway/jsonpath/json-path/2.9.0/json-path-2.9.0.jar:/root/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.2/jakarta.xml.bind-api-4.0.2.jar:/root/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.3/jakarta.activation-api-2.1.3.jar:/root/.m2/repository/net/minidev/json-smart/2.5.1/json-smart-2.5.1.jar:/root/.m2/repository/net/minidev/accessors-smart/2.5.1/accessors-smart-2.5.1.jar:/root/.m2/repository/org/ow2/asm/asm/9.6/asm-9.6.jar:/root/.m2/repository/org/assertj/assertj-core/3.25.3/assertj-core-3.25.3.jar:/root/.m2/repository/org/awaitility/awaitility/4.2.2/awaitility-4.2.2.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.3/junit-jupiter-5.10.3.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.3/junit-jupiter-api-5.10.3.jar:/root/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/root/.m2/repository/org/junit/platform/junit-platform-commons/1.10.3/junit-platform-commons-1.10.3.jar:/root/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.3/junit-jupiter-params-5.10.3.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.3/junit-jupiter-engine-5.10.3.jar:/root/.m2/repository/org/junit/platform/junit-platform-engine/1.10.3/junit-platform-engine-1.10.3.jar:/root/.m2/repository/org/mockito/mockito-core/5.11.0/mockito-core-5.11.0.jar:/root/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.19/byte-buddy-agent-1.14.19.jar:/root/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/root/.m2/repository/org/mockito/mockito-junit-jupiter/5.11.0/mockito-junit-jupiter-5.11.0.jar:/root/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/root/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:/root/.m2/repository/org/springframework/spring-core/6.1.13/spring-core-6.1.13.jar:/root/.m2/repository/org/springframework/spring-jcl/6.1.13/spring-jcl-6.1.13.jar:/root/.m2/repository/org/springframework/spring-test/6.1.13/spring-test-6.1.13.jar:/root/.m2/repository/org/xmlunit/xmlunit-core/2.9.1/xmlunit-core-2.9.1.jar:/root/.m2/repository/org/springframework/security/spring-security-test/6.3.3/spring-security-test-6.3.3.jar:/root/.m2/repository/org/springframework/security/spring-security-core/6.3.3/spring-security-core-6.3.3.jar:/root/.m2/repository/org/springframework/security/spring-security-crypto/6.3.3/spring-security-crypto-6.3.3.jar:/root/.m2/repository/com/h2database/h2/2.2.224/h2-2.2.224.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/root"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-08-18"/>
+    <property name="java.home" value="/tmp/jdk-21.0.12.1+1"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/workspace/backend"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="FILE_LOG_CHARSET" value="UTF-8"/>
+    <property name="java.awt.headless" value="true"/>
+    <property name="surefire.real.class.path" value="/workspace/backend/target/surefire/surefirebooter-20260925050336347_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.12.1+1-LTS"/>
+    <property name="user.name" value="root"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="5.10.134-013.15.kangaroo.al8.x86_64"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-21.0.12.1+1"/>
+    <property name="localRepository" value="/root/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="com.zaxxer.hikari.pool_number" value="1"/>
+    <property name="java.version" value="21.0.12.1"/>
+    <property name="user.dir" value="/workspace/backend"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="PID" value="3069"/>
+    <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="21.0.12.1+1-LTS"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="65.0"/>
+    <property name="LOGGED_APPLICATION_NAME" value="[restaurant-saas-platform] "/>
+  </properties>
+  <testcase name="testCompleteRestaurantOnboardingAndPosBillingFlow" classname="com.restaurantsaas.platform.MvpIntegrationFlowTest" time="1.991">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;400&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<400>
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:59)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:122)
+	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:637)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.restaurantsaas.platform.MvpIntegrationFlowTest.testCompleteRestaurantOnboardingAndPosBillingFlow(MvpIntegrationFlowTest.java:199)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+]]></failure>
+    <system-out><![CDATA[05:03:41.316 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.restaurantsaas.platform.MvpIntegrationFlowTest]: MvpIntegrationFlowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+05:03:41.538 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.restaurantsaas.platform.RestaurantSaaSApplication for test class com.restaurantsaas.platform.MvpIntegrationFlowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.4)
+
+2026-09-25T05:03:42.337Z  INFO 3069 --- [restaurant-saas-platform] [           main] c.r.platform.MvpIntegrationFlowTest      : Starting MvpIntegrationFlowTest using Java 21.0.12.1 with PID 3069 (started by root in /workspace/backend)
+2026-09-25T05:03:42.338Z  INFO 3069 --- [restaurant-saas-platform] [           main] c.r.platform.MvpIntegrationFlowTest      : The following 1 profile is active: "test"
+2026-09-25T05:03:47.107Z  WARN 3069 --- [restaurant-saas-platform] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-25T05:03:50.515Z  WARN 3069 --- [restaurant-saas-platform] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used for username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider.
+2026-09-25T05:03:51.440Z  WARN 3069 --- [restaurant-saas-platform] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-25T05:03:53.824Z  INFO 3069 --- [restaurant-saas-platform] [           main] c.r.platform.MvpIntegrationFlowTest      : Started MvpIntegrationFlowTest in 12.097 seconds (process running for 17.388)
+2026-09-25T05:03:55.739Z  INFO 3069 --- [restaurant-saas-platform] [           main] c.r.p.service.NotificationService        : Broadcasting ORDER_CREATED event to /topic/tenant/8e39d84a-521a-43d4-bde0-0528ce5b6ce9/branch/59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3/orders
+2026-09-25T05:03:55.812Z  INFO 3069 --- [restaurant-saas-platform] [           main] c.r.p.service.NotificationService        : Broadcasting KOT_UPDATED event to /topic/tenant/8e39d84a-521a-43d4-bde0-0528ce5b6ce9/branch/59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3/kot
+2026-09-25T05:03:56.004Z  WARN 3069 --- [restaurant-saas-platform] [           main] c.r.platform.service.PaymentService      : Gateway verification failed for order 10da6f05-2eda-4bb4-b6a4-f7642da6d07d: No payment gateway is configured for this deployment. Online payments are disabled until a PaymentGatewayProvider (e.g. Stripe/Razorpay) is registered.
+2026-09-25T05:03:56.009Z  WARN 3069 --- [restaurant-saas-platform] [           main] c.r.p.c.e.GlobalExceptionHandler         : API Exception [400 BAD_REQUEST]: Payment could not be verified: No payment gateway is configured for this deployment. Online payments are disabled until a PaymentGatewayProvider (e.g. Stripe/Razorpay) is registered.
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /auth/register-restaurant
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"284"]
+             Body = {
+  "restaurantName" : "Gourmet Express",
+  "slug" : "gourmet-express-1790312634407",
+  "ownerName" : "Gordon Ramsay",
+  "email" : "gordon1790312634407@gourmet.com",
+  "password" : "Password@123",
+  "branchName" : "Central Outlet",
+  "branchCode" : "CEN-01",
+  "plan" : "FREE_TRIAL"
+}
+    Session Attrs = {}
+
+Handler:
+             Type = com.restaurantsaas.platform.controller.AuthController
+           Method = com.restaurantsaas.platform.controller.AuthController#registerRestaurant(RegisterRestaurantRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {
+  "success" : true,
+  "message" : "Restaurant registered successfully",
+  "data" : {
+    "accessToken" : "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnb3Jkb24xNzkwMzEyNjM0NDA3QGdvdXJtZXQuY29tIiwiaXNzIjoicmVzdGF1cmFudC1zYWFzLXBsYXRmb3JtIiwiaWF0IjoxNzkwMzEyNjM1LCJleHAiOjE3OTAzOTkwMzUsInVzZXJJZCI6IjQ5ZWJhMDdkLTM1NDQtNGI5Ni04MGQwLTVlZWFkNzUyZmVhZSIsInJvbGUiOiJSRVNUQVVSQU5UX09XTkVSIiwiZnVsbE5hbWUiOiJHb3Jkb24gUmFtc2F5IiwidGVuYW50SWQiOiI4ZTM5ZDg0YS01MjFhLTQzZDQtYmRlMC0wNTI4Y2U1YjZjZTkiLCJicmFuY2hJZCI6IjU5ZjMxZGI1LWI5OGYtNGVmNi1iMGE4LTVmMmQwZjA0NzllMyJ9.VISFoH3gS9Pja1rGqOZv9I9dsXdJnKVyUnLdDh_LjgctwQwIgcowCAxlh6fXu2l3",
+    "refreshToken" : "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnb3Jkb24xNzkwMzEyNjM0NDA3QGdvdXJtZXQuY29tIiwiaXNzIjoicmVzdGF1cmFudC1zYWFzLXBsYXRmb3JtIiwiaWF0IjoxNzkwMzEyNjM1LCJleHAiOjE3OTA5MTc0MzUsInVzZXJJZCI6IjQ5ZWJhMDdkLTM1NDQtNGI5Ni04MGQwLTVlZWFkNzUyZmVhZSIsInJvbGUiOiJSRVNUQVVSQU5UX09XTkVSIiwiZnVsbE5hbWUiOiJHb3Jkb24gUmFtc2F5IiwidGVuYW50SWQiOiI4ZTM5ZDg0YS01MjFhLTQzZDQtYmRlMC0wNTI4Y2U1YjZjZTkiLCJicmFuY2hJZCI6IjU5ZjMxZGI1LWI5OGYtNGVmNi1iMGE4LTVmMmQwZjA0NzllMyJ9.robM9HkiRrmGjXdCh91S0aWrOuTkn6Sr0mH3u7tRK2RLP8wCo-h6VVJVO8BTNQ9S",
+    "tokenType" : "Bearer",
+    "user" : {
+      "id" : "49eba07d-3544-4b96-80d0-5eead752feae",
+      "tenantId" : "8e39d84a-521a-43d4-bde0-0528ce5b6ce9",
+      "branchId" : "59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3",
+      "email" : "gordon1790312634407@gourmet.com",
+      "fullName" : "Gordon Ramsay",
+      "primaryRole" : "RESTAURANT_OWNER",
+      "createdAt" : "2026-09-25T05:03:55.138349225Z",
+      "active" : true
+    },
+    "restaurant" : {
+      "id" : "8e39d84a-521a-43d4-bde0-0528ce5b6ce9",
+      "name" : "Gourmet Express",
+      "slug" : "gourmet-express-1790312634407",
+      "email" : "gordon1790312634407@gourmet.com",
+      "subscriptionPlan" : "FREE_TRIAL",
+      "subscriptionStatus" : "ACTIVE",
+      "subscriptionEndsAt" : "2026-10-09T05:03:54.707797487Z",
+      "createdAt" : "2026-09-25T05:03:54.711263420Z",
+      "active" : true
+    },
+    "branch" : {
+      "id" : "59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3",
+      "tenantId" : "8e39d84a-521a-43d4-bde0-0528ce5b6ce9",
+      "name" : "Central Outlet",
+      "code" : "CEN-01",
+      "currency" : "INR",
+      "createdAt" : "2026-09-25T05:03:54.721556897Z",
+      "active" : true
+    }
+  },
+  "timestamp" : "2026-09-25T05:03:55.152264579Z"
+}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /menu/categories
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnb3Jkb24xNzkwMzEyNjM0NDA3QGdvdXJtZXQuY29tIiwiaXNzIjoicmVzdGF1cmFudC1zYWFzLXBsYXRmb3JtIiwiaWF0IjoxNzkwMzEyNjM1LCJleHAiOjE3OTAzOTkwMzUsInVzZXJJZCI6IjQ5ZWJhMDdkLTM1NDQtNGI5Ni04MGQwLTVlZWFkNzUyZmVhZSIsInJvbGUiOiJSRVNUQVVSQU5UX09XTkVSIiwiZnVsbE5hbWUiOiJHb3Jkb24gUmFtc2F5IiwidGVuYW50SWQiOiI4ZTM5ZDg0YS01MjFhLTQzZDQtYmRlMC0wNTI4Y2U1YjZjZTkiLCJicmFuY2hJZCI6IjU5ZjMxZGI1LWI5OGYtNGVmNi1iMGE4LTVmMmQwZjA0NzllMyJ9.VISFoH3gS9Pja1rGqOZv9I9dsXdJnKVyUnLdDh_LjgctwQwIgcowCAxlh6fXu2l3", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Length:"103"]
+             Body = {
+  "name" : "Artisan Burgers",
+  "description" : "Handcrafted gourmet burgers",
+  "displayOrder" : 1
+}
+    Session Attrs = {}
+
+Handler:
+             Type = com.restaurantsaas.platform.controller.MenuController
+           Method = com.restaurantsaas.platform.controller.MenuController#createCategory(CreateCategoryRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {
+  "success" : true,
+  "message" : "Category created successfully",
+  "data" : {
+    "id" : "03da5a03-162a-4859-95de-80acb6e4b1e6",
+    "tenantId" : "8e39d84a-521a-43d4-bde0-0528ce5b6ce9",
+    "name" : "Artisan Burgers",
+    "description" : "Handcrafted gourmet burgers",
+    "displayOrder" : 1,
+    "active" : true
+  },
+  "timestamp" : "2026-09-25T05:03:55.351963234Z"
+}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /menu/items
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnb3Jkb24xNzkwMzEyNjM0NDA3QGdvdXJtZXQuY29tIiwiaXNzIjoicmVzdGF1cmFudC1zYWFzLXBsYXRmb3JtIiwiaWF0IjoxNzkwMzEyNjM1LCJleHAiOjE3OTAzOTkwMzUsInVzZXJJZCI6IjQ5ZWJhMDdkLTM1NDQtNGI5Ni04MGQwLTVlZWFkNzUyZmVhZSIsInJvbGUiOiJSRVNUQVVSQU5UX09XTkVSIiwiZnVsbE5hbWUiOiJHb3Jkb24gUmFtc2F5IiwidGVuYW50SWQiOiI4ZTM5ZDg0YS01MjFhLTQzZDQtYmRlMC0wNTI4Y2U1YjZjZTkiLCJicmFuY2hJZCI6IjU5ZjMxZGI1LWI5OGYtNGVmNi1iMGE4LTVmMmQwZjA0NzllMyJ9.VISFoH3gS9Pja1rGqOZv9I9dsXdJnKVyUnLdDh_LjgctwQwIgcowCAxlh6fXu2l3", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Length:"208"]
+             Body = {
+  "categoryId" : "03da5a03-162a-4859-95de-80acb6e4b1e6",
+  "name" : "Truffle Mushroom Burger",
+  "price" : 350.00,
+  "taxRate" : 5.00,
+  "preparationTimeMinutes" : 15,
+  "veg" : true,
+  "available" : true
+}
+    Session Attrs = {}
+
+Handler:
+             Type = com.restaurantsaas.platform.controller.MenuController
+           Method = com.restaurantsaas.platform.controller.MenuController#createMenuItem(CreateMenuItemRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {
+  "success" : true,
+  "message" : "Menu item created successfully",
+  "data" : {
+    "id" : "bd001c38-52d7-4041-8504-d71c5cbec7e2",
+    "tenantId" : "8e39d84a-521a-43d4-bde0-0528ce5b6ce9",
+    "categoryId" : "03da5a03-162a-4859-95de-80acb6e4b1e6",
+    "categoryName" : "Artisan Burgers",
+    "name" : "Truffle Mushroom Burger",
+    "price" : 350.00,
+    "taxRate" : 5.00,
+    "preparationTimeMinutes" : 15,
+    "veg" : true,
+    "available" : true
+  },
+  "timestamp" : "2026-09-25T05:03:55.430321867Z"
+}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /tables
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnb3Jkb24xNzkwMzEyNjM0NDA3QGdvdXJtZXQuY29tIiwiaXNzIjoicmVzdGF1cmFudC1zYWFzLXBsYXRmb3JtIiwiaWF0IjoxNzkwMzEyNjM1LCJleHAiOjE3OTAzOTkwMzUsInVzZXJJZCI6IjQ5ZWJhMDdkLTM1NDQtNGI5Ni04MGQwLTVlZWFkNzUyZmVhZSIsInJvbGUiOiJSRVNUQVVSQU5UX09XTkVSIiwiZnVsbE5hbWUiOiJHb3Jkb24gUmFtc2F5IiwidGVuYW50SWQiOiI4ZTM5ZDg0YS01MjFhLTQzZDQtYmRlMC0wNTI4Y2U1YjZjZTkiLCJicmFuY2hJZCI6IjU5ZjMxZGI1LWI5OGYtNGVmNi1iMGE4LTVmMmQwZjA0NzllMyJ9.VISFoH3gS9Pja1rGqOZv9I9dsXdJnKVyUnLdDh_LjgctwQwIgcowCAxlh6fXu2l3", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Length:"71"]
+             Body = {
+  "tableNumber" : "T-10",
+  "section" : "Terrace",
+  "capacity" : 4
+}
+    Session Attrs = {}
+
+Handler:
+             Type = com.restaurantsaas.platform.controller.TableController
+           Method = com.restaurantsaas.platform.controller.TableController#createTable(CreateTableRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {
+  "success" : true,
+  "message" : "Table created successfully",
+  "data" : {
+    "id" : "ec75dcd6-99d6-43e2-84fd-f54237e6b82b",
+    "tenantId" : "8e39d84a-521a-43d4-bde0-0528ce5b6ce9",
+    "branchId" : "59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3",
+    "tableNumber" : "T-10",
+    "section" : "Terrace",
+    "capacity" : 4,
+    "status" : "AVAILABLE",
+    "qrCodeToken" : "qr-98a56a70",
+    "active" : true
+  },
+  "timestamp" : "2026-09-25T05:03:55.518690593Z"
+}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /orders
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnb3Jkb24xNzkwMzEyNjM0NDA3QGdvdXJtZXQuY29tIiwiaXNzIjoicmVzdGF1cmFudC1zYWFzLXBsYXRmb3JtIiwiaWF0IjoxNzkwMzEyNjM1LCJleHAiOjE3OTAzOTkwMzUsInVzZXJJZCI6IjQ5ZWJhMDdkLTM1NDQtNGI5Ni04MGQwLTVlZWFkNzUyZmVhZSIsInJvbGUiOiJSRVNUQVVSQU5UX09XTkVSIiwiZnVsbE5hbWUiOiJHb3Jkb24gUmFtc2F5IiwidGVuYW50SWQiOiI4ZTM5ZDg0YS01MjFhLTQzZDQtYmRlMC0wNTI4Y2U1YjZjZTkiLCJicmFuY2hJZCI6IjU5ZjMxZGI1LWI5OGYtNGVmNi1iMGE4LTVmMmQwZjA0NzllMyJ9.VISFoH3gS9Pja1rGqOZv9I9dsXdJnKVyUnLdDh_LjgctwQwIgcowCAxlh6fXu2l3", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Length:"273"]
+             Body = {
+  "orderType" : "DINE_IN",
+  "tableId" : "ec75dcd6-99d6-43e2-84fd-f54237e6b82b",
+  "customerName" : "John Doe",
+  "notes" : "Extra crispy fries",
+  "discountAmount" : 0,
+  "items" : [ {
+    "menuItemId" : "bd001c38-52d7-4041-8504-d71c5cbec7e2",
+    "quantity" : 2
+  } ]
+}
+    Session Attrs = {}
+
+Handler:
+             Type = com.restaurantsaas.platform.controller.OrderController
+           Method = com.restaurantsaas.platform.controller.OrderController#createOrder(CreateOrderRequest, UserPrincipal)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {
+  "success" : true,
+  "message" : "Order placed successfully",
+  "data" : {
+    "id" : "10da6f05-2eda-4bb4-b6a4-f7642da6d07d",
+    "tenantId" : "8e39d84a-521a-43d4-bde0-0528ce5b6ce9",
+    "branchId" : "59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3",
+    "orderNumber" : "ORD-260925050355-265",
+    "orderType" : "DINE_IN",
+    "tableId" : "ec75dcd6-99d6-43e2-84fd-f54237e6b82b",
+    "status" : "PLACED",
+    "paymentStatus" : "UNPAID",
+    "subtotal" : 700.00,
+    "taxAmount" : 35.00,
+    "discountAmount" : 0,
+    "grandTotal" : 735.00,
+    "customerName" : "John Doe",
+    "notes" : "Extra crispy fries",
+    "createdAt" : "2026-09-25T05:03:55.714100530Z",
+    "updatedAt" : "2026-09-25T05:03:55.714100530Z",
+    "items" : [ {
+      "id" : "0ae247b0-c96f-4e01-a5d0-a6897f5e1c5a",
+      "menuItemId" : "bd001c38-52d7-4041-8504-d71c5cbec7e2",
+      "itemName" : "Truffle Mushroom Burger",
+      "quantity" : 2,
+      "unitPrice" : 350.00,
+      "taxRate" : 5.00,
+      "taxAmount" : 35.00,
+      "totalPrice" : 735.00,
+      "status" : "PENDING"
+    } ]
+  },
+  "timestamp" : "2026-09-25T05:03:55.833527385Z"
+}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /kitchen/tickets
+       Parameters = {}
+          Headers = [Authorization:"Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnb3Jkb24xNzkwMzEyNjM0NDA3QGdvdXJtZXQuY29tIiwiaXNzIjoicmVzdGF1cmFudC1zYWFzLXBsYXRmb3JtIiwiaWF0IjoxNzkwMzEyNjM1LCJleHAiOjE3OTAzOTkwMzUsInVzZXJJZCI6IjQ5ZWJhMDdkLTM1NDQtNGI5Ni04MGQwLTVlZWFkNzUyZmVhZSIsInJvbGUiOiJSRVNUQVVSQU5UX09XTkVSIiwiZnVsbE5hbWUiOiJHb3Jkb24gUmFtc2F5IiwidGVuYW50SWQiOiI4ZTM5ZDg0YS01MjFhLTQzZDQtYmRlMC0wNTI4Y2U1YjZjZTkiLCJicmFuY2hJZCI6IjU5ZjMxZGI1LWI5OGYtNGVmNi1iMGE4LTVmMmQwZjA0NzllMyJ9.VISFoH3gS9Pja1rGqOZv9I9dsXdJnKVyUnLdDh_LjgctwQwIgcowCAxlh6fXu2l3", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3"]
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.restaurantsaas.platform.controller.KitchenController
+           Method = com.restaurantsaas.platform.controller.KitchenController#getActiveTickets()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {
+  "success" : true,
+  "message" : "Operation completed successfully",
+  "data" : [ {
+    "id" : "178d9f74-5907-40c5-8671-77a959e0f975",
+    "tenantId" : "8e39d84a-521a-43d4-bde0-0528ce5b6ce9",
+    "branchId" : "59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3",
+    "orderId" : "10da6f05-2eda-4bb4-b6a4-f7642da6d07d",
+    "kotNumber" : "KOT-050355-70",
+    "tableNumber" : "T-10",
+    "orderType" : "DINE_IN",
+    "status" : "PENDING",
+    "itemsSummary" : "2x Truffle Mushroom Burger; ",
+    "specialInstructions" : "Extra crispy fries",
+    "createdAt" : "2026-09-25T05:03:55.736154Z",
+    "elapsedMinutes" : 0
+  } ],
+  "timestamp" : "2026-09-25T05:03:55.908829733Z"
+}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /payments/settle
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnb3Jkb24xNzkwMzEyNjM0NDA3QGdvdXJtZXQuY29tIiwiaXNzIjoicmVzdGF1cmFudC1zYWFzLXBsYXRmb3JtIiwiaWF0IjoxNzkwMzEyNjM1LCJleHAiOjE3OTAzOTkwMzUsInVzZXJJZCI6IjQ5ZWJhMDdkLTM1NDQtNGI5Ni04MGQwLTVlZWFkNzUyZmVhZSIsInJvbGUiOiJSRVNUQVVSQU5UX09XTkVSIiwiZnVsbE5hbWUiOiJHb3Jkb24gUmFtc2F5IiwidGVuYW50SWQiOiI4ZTM5ZDg0YS01MjFhLTQzZDQtYmRlMC0wNTI4Y2U1YjZjZTkiLCJicmFuY2hJZCI6IjU5ZjMxZGI1LWI5OGYtNGVmNi1iMGE4LTVmMmQwZjA0NzllMyJ9.VISFoH3gS9Pja1rGqOZv9I9dsXdJnKVyUnLdDh_LjgctwQwIgcowCAxlh6fXu2l3", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Length:"148"]
+             Body = {
+  "orderId" : "10da6f05-2eda-4bb4-b6a4-f7642da6d07d",
+  "amount" : 735.00,
+  "paymentMethod" : "UPI",
+  "transactionReference" : "UPI-TXN-98214"
+}
+    Session Attrs = {}
+
+Handler:
+             Type = com.restaurantsaas.platform.controller.PaymentController
+           Method = com.restaurantsaas.platform.controller.PaymentController#processPayment(PaymentRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = com.restaurantsaas.platform.common.exception.BadRequestException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", X-Tenant-ID:"8e39d84a-521a-43d4-bde0-0528ce5b6ce9", X-Branch-ID:"59f31db5-b98f-4ef6-b0a8-5f2d0f0479e3", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {
+  "status" : 400,
+  "error" : "Bad Request",
+  "message" : "Payment could not be verified: No payment gateway is configured for this deployment. Online payments are disabled until a PaymentGatewayProvider (e.g. Stripe/Razorpay) is registered.",
+  "path" : "/payments/settle",
+  "timestamp" : "2026-09-25T05:03:56.009813907Z"
+}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+</testsuite>

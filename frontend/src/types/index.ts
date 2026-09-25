@@ -147,3 +147,110 @@ export interface PageResponse<T> {
   hasNext: boolean;
   hasPrevious: boolean;
 }
+
+/* ------------------------- Additional API-aligned types ------------------------- */
+
+export type TableStatus = "AVAILABLE" | "OCCUPIED" | "RESERVED" | "BILLING" | "CLEANING";
+export type KotStatus = "PENDING" | "IN_PROGRESS" | "READY" | "SERVED" | "CANCELLED";
+export type PaymentMethodType = "CASH" | "CARD" | "UPI" | "WALLET" | "ONLINE";
+export type SubscriptionPlan = "FREE_TRIAL" | "BASIC" | "PRO" | "ENTERPRISE";
+export type SubscriptionStatus = "TRIALING" | "ACTIVE" | "PAST_DUE" | "CANCELED";
+
+export interface RestaurantInfo {
+  id: string;
+  name: string;
+  slug: string;
+  email: string;
+  phoneNumber?: string;
+  address?: string;
+  logoUrl?: string;
+  subscriptionPlan: SubscriptionPlan;
+  subscriptionStatus: SubscriptionStatus;
+  subscriptionEndsAt?: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface DashboardSummary {
+  todayRevenue: number;
+  todayOrdersCount: number;
+  activeOrdersCount: number;
+  occupiedTablesCount: number;
+  totalTablesCount: number;
+  tableOccupancyRate: number;
+  avgPrepTimeMinutes: number;
+  topSellingItems: Array<Record<string, unknown>>;
+  recentOrders: Array<Record<string, unknown>>;
+}
+
+export interface KitchenTicketItemView {
+  menuItemName?: string;
+  itemName?: string;
+  quantity?: number;
+  status?: string;
+}
+
+export interface KitchenTicketView {
+  id: string;
+  tenantId: string;
+  branchId: string;
+  orderId: string;
+  kotNumber: string;
+  tableNumber?: string;
+  orderType: string;
+  status: KotStatus;
+  itemsSummary?: string;
+  specialInstructions?: string;
+  createdAt: string;
+  startedAt?: string | null;
+  completedAt?: string | null;
+  elapsedMinutes: number;
+}
+
+export interface PaymentDto {
+  id: string;
+  tenantId: string;
+  branchId: string;
+  orderId: string;
+  amount: number;
+  paymentMethod: PaymentMethodType;
+  status: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
+  transactionReference?: string;
+  paymentGateway?: string;
+  paidAt?: string;
+}
+
+export interface OrderItemView {
+  id?: string;
+  menuItemId: string;
+  itemName: string;
+  quantity: number;
+  unitPrice: number;
+  taxRate: number;
+  taxAmount: number;
+  totalPrice: number;
+  notes?: string;
+  status: string;
+}
+
+export interface OrderView {
+  id: string;
+  tenantId: string;
+  branchId: string;
+  orderNumber: string;
+  orderType: "DINE_IN" | "TAKEAWAY" | "DELIVERY" | "QR_ORDER";
+  tableId?: string;
+  tableNumber?: string;
+  status: string;
+  paymentStatus: string;
+  subtotal: number;
+  taxAmount: number;
+  discountAmount: number;
+  grandTotal: number;
+  customerName?: string;
+  customerPhone?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+  items: OrderItemView[];
+}

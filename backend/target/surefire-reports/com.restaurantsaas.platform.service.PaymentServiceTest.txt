@@ -1,0 +1,22 @@
+-------------------------------------------------------------------------------
+Test set: com.restaurantsaas.platform.service.PaymentServiceTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.285 s <<< FAILURE! -- in com.restaurantsaas.platform.service.PaymentServiceTest
+com.restaurantsaas.platform.service.PaymentServiceTest.processPayment_shouldFreeOccupiedTableAfterPayment -- Time elapsed: 0.220 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.util.List.isEmpty()" because "this.gatewayProviders" is null
+	at com.restaurantsaas.platform.service.PaymentService.resolveProvider(PaymentService.java:142)
+	at com.restaurantsaas.platform.service.PaymentService.processPayment(PaymentService.java:66)
+	at com.restaurantsaas.platform.service.PaymentServiceTest.processPayment_shouldFreeOccupiedTableAfterPayment(PaymentServiceTest.java:143)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.restaurantsaas.platform.service.PaymentServiceTest.processPayment_shouldPersistPaymentAndMarkOrderPaidCompleted -- Time elapsed: 0.010 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.util.List.isEmpty()" because "this.gatewayProviders" is null
+	at com.restaurantsaas.platform.service.PaymentService.resolveProvider(PaymentService.java:142)
+	at com.restaurantsaas.platform.service.PaymentService.processPayment(PaymentService.java:66)
+	at com.restaurantsaas.platform.service.PaymentServiceTest.processPayment_shouldPersistPaymentAndMarkOrderPaidCompleted(PaymentServiceTest.java:111)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

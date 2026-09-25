@@ -1,0 +1,16 @@
+/workspace/backend/src/test/java/com/restaurantsaas/platform/MvpIntegrationFlowTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/RestaurantSaaSApplicationTests.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/common/controller/HealthControllerTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/common/dto/ApiResponseTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/common/exception/ApiExceptionStatusTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/security/JwtTokenProviderTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/security/UserPrincipalTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/service/AnalyticsServiceTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/service/AuthServiceTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/service/KitchenServiceTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/service/MenuServiceTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/service/OrderServiceTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/service/PaymentServiceTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/service/TableServiceTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/tenant/TenantContextTest.java
+/workspace/backend/src/test/java/com/restaurantsaas/platform/tenant/TenantFilterTest.java

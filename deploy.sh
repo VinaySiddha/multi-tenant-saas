@@ -5,13 +5,27 @@ echo "=========================================================="
 echo "  🚀 RestoSaaS Enterprise Platform - Deployment Script"
 echo "=========================================================="
 
-# 1. Environment file setup
+# 1. Environment file setup (fail fast: never auto-create with placeholder secrets)
 if [ ! -f .env ]; then
-  echo "📄 Creating .env from .env.example..."
-  cp .env.example .env
+  echo "❌ Error: .env file not found."
+  echo "   Copy .env.example to .env and fill in real secrets:"
+  echo "     cp .env.example .env"
+  echo "     openssl rand -base64 48   # use output as APP_JWT_SECRET"
+  exit 1
 fi
 
-# 2. Check Docker availability
+# 2. Validate required secrets are present and strong enough
+set -a; source .env; set +a
+if [ -z "${APP_JWT_SECRET:-}" ] || [ "${#APP_JWT_SECRET}" -lt 32 ] || [[ "$APP_JWT_SECRET" == __* ]]; then
+  echo "❌ Error: APP_JWT_SECRET is missing, a placeholder, or shorter than 32 characters in .env."
+  exit 1
+fi
+if [ -z "${POSTGRES_PASSWORD:-}" ] || [[ "$POSTGRES_PASSWORD" == __* ]]; then
+  echo "❌ Error: POSTGRES_PASSWORD is missing or left as placeholder in .env."
+  exit 1
+fi
+
+# 3. Check Docker availability
 if ! command -v docker &> /dev/null; then
     echo "❌ Error: Docker is not installed. Please install Docker first."
     exit 1
@@ -29,11 +43,8 @@ echo "=========================================================="
 echo "  ✅ Deployment Complete & Online!"
 echo "=========================================================="
 echo "  🌐 Gateway & Frontend URL : http://localhost"
-echo "  📊 Direct Next.js App    : http://localhost:3000"
-echo "  ⚙️ Backend REST API      : http://localhost:8080/api/v1"
-echo "  📚 Swagger API Docs      : http://localhost:8080/api/v1/swagger-ui.html"
+echo "  ⚙️ Backend REST API       : http://localhost/api/v1 (via gateway)"
 echo ""
-echo "  🔑 Demo Credentials:"
-echo "     - Email    : owner@royalbistro.com"
-echo "     - Password : Admin@123"
+echo "  ℹ️  No demo accounts are seeded in production."
+echo "     Onboard a tenant via POST /api/v1/auth/register-restaurant."
 echo "=========================================================="

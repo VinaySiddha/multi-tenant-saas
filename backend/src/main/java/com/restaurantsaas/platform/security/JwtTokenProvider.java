@@ -22,11 +22,21 @@ public class JwtTokenProvider {
     private final String issuer;
 
     public JwtTokenProvider(
-            @Value("${app.jwt.secret:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}") String jwtSecret,
+            @Value("${app.jwt.secret}") String jwtSecret,
             @Value("${app.jwt.expiration-ms:86400000}") long jwtExpirationInMs,
             @Value("${app.jwt.refresh-expiration-ms:604800000}") long refreshExpirationInMs,
             @Value("${app.jwt.issuer:restaurant-saas-platform}") String issuer) {
-        this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        if (jwtSecret == null || jwtSecret.isBlank()) {
+            throw new IllegalStateException(
+                    "JWT secret must be provided via the APP_JWT_SECRET environment variable. "
+                            + "Refusing to start with an empty or missing signing key.");
+        }
+        byte[] secretBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        if (secretBytes.length < 32) {
+            throw new IllegalStateException(
+                    "JWT secret is too weak: it must be at least 256 bits (32 ASCII characters).");
+        }
+        this.key = Keys.hmacShaKeyFor(secretBytes);
         this.jwtExpirationInMs = jwtExpirationInMs;
         this.refreshExpirationInMs = refreshExpirationInMs;
         this.issuer = issuer;
@@ -100,8 +110,14 @@ public class JwtTokenProvider {
         try {
             Jwts.parser().verifyWith(key).build().parseSignedClaims(authToken);
             return true;
-        } catch (SecurityException | MalformedJwtException ex) {
-            log.warn("Invalid JWT signature or token format");
+        } catch (io.jsonwebtoken.security.SignatureException ex) {
+            // Subclass of SecurityException — must be caught first so forged
+            // signatures are logged distinctly and rejected.
+            log.warn("JWT signature validation failed - token rejected");
+        } catch (MalformedJwtException ex) {
+            log.warn("Malformed JWT token");
+        } catch (SecurityException ex) {
+            log.warn("Invalid JWT security context");
         } catch (ExpiredJwtException ex) {
             log.warn("Expired JWT token");
         } catch (UnsupportedJwtException ex) {

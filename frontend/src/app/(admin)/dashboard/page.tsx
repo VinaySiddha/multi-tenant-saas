@@ -1,190 +1,299 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { 
-  DollarSign, 
-  ShoppingBag, 
-  TrendingUp, 
-  Clock, 
-  Utensils, 
-  CheckCircle2, 
-  ArrowUpRight,
-  RefreshCw
+import React from "react";
+import Link from "next/link";
+import {
+  DollarSign,
+  ShoppingBag,
+  Utensils,
+  Clock,
+  Receipt,
+  ChefHat,
+  RefreshCw,
+  Flame,
+  AlertCircle,
 } from "lucide-react";
-import { formatCurrency } from "@/lib/utils";
-import apiClient from "@/lib/api-client";
+
+import { adminApi, apiErrorMessage } from "@/lib/admin-api";
+import { useFetch, useAutoRefresh } from "@/hooks/useFetch";
 import { useAuthStore } from "@/store/useAuthStore";
+import { formatCurrency, formatDateTime } from "@/lib/utils";
+import type { DashboardSummary, OrderView } from "@/types";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Button,
+  SkeletonCard,
+  ErrorState,
+  EmptyState,
+  Badge,
+} from "@/components/ui";
+import { OrderStatusBadge, PaymentStatusBadge } from "@/components/status-badges";
+
+const REFRESH_INTERVAL_MS = 30_000;
+
+interface TopItem {
+  name: string;
+  quantity?: number | string;
+  revenue?: number | string;
+}
+
+function normalizeTopItems(items: Array<Record<string, unknown>> | undefined): TopItem[] {
+  if (!Array.isArray(items)) return [];
+  return items.slice(0, 6).map((raw) => ({
+    name: String(raw.name ?? raw.itemName ?? raw.menuItemName ?? "Item"),
+    quantity: (raw.totalQuantity ?? raw.quantity) as number | string | undefined,
+    revenue: (raw.totalRevenue ?? raw.revenue) as number | string | undefined,
+  }));
+}
 
 export default function AdminDashboardPage() {
   const { tenant, branch } = useAuthStore();
-  const [summary, setSummary] = useState<any>({
-    todayRevenue: 48250,
-    todayOrdersCount: 128,
-    occupiedTablesCount: 14,
-    totalTablesCount: 20,
-    tableOccupancyRate: 70.0,
-    avgPrepTimeMinutes: 14.5
-  });
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, []);
-
-  const fetchAnalytics = async () => {
+  const summary = useFetch<DashboardSummary>(async () => {
     try {
-      setLoading(true);
-      const res = await apiClient.get("/analytics/summary");
-      if (res.data?.data) {
-        setSummary(res.data.data);
-      }
-    } catch {
-      // Keep demo values
-    } finally {
-      setLoading(false);
+      return await adminApi.getDashboardSummary();
+    } catch (err) {
+      throw new Error(apiErrorMessage(err, "Unable to load dashboard analytics."));
     }
-  };
+  });
 
+  const recentOrders = useFetch<OrderView[]>(async () => {
+    try {
+      return await adminApi.getOrders();
+    } catch {
+      // Orders list is supplementary — degrade gracefully.
+      return [];
+    }
+  });
+
+  const refreshAll = React.useCallback(() => {
+    summary.refresh();
+    recentOrders.refresh();
+  }, [summary.refresh, recentOrders.refresh]);
+
+  useAutoRefresh(refreshAll, REFRESH_INTERVAL_MS, !summary.loading);
+
+  const data = summary.data;
   const stats = [
-    { 
-      title: "Today's Revenue", 
-      value: formatCurrency(Number(summary.todayRevenue || 0)), 
-      change: "+14.2% vs y'day", 
-      icon: DollarSign, 
-      color: "text-emerald-500" 
+    {
+      title: "Today's Revenue",
+      value: formatCurrency(Number(data?.todayRevenue ?? 0)),
+      hint: `${data?.todayOrdersCount ?? 0} orders today`,
+      icon: DollarSign,
+      color: "text-emerald-500 bg-emerald-50 dark:bg-emerald-950/40",
     },
-    { 
-      title: "Orders Placed", 
-      value: String(summary.todayOrdersCount || 0), 
-      change: "Active: " + (summary.activeOrdersCount || 3), 
-      icon: ShoppingBag, 
-      color: "text-indigo-500" 
+    {
+      title: "Active Orders",
+      value: String(data?.activeOrdersCount ?? 0),
+      hint: `${data?.todayOrdersCount ?? 0} placed today`,
+      icon: ShoppingBag,
+      color: "text-indigo-500 bg-indigo-50 dark:bg-indigo-950/40",
     },
-    { 
-      title: "Table Occupancy", 
-      value: `${summary.occupiedTablesCount || 0} / ${summary.totalTablesCount || 4}`, 
-      change: `${summary.tableOccupancyRate || 0}% Occ.`, 
-      icon: Utensils, 
-      color: "text-amber-500" 
+    {
+      title: "Table Occupancy",
+      value: `${data?.occupiedTablesCount ?? 0}/${data?.totalTablesCount ?? 0}`,
+      hint: `${Math.round(data?.tableOccupancyRate ?? 0)}% occupied`,
+      icon: Utensils,
+      color: "text-amber-500 bg-amber-50 dark:bg-amber-950/40",
     },
-    { 
-      title: "Avg. Prep Time", 
-      value: `${summary.avgPrepTimeMinutes || 14.5} mins`, 
-      change: "Kitchen Target: 15m", 
-      icon: Clock, 
-      color: "text-blue-500" 
+    {
+      title: "Avg. Prep Time",
+      value: `${(data?.avgPrepTimeMinutes ?? 0).toFixed(1)} min`,
+      hint: "Kitchen target: 15 min",
+      icon: Clock,
+      color: "text-blue-500 bg-blue-50 dark:bg-blue-950/40",
     },
   ];
 
+  const topItems = normalizeTopItems(data?.topSellingItems);
+  const orders = (recentOrders.data ?? [])
+    .slice()
+    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+    .slice(0, 8);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-[1400px] mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Restaurant Operations Dashboard
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+            Operations Dashboard
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            {tenant?.name || "The Royal Bistro"} • {branch?.name || "Indiranagar Flagship"}
+            {tenant?.name ?? "—"} • {branch?.name ?? "All branches"} • Auto-refreshes every{" "}
+            {REFRESH_INTERVAL_MS / 1000}s
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={fetchAnalytics}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-semibold rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
-          </button>
-          <div className="flex items-center gap-2">
-            <span className="flex h-2.5 w-2.5 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          {summary.error && (
+            <span className="hidden sm:flex items-center gap-1 text-[11px] font-semibold text-amber-600">
+              <AlertCircle className="w-3.5 h-3.5" /> Live feed degraded
             </span>
-            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-              Live Engine Active
-            </span>
-          </div>
+          )}
+          <Button variant="outline" size="sm" onClick={refreshAll} loading={summary.loading}>
+            {!summary.loading && <RefreshCw className="w-3.5 h-3.5" />} Refresh
+          </Button>
         </div>
       </div>
 
-      {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <div
-              key={stat.title}
-              className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-medium text-slate-500">{stat.title}</span>
-                <div className={`p-2 rounded-lg bg-slate-50 dark:bg-slate-800 ${stat.color}`}>
-                  <Icon className="w-4 h-4" />
+      {/* KPI grid */}
+      {summary.loading && !summary.data ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      ) : summary.error ? (
+        <ErrorState message={summary.error} onRetry={summary.refresh} />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <Card key={stat.title} className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-medium text-slate-500">{stat.title}</span>
+                  <div className={`p-2 rounded-lg ${stat.color}`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 tabular-nums">
                   {stat.value}
-                </span>
-                <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center">
-                  {stat.change}
-                </span>
-              </div>
-            </div>
-          );
-        })}
+                </p>
+                <p className="text-[11px] text-slate-500 mt-1">{stat.hint}</p>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Quick actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <Link
+          href="/pos/terminal"
+          className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-400 transition block"
+        >
+          <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+            <Receipt className="w-4 h-4" />
+            <h4 className="text-xs font-bold">Open POS Terminal</h4>
+          </div>
+          <p className="text-[11px] text-slate-500 mt-1">
+            Take dine-in & takeaway orders with split bills
+          </p>
+        </Link>
+        <Link
+          href="/kitchen/kds"
+          className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-rose-400 transition block"
+        >
+          <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400">
+            <ChefHat className="w-4 h-4" />
+            <h4 className="text-xs font-bold">Kitchen Display (KDS)</h4>
+          </div>
+          <p className="text-[11px] text-slate-500 mt-1">
+            Manage food preparation and live KOT timers
+          </p>
+        </Link>
+        <Link
+          href="/tables"
+          className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-400 transition block"
+        >
+          <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+            <Utensils className="w-4 h-4" />
+            <h4 className="text-xs font-bold">Manage Tables</h4>
+          </div>
+          <p className="text-[11px] text-slate-500 mt-1">
+            Floor plan, table statuses & QR codes
+          </p>
+        </Link>
       </div>
 
-      {/* Operational Highlights */}
+      {/* Recent orders + top sellers */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100">
-              Live Quick Actions
-            </h3>
-            <span className="text-xs text-indigo-600 font-semibold">POS & Kitchen Link</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <a
-              href="/pos/terminal"
-              className="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 hover:border-indigo-500 transition block text-left"
-            >
-              <h4 className="text-xs font-bold text-indigo-700 dark:text-indigo-300">Open POS Terminal</h4>
-              <p className="text-[11px] text-slate-500 mt-1">Take dine-in & takeaway orders with split bills</p>
-            </a>
-            <a
-              href="/kitchen/kds"
-              className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 hover:border-rose-500 transition block text-left"
-            >
-              <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300">Kitchen Display (KDS)</h4>
-              <p className="text-[11px] text-slate-500 mt-1">Manage food preparation and live KOT timers</p>
-            </a>
-            <a
-              href="/qr/menu/5da85f64-5717-4562-b3fc-2c963f66afb5"
-              target="_blank"
-              rel="noreferrer"
-              className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 hover:border-emerald-500 transition block text-left"
-            >
-              <h4 className="text-xs font-bold text-emerald-700 dark:text-emerald-300">QR Self-Order Demo</h4>
-              <p className="text-[11px] text-slate-500 mt-1">Simulate customer phone menu scan & ordering</p>
-            </a>
-          </div>
-        </div>
+        <Card className="lg:col-span-2">
+          <CardHeader
+            title="Recent Orders"
+            subtitle="Latest activity across all channels"
+            action={
+              <Link href="/orders" className="text-xs font-semibold text-indigo-600 hover:underline">
+                View all →
+              </Link>
+            }
+          />
+          <CardBody className="px-0 pb-0">
+            {recentOrders.loading ? (
+              <EmptyState title="Loading orders…" />
+            ) : orders.length === 0 ? (
+              <EmptyState
+                title="No orders yet today"
+                hint="Orders created from POS or QR menus will appear here in real time."
+              />
+            ) : (
+              <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+                {orders.map((order) => (
+                  <li
+                    key={order.id}
+                    className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                          {order.orderNumber}
+                        </p>
+                        <OrderStatusBadge status={order.status} />
+                        <PaymentStatusBadge status={order.paymentStatus} />
+                      </div>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        {order.tableNumber ? `Table ${order.tableNumber} • ` : ""}
+                        {formatDateTime(order.createdAt)}
+                      </p>
+                    </div>
+                    <span className="text-sm font-bold text-slate-900 dark:text-slate-100 tabular-nums shrink-0">
+                      {formatCurrency(Number(order.grandTotal ?? 0))}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardBody>
+        </Card>
 
-        <div className="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-          <div>
-            <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2">
-              Multi-Tenancy Guard
-            </h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Every query and transaction is isolated by <code className="text-indigo-600 font-mono">tenant_id</code> and <code className="text-indigo-600 font-mono">branch_id</code>.
-            </p>
-          </div>
-          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400 space-y-1">
-            <p>Tenant: <span className="font-semibold text-slate-700 dark:text-slate-300">{tenant?.id || "3fa85f64-5717-4562-b3fc-2c963f66afa6"}</span></p>
-            <p>Branch: <span className="font-semibold text-slate-700 dark:text-slate-300">{branch?.code || "IND-01"}</span></p>
-          </div>
-        </div>
+        <Card>
+          <CardHeader title="Top Sellers" subtitle="Based on current live data" />
+          <CardBody>
+            {topItems.length === 0 ? (
+              <EmptyState
+                title="No sales data yet"
+                hint="Bestsellers will surface once orders start flowing in."
+                icon={Flame}
+              />
+            ) : (
+              <ol className="space-y-3">
+                {topItems.map((item, idx) => (
+                  <li key={`${item.name}-${idx}`} className="flex items-center gap-3">
+                    <span className="w-6 h-6 shrink-0 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-300 text-[11px] font-bold flex items-center justify-center">
+                      {idx + 1}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">
+                        {item.name}
+                      </p>
+                      {item.quantity !== undefined && (
+                        <p className="text-[10px] text-slate-500">{String(item.quantity)} sold</p>
+                      )}
+                    </div>
+                    {item.revenue !== undefined && (
+                      <Badge tone="success">
+                        {formatCurrency(Number(item.revenue || 0))}
+                      </Badge>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            )}
+          </CardBody>
+        </Card>
       </div>
     </div>
   );

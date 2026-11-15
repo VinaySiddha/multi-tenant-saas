@@ -17,11 +17,11 @@ interface PillarItem {
 const pillars: PillarItem[] = [
   {
     id: "1",
-    title: "Front-of-House POS Billing Terminal",
-    category: "Cashier & Server",
-    description: "Touch optimized billing interface with quick item search, table transfers, and instant GST invoice settlement.",
-    href: "/terminal",
-    badge: "Terminal Active",
+    title: "Real-Time Orders & Service Dispatch",
+    category: "Floor & Operations",
+    description: "Centralized live order tracking across tables and QR ordering with instant kitchen pacing and status synchronization.",
+    href: "/orders",
+    badge: "Live Dispatch",
     icon: Receipt,
   },
   {

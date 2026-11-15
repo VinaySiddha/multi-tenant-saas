@@ -92,7 +92,7 @@ export default function KdsPage() {
               </span>
             </h2>
             <p className="text-[11px] text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70">
-              Real-time orders received from POS terminals and guest QR mobile scans
+              Real-time orders received from dining tables and guest QR mobile scans
             </p>
           </div>
         </div>
@@ -131,7 +131,7 @@ export default function KdsPage() {
           <div className="space-y-1">
             <h3 className="text-base font-bold text-[#0F3D2E] dark:text-[#FAFAF8]">Kitchen Queue is Clear</h3>
             <p className="text-xs text-[#0B0B0B]/70 dark:text-[#E5E7EB]/70 max-w-sm">
-              All tickets are prepared and served. New customer orders from POS or QR menu will appear here automatically with audio alerts.
+              All tickets are prepared and served. New customer orders from dining tables or QR menu will appear here automatically with audio alerts.
             </p>
           </div>
         </div>

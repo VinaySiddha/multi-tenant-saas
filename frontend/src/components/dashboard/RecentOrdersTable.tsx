@@ -103,7 +103,7 @@ export default function RecentOrdersTable({
                       <Receipt className="w-4 h-4" />
                     </div>
                     <p className="text-xs font-semibold text-[#0B0B0B] dark:text-[#FAFAF8]">No active orders found</p>
-                    <p className="text-[11px] text-[#6B7280]">Orders placed via POS, QR or Delivery will show here in real time.</p>
+                    <p className="text-[11px] text-[#6B7280]">Orders placed via QR or Dining Tables will show here in real time.</p>
                   </div>
                 </td>
               </tr>

@@ -45,9 +45,10 @@ export default function HomePage() {
         links={[
           { label: "Product", href: "#workspace" },
           { label: "Capabilities", href: "#capabilities" },
-          { label: "Why Sapru", href: "#why-sapru" },
-          { label: "How It Works", href: "#how-it-works" },
-          { label: "Terminal", href: "/terminal" },
+          { label: "Pricing", href: "/pricing" },
+          { label: "Docs", href: "/docs" },
+          { label: "Support", href: "/support" },
+          { label: "Dashboard", href: "/dashboard" },
         ]}
         email="hello@sapru.io"
       />
@@ -84,7 +85,7 @@ export default function HomePage() {
             {/* Hero Action Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
               <Link
-                href="/terminal"
+                href="/dashboard"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-sm transition-all shadow-lg shadow-[#FF6A3D]/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
               >
                 <span>Get Started</span>
@@ -268,7 +269,7 @@ export default function HomePage() {
               {
                 index: "01",
                 title: "RUN",
-                description: "Fast POS billing, quick order punching, and smooth floor service.",
+                description: "Fast order coordination, quick table punching, and smooth floor service.",
               },
               {
                 index: "02",
@@ -367,7 +368,7 @@ export default function HomePage() {
                     Sapru Restaurant Platform
                   </span>
                   <span className="text-[11px] text-[#E5E7EB]/60 font-mono">
-                    All terminals active • System status: Live
+                    All stations active • System status: Live
                   </span>
                 </div>
               </div>
@@ -543,7 +544,7 @@ export default function HomePage() {
             {workspaceTab === "operations" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-6">
                 {[
-                  { name: "POS Terminal", role: "Cashier Billing", state: "Live" },
+                  { name: "Live Orders", role: "Floor Operations", state: "Live" },
                   { name: "Kitchen Display (KDS)", role: "Kitchen Pacing", state: "Connected" },
                   { name: "Table Floorplan", role: "Floor Seating", state: "Active" },
                   { name: "Inventory Alerts", role: "Stock Tracking", state: "Audited" },
@@ -598,8 +599,8 @@ export default function HomePage() {
                 icon: Layers,
                 title: "Everything Connected",
                 headline: "One single reliable software.",
-                desc: "Orders from dining tables, takeaways, and QR scans flow directly to your kitchen and billing screens with zero manual delays or lost tickets.",
-                points: ["Live kitchen display sync", "Table status indicators", "Multi-payment support"],
+                desc: "Orders from dining tables, takeaways, and QR scans flow directly to your kitchen and management screens with zero manual delays or lost tickets.",
+                points: ["Live kitchen display sync", "Table status indicators", "Real-time order tracking"],
               },
               {
                 icon: BarChart3,
@@ -764,7 +765,7 @@ export default function HomePage() {
                   Live Floor &amp; Station Log
                 </span>
                 {[
-                  { tag: "POS", msg: "Table 4 settled via UPI with printed receipt", time: "1m ago" },
+                  { tag: "ORDERS", msg: "Table 4 guest order routed to kitchen display", time: "1m ago" },
                   { tag: "KITCHEN", msg: "Order #1049 marked ready on kitchen display", time: "5m ago" },
                   { tag: "REPORTS", msg: "Daily revenue briefing generated for manager", time: "20m ago" },
                 ].map((item, idx) => (
@@ -826,7 +827,7 @@ export default function HomePage() {
 
           <div>
             <Link
-              href="/terminal"
+              href="/dashboard"
               className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-sm transition-all shadow-lg shadow-[#FF6A3D]/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
             >
               <span>Get Started</span>
@@ -860,10 +861,11 @@ export default function HomePage() {
 
           <div className="flex items-center gap-6 text-xs text-[#0B0B0B]/70 font-medium">
             <a href="#workspace" className="hover:text-[#FF6A3D] transition">Platform</a>
-            <a href="#capabilities" className="hover:text-[#FF6A3D] transition">Capabilities</a>
-            <a href="#why-sapru" className="hover:text-[#FF6A3D] transition">Why Sapru</a>
+            <Link href="/pricing" className="hover:text-[#FF6A3D] transition">Pricing</Link>
+            <Link href="/docs" className="hover:text-[#FF6A3D] transition">API Docs</Link>
+            <Link href="/support" className="hover:text-[#FF6A3D] transition">Support</Link>
             <Link href="/login" className="hover:text-[#FF6A3D] transition">Sign In</Link>
-            <Link href="/terminal" className="hover:text-[#FF6A3D] transition">Terminal</Link>
+            <Link href="/dashboard" className="hover:text-[#FF6A3D] transition">Dashboard</Link>
           </div>
 
           <div className="text-xs text-[#6B7280] font-mono">

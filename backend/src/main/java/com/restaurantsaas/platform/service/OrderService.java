@@ -32,9 +32,12 @@ public class OrderService {
     private final DiningTableRepository tableRepository;
     private final KitchenTicketRepository kitchenTicketRepository;
     private final NotificationService notificationService;
+    private final SubscriptionService subscriptionService;
 
     @Transactional
     public OrderDto createOrder(UUID tenantId, UUID branchId, CreateOrderRequest request, UUID createdByUserId) {
+        subscriptionService.assertOperationalAccess(tenantId);
+
         if (request.getItems() == null || request.getItems().isEmpty()) {
             throw new BadRequestException("Order items list cannot be empty");
         }

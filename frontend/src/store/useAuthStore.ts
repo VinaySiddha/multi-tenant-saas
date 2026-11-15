@@ -7,11 +7,21 @@ interface AuthState {
   user: User | null;
   tenant: Tenant | null;
   branch: Branch | null;
+  branches: Branch[];
   isAuthenticated: boolean;
 
-  setAuth: (token: string, refreshToken: string, user: User, tenant?: Tenant, branch?: Branch) => void;
+  setAuth: (
+    token: string,
+    refreshToken: string,
+    user: User,
+    tenant?: Tenant,
+    branch?: Branch,
+    branches?: Branch[]
+  ) => void;
   setTenant: (tenant: Tenant | null) => void;
   setBranch: (branch: Branch | null) => void;
+  setBranches: (branches: Branch[]) => void;
+  switchBranch: (branch: Branch) => void;
   logout: () => void;
 }
 
@@ -31,15 +41,16 @@ const safeParse = <T>(key: string): T | null => {
   }
 };
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
   refreshToken: typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null,
   user: safeParse<User>("user"),
   tenant: safeParse<Tenant>("tenant"),
   branch: safeParse<Branch>("branch"),
+  branches: safeParse<Branch[]>("branches") || [],
   isAuthenticated: typeof window !== "undefined" ? Boolean(localStorage.getItem("token")) : false,
 
-  setAuth: (token, refreshToken, user, tenant, branch) => {
+  setAuth: (token, refreshToken, user, tenant, branch, branches) => {
     if (typeof window !== "undefined") {
       try {
         localStorage.setItem("token", token);
@@ -47,8 +58,9 @@ export const useAuthStore = create<AuthState>((set) => ({
         localStorage.setItem("user", JSON.stringify(user));
         if (tenant) localStorage.setItem("tenant", JSON.stringify(tenant));
         if (branch) localStorage.setItem("branch", JSON.stringify(branch));
+        if (branches) localStorage.setItem("branches", JSON.stringify(branches));
       } catch {
-        // ignore
+        // ignore storage errors
       }
     }
     set({
@@ -57,6 +69,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       user,
       tenant: tenant || null,
       branch: branch || null,
+      branches: branches || (branch ? [branch] : []),
       isAuthenticated: true,
     });
   },
@@ -91,6 +104,29 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ branch });
   },
 
+  setBranches: (branches) => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("branches", JSON.stringify(branches));
+      } catch {
+        // ignore
+      }
+    }
+    set({ branches });
+  },
+
+  switchBranch: (branch) => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("branch", JSON.stringify(branch));
+        window.dispatchEvent(new CustomEvent("sapru:branch-switched", { detail: branch }));
+      } catch {
+        // ignore
+      }
+    }
+    set({ branch });
+  },
+
   logout: () => {
     if (typeof window !== "undefined") {
       try {
@@ -99,6 +135,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         localStorage.removeItem("user");
         localStorage.removeItem("tenant");
         localStorage.removeItem("branch");
+        localStorage.removeItem("branches");
       } catch {
         // ignore
       }
@@ -109,6 +146,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       user: null,
       tenant: null,
       branch: null,
+      branches: [],
       isAuthenticated: false,
     });
   },

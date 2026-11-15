@@ -1,106 +1,177 @@
-# 🚀 RestoSaaS Enterprise Platform — Production Deployment Guide
+# 🚀 Sapru Restaurant Management Platform — Production Deployment Guide
 
-This guide covers all recommended production deployment strategies for the **RestoSaaS Multi-Tenant Restaurant Platform**.
-
----
-
-## 🏗️ Architecture & Ports Overview
-
-| Service | Port (Container) | Port (Host / External) | Description |
-| :--- | :--- | :--- | :--- |
-| **Nginx Gateway** | 80 | `80` (HTTP) / `443` (HTTPS) | Unified reverse proxy with WebSocket support |
-| **Frontend (Next.js 15)** | 3000 | `3000` | Server-side rendered React 19 UI & App Router |
-| **Backend (Spring Boot 3)** | 8080 | `8080` (Internal/API) | Java 21 REST API & STOMP Message Broker |
-| **Database (PostgreSQL 16)** | 5432 | `5432` | PostgreSQL with multi-tenant row isolation |
+This guide covers production deployment, architecture, container orchestration, SSL/TLS configuration, environment hardening, and operations for the **Sapru Restaurant SaaS Platform**.
 
 ---
 
-## Option 1: 1-Click Single Server / VPS Deployment (Recommended)
+## 🏗️ Architecture & Services Overview
 
-Deploy on any Linux VM (AWS EC2, DigitalOcean Droplet, Hetzner, Linode, Ubuntu/Debian/Fedora).
+The platform is designed around a multi-tenant, cloud-native architecture comprising four isolated services:
 
-### Step 1: Clone and Configure Environment
+| Service | Container Name | Internal Port | Host / Gateway Port | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **Nginx Gateway** | `resto_saas_gateway` | 80 / 443 | `80` (HTTP), `443` (HTTPS) | Reverse proxy with WebSocket upgrade & Gzip compression |
+| **Frontend (Next.js 16)** | `resto_saas_frontend` | 3000 | None (proxied) / `3000` | SSR React 19 UI (Turbopack, Standalone container) |
+| **Backend (Spring Boot 3)** | `resto_saas_backend` | 8080 | None (proxied) / `8080` | Java 21 REST API, WebSocket/STOMP, Multi-tenant engine |
+| **Database (PostgreSQL 16)**| `resto_saas_postgres` | 5432 | Internal only | PostgreSQL 16 with Flyway versioned migrations |
+
+---
+
+## 🛡️ Production Pre-Deployment Checklist
+
+Before deploying to a public server or cloud instance:
+
+1. **Rotate Passwords & Secrets**:
+   - Generate a strong PostgreSQL password.
+   - Generate a 256-bit (64-character hex) JWT secret key:
+     ```bash
+     openssl rand -hex 32
+     ```
+   - Set these values in `.env` (never commit `.env` to version control).
+2. **Database Migrations**:
+   - `spring.flyway.enabled: true` and `spring.jpa.hibernate.ddl-auto: validate` are pre-configured in `application-prod.yml` to safely apply migrations (`V1`, `V2`, `V3`) automatically on first startup.
+3. **Database Port Isolation**:
+   - PostgreSQL port `5432` is bound only to the internal Docker bridge network (`resto_network`) and is not exposed to the public internet.
+
+---
+
+## 🚀 Standard Docker Compose Deployment
+
+### Step 1: Clone Repository & Enter Directory
 ```bash
-git clone <your-repo-url> resto-saas
-cd resto-saas
-
-# Copy environment template
-cp .env.example .env
+git clone https://github.com/VinaySiddha/NewFolder.git sapru-platform
+cd sapru-platform
 ```
 
-Edit `.env` to configure your production credentials:
+### Step 2: Configure Environment Variables
+Copy `.env.example` and populate your production secrets:
+```bash
+cp .env.example .env
+nano .env
+```
+
+Example production configuration:
 ```env
+# Database Credentials
 POSTGRES_DB=restaurant_saas_db
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=YourStrongDatabasePassword123!
-APP_JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+
+# JWT Security (Must be 64-char hex)
+APP_JWT_SECRET=c2e8a104f64798319f07153a54b6c31048b26e2a7e58a2d7139d67b2d415f3e9
+APP_JWT_EXPIRATION_MS=86400000
+
+# Payment Provider Webhook Signing Secret
+BILLING_WEBHOOK_SECRET=whsec_your_razorpay_or_stripe_webhook_secret
+
+# Server Environment
+NODE_ENV=production
+SPRING_PROFILES_ACTIVE=prod
+NEXT_PUBLIC_API_URL=/api/v1
 ```
 
-### Step 2: Run Deployment Script
+### Step 3: Launch Containers
+Run the automated deployment script:
 ```bash
+chmod +x deploy.sh
 ./deploy.sh
 ```
 
-Or manually with Docker Compose:
+Or deploy manually via Docker Compose:
 ```bash
-docker compose up -d --build
+docker compose down --remove-orphans || true
+docker compose build --parallel
+docker compose up -d
 ```
 
-### Step 3: Access Live Services
-* 🌐 **Main Web App**: `http://<your-server-ip>`
-* 🛒 **POS Terminal**: `http://<your-server-ip>/terminal`
-* 🍳 **Kitchen Display (KDS)**: `http://<your-server-ip>/kds`
-* 📱 **QR Menu Scan**: `http://<your-server-ip>/menu/5da85f64-5717-4562-b3fc-2c963f66afb5`
-* 📚 **Swagger API Documentation**: `http://<your-server-ip>/api/v1/swagger-ui.html`
+### Step 4: Verify Service Health
+Check running container statuses and logs:
+```bash
+docker compose ps
+docker compose logs -f backend
+```
 
 ---
 
-## Option 2: Cloud PaaS Deployment (Render / Railway)
+## 🔒 Enabling SSL/HTTPS with Let's Encrypt (Nginx)
 
-### 1. PostgreSQL Database
-1. Create a Managed PostgreSQL 16 database on **Railway** or **Render**.
-2. Note the `DATABASE_URL` or individual host, port, user, and password.
+For production web traffic, configure SSL termination via Certbot.
 
-### 2. Backend (Spring Boot 3)
-1. In Railway or Render, create a new **Web Service** pointing to `/backend`.
-2. Select **Dockerfile** as the build method (uses `/backend/Dockerfile`).
-3. Set Environment Variables:
-   - `SPRING_PROFILES_ACTIVE`: `prod`
-   - `SPRING_DATASOURCE_URL`: `jdbc:postgresql://<db_host>:<db_port>/<db_name>`
-   - `SPRING_DATASOURCE_USERNAME`: `<db_user>`
-   - `SPRING_DATASOURCE_PASSWORD`: `<db_password>`
-   - `APP_JWT_SECRET`: `<your_64_char_secret>`
-4. Port: `8080`
-
-### 3. Frontend (Next.js 15)
-1. Deploy `/frontend` to **Vercel** or **Railway/Render**.
-2. Set Environment Variables:
-   - `NEXT_PUBLIC_API_URL`: `https://<your-backend-service-domain>/api/v1`
-   - `BACKEND_INTERNAL_URL`: `https://<your-backend-service-domain>/api/v1/:path*`
-3. Build Command: `npm run build`
-4. Output Directory: Standalone
-
----
-
-## 🔒 Enabling Free SSL / HTTPS with Let's Encrypt & Certbot
-
-If deploying on a custom domain (e.g. `app.yourdomain.com`):
-
-1. Point your domain's DNS `A` record to your server's public IP.
-2. Install Certbot on the host:
+1. **Install Certbot on Host**:
    ```bash
-   sudo apt-get update && sudo apt-get install -y certbot python3-certbot-nginx
-   sudo certbot --nginx -d app.yourdomain.com
+   sudo apt-get update && sudo apt-get install -y certbot
    ```
-3. Auto-renewal is automatically scheduled via cron.
+2. **Obtain SSL Certificate (Standalone mode or Webroot)**:
+   ```bash
+   sudo certbot certonly --standalone -d yourdomain.com -d www.yourdomain.com
+   ```
+3. **Mount Certificates in `docker-compose.yml`**:
+   Add the following volume mounts under the `nginx` service:
+   ```yaml
+   volumes:
+     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+     - /etc/letsencrypt:/etc/letsencrypt:ro
+   ```
+4. **Update `nginx/nginx.conf` with HTTPS Server Block**:
+   ```nginx
+   server {
+       listen 80;
+       server_name yourdomain.com;
+       return 301 https://$host$request_uri;
+   }
+
+   server {
+       listen 443 ssl http2;
+       server_name yourdomain.com;
+
+       ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+       ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+
+       ssl_protocols TLSv1.2 TLSv1.3;
+       ssl_ciphers HIGH:!aNULL:!MD5;
+
+       # ... (proxy pass rules for /api/v1/ws, /api/v1/, and /)
+   }
+   ```
 
 ---
 
-## 🔑 Pre-Seeded Default Accounts
+## 📊 Live Endpoints & Routes
 
-| Role | Email | Password | Access Portal |
-| :--- | :--- | :--- | :--- |
-| **Restaurant Owner** | `owner@royalbistro.com` | `Admin@123` | Full Dashboard & Settings |
-| **POS Cashier** | `cashier@royalbistro.com` | `Admin@123` | POS Terminal & Billing |
-| **Kitchen Chef** | `chef@royalbistro.com` | `Admin@123` | Kitchen Display System (KDS) |
-| **Platform Admin** | `admin@restaurantsaas.io` | `Admin@123` | SaaS Superadmin |
+| Section | Route | Description |
+| :--- | :--- | :--- |
+| **Landing & Marketing** | `/` | Responsive landing page, features, pricing overview |
+| **Authentication & Onboarding** | `/login` | High-security login, Remember Me, new tenant signup |
+| **Pricing & Plans** | `/pricing` | Tiered pricing matrix (Starter, Growth, Multi-Outlet) |
+| **24/7 Support Portal** | `/support` | Help desk, ticket creation, FAQs, contact details |
+| **Admin Dashboard** | `/dashboard` | Revenue telemetry, active orders, floorplan occupancy |
+| **Kitchen Display (KDS)** | `/kds` | Real-time Kanban board with audio chime order alerts |
+| **Floorplan & Tables** | `/tables` | Section manager, table occupancy, QR generator |
+| **Menu Management** | `/menu` | Categorized catalog, price adjustments, veg/non-veg toggles |
+| **Inventory & Stock** | `/inventory` | Raw material stock levels, reorder thresholds |
+| **Staff & Roles** | `/staff` | Team member directory, branch assignment, RBAC |
+| **Subscription & Invoicing** | `/billing` | Active trial status, plan upgrades, Razorpay/Stripe invoices |
+| **Contactless QR Ordering** | `/menu/[tableId]` | Mobile guest self-ordering drawer |
+| **OpenAPI / Swagger UI** | `/api/v1/swagger-ui.html` | Interactive REST documentation and schema testing |
+| **OpenAPI JSON Spec** | `/api/v1/v3/api-docs` | Raw OpenAPI 3.0 specification |
+
+---
+
+## 🛠️ Operational Commands & Maintenance
+
+- **Restart All Services**:
+  ```bash
+  docker compose restart
+  ```
+- **View Live Backend Logs**:
+  ```bash
+  docker compose logs -f backend
+  ```
+- **Backup PostgreSQL Database**:
+  ```bash
+  docker compose exec -t postgres pg_dump -U postgres restaurant_saas_db > backup_$(date +%Y%m%d_%H%M%S).sql
+  ```
+- **Restore PostgreSQL Database**:
+  ```bash
+  cat backup.sql | docker compose exec -T postgres psql -U postgres -d restaurant_saas_db
+  ```

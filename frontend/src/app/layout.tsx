@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Sapru — All-in-One Restaurant Management Software",
-  description: "Cloud-native restaurant management platform for modern food businesses: Fast Billing POS, Kitchen Display, QR Ordering, Inventory & Daily Reports.",
+  description: "Cloud-native restaurant management platform for modern food businesses: Kitchen Display, QR Ordering, Table Floorplans, Inventory & Daily Reports.",
 };
 
 export default function RootLayout({

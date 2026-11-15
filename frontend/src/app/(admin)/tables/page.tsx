@@ -92,25 +92,22 @@ export default function TablesManagementPage() {
           capacity: Number(tableForm.capacity),
           status: editingTable.status
         });
-        const updated = res.data?.data || { ...editingTable, ...tableForm, capacity: Number(tableForm.capacity) };
-        setTables(tables.map(t => t.id === editingTable.id ? updated : t));
+        if (res.data?.data) {
+          setTables(tables.map(t => t.id === editingTable.id ? res.data.data : t));
+        } else {
+          await fetchTables();
+        }
       } else {
         const res = await apiClient.post("/tables", {
           tableNumber: tableForm.tableNumber,
           section: tableForm.section,
           capacity: Number(tableForm.capacity)
         });
-        const created = res.data?.data || {
-          id: String(Date.now()),
-          tenantId: "demo",
-          branchId: "b1",
-          tableNumber: tableForm.tableNumber,
-          section: tableForm.section,
-          capacity: Number(tableForm.capacity),
-          status: "AVAILABLE" as const,
-          qrCodeToken: "qr-" + String(Date.now()).slice(-6)
-        };
-        setTables([...tables, created]);
+        if (res.data?.data) {
+          setTables([...tables, res.data.data]);
+        } else {
+          await fetchTables();
+        }
       }
       setShowTableModal(false);
       setEditingTable(null);

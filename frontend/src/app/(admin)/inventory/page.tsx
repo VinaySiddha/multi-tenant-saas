@@ -80,17 +80,7 @@ export default function InventoryPage() {
       if (res.data?.data) {
         setItems([res.data.data, ...items]);
       } else {
-        const newItem: InventoryItem = {
-          id: String(Date.now()),
-          tenantId: "demo",
-          name: formData.name,
-          unit: formData.unit,
-          currentStock: Number(formData.currentStock),
-          minThreshold: Number(formData.minThreshold),
-          costPerUnit: Number(formData.costPerUnit),
-          isLowStock: Number(formData.currentStock) <= Number(formData.minThreshold)
-        };
-        setItems([newItem, ...items]);
+        await fetchInventory();
       }
       setShowAddModal(false);
       setFormData({ name: "", unit: "kg", currentStock: 0, minThreshold: 5, costPerUnit: 0 });

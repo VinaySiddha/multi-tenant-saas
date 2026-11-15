@@ -36,13 +36,6 @@ export default function OrdersManagementPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
 
-  // Settlement Modal state
-  const [settlingOrder, setSettlingOrder] = useState<Order | null>(null);
-  const [showSettleModal, setShowSettleModal] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"CASH" | "UPI" | "CARD" | "NET_BANKING">("CASH");
-  const [isSettling, setIsSettling] = useState(false);
-  const [settleSuccessMsg, setSettleSuccessMsg] = useState<string | null>(null);
-
   const { playNotificationSound } = useNotifications();
 
   const fetchOrders = useCallback(async () => {
@@ -86,28 +79,6 @@ export default function OrdersManagementPage() {
     };
   }, [fetchOrders]);
 
-  // Execute Payment Settlement
-  const handleProcessPayment = async () => {
-    if (!settlingOrder) return;
-    setIsSettling(true);
-    try {
-      await apiClient.post("/payments/settle", {
-        orderId: settlingOrder.id,
-        amount: settlingOrder.grandTotal,
-        paymentMethod: paymentMethod,
-        transactionReference: `TXN-${Date.now().toString().slice(-6)}`
-      });
-
-      setSettleSuccessMsg(`Payment of ${formatCurrency(settlingOrder.grandTotal)} received! Order #${settlingOrder.orderNumber} is marked PAID and table is freed.`);
-      setShowSettleModal(false);
-      fetchOrders();
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Failed to process payment");
-    } finally {
-      setIsSettling(false);
-    }
-  };
-
   const filteredOrders = orders.filter((ord) => {
     const matchesSearch = ord.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           (ord.tableName && ord.tableName.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -130,10 +101,10 @@ export default function OrdersManagementPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#0F3D2E] flex items-center gap-2">
             <Receipt className="w-7 h-7 text-[#FF6A3D]" />
-            Orders &amp; Billing Settlement Hub
+            Orders &amp; Dining Hub
           </h1>
           <p className="text-xs text-[#0B0B0B]/70 mt-1">
-            Real-time POS and QR orders, live kitchen states, bill settlements, and official Tax Invoice printing.
+            Real-time table and QR orders, live kitchen states, and official order receipts.
           </p>
         </div>
 
@@ -148,18 +119,6 @@ export default function OrdersManagementPage() {
           </MorphButton>
         </div>
       </div>
-
-      {settleSuccessMsg && (
-        <div className="p-4 bg-[#0F3D2E]/10 border border-[#0F3D2E]/30 rounded-2xl text-xs text-[#0F3D2E] flex items-start justify-between gap-2 shadow-xs animate-in fade-in">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-[#0F3D2E] shrink-0" />
-            <span className="font-semibold">{settleSuccessMsg}</span>
-          </div>
-          <button onClick={() => setSettleSuccessMsg(null)} className="text-[#0F3D2E] hover:text-[#0B0B0B]">
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      )}
 
       {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -260,7 +219,7 @@ export default function OrdersManagementPage() {
                   <td colSpan={7} className="px-5 py-12 text-center text-[#0B0B0B]/50">
                     <Receipt className="w-10 h-10 mx-auto text-[#0F3D2E] opacity-30 mb-2" />
                     <span className="font-semibold block text-[#0B0B0B]">No orders found</span>
-                    <span className="text-[11px] text-[#0B0B0B]/60">Place an order from POS terminal or scan Table QR to start the live flow.</span>
+                    <span className="text-[11px] text-[#0B0B0B]/60">Place an order by scanning Table QR to start the live flow.</span>
                   </td>
                 </tr>
               ) : (
@@ -325,19 +284,6 @@ export default function OrdersManagementPage() {
                       </td>
                       <td className="px-5 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          {!isPaid && (
-                            <MorphButton
-                              size="sm"
-                              onClick={() => {
-                                setSettlingOrder(order);
-                                setShowSettleModal(true);
-                              }}
-                              className="bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-[11px] shadow-md shadow-[#FF6A3D]/25"
-                            >
-                              <CreditCard className="w-3.5 h-3.5" />
-                              <span>Settle Bill</span>
-                            </MorphButton>
-                          )}
                           <MorphButton
                             size="sm"
                             onClick={() => {
@@ -359,126 +305,6 @@ export default function OrdersManagementPage() {
           </table>
         </div>
       </div>
-
-      {/* Bill Settlement Modal */}
-      {showSettleModal && settlingOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#E5E7EB] space-y-4 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-b pb-3 border-[#E5E7EB]">
-              <div>
-                <h3 className="font-bold text-base text-[#0F3D2E]">
-                  Settle Bill &amp; Complete Order
-                </h3>
-                <p className="text-xs text-[#0B0B0B]/60">
-                  {settlingOrder.orderNumber} • {settlingOrder.tableName ? `Table ${settlingOrder.tableName}` : settlingOrder.orderType}
-                </p>
-              </div>
-              <button
-                onClick={() => {
-                  setShowSettleModal(false);
-                  setSettlingOrder(null);
-                }}
-                className="p-1 rounded-lg text-[#0B0B0B]/40 hover:text-[#0B0B0B]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Order Items Breakdown */}
-            <div className="p-4 rounded-2xl bg-[#FAFAF8] border border-[#E5E7EB] font-mono text-xs space-y-2">
-              <div className="space-y-1 max-h-32 overflow-y-auto">
-                {settlingOrder.items?.map((item, idx) => (
-                  <div key={idx} className="flex justify-between text-[#0B0B0B] text-[11px]">
-                    <span className="truncate max-w-[200px]">
-                      {item.quantity}x {item.menuItemName || (item as any).itemName}
-                    </span>
-                    <span>{formatCurrency(item.totalPrice)}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-2 border-t border-[#E5E7EB] space-y-1 text-[#0B0B0B]/70 text-[11px]">
-                <div className="flex justify-between">
-                  <span>Subtotal:</span>
-                  <span>{formatCurrency(settlingOrder.subtotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>GST &amp; Taxes:</span>
-                  <span>{formatCurrency(settlingOrder.taxAmount)}</span>
-                </div>
-                <div className="flex justify-between font-bold text-sm text-[#0F3D2E] pt-1 border-t border-[#E5E7EB]">
-                  <span>Total Payable:</span>
-                  <span>{formatCurrency(settlingOrder.grandTotal)}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Payment Method Selector */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-[#0B0B0B]">
-                Select Payment Mode
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { id: "CASH", label: "💵 Cash", desc: "Counter" },
-                  { id: "UPI", label: "📱 UPI / QR", desc: "Digital" },
-                  { id: "CARD", label: "💳 Card", desc: "Terminal" },
-                ].map((m) => (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setPaymentMethod(m.id as any)}
-                    className={`p-3 rounded-2xl border text-center transition flex flex-col items-center justify-center ${
-                      paymentMethod === m.id
-                        ? "bg-[#FF6A3D] text-white border-[#FF6A3D] shadow-xs font-bold"
-                        : "bg-[#FAFAF8] border-[#E5E7EB] text-[#0B0B0B] hover:bg-[#E5E7EB]"
-                    }`}
-                  >
-                    <span className="text-xs">{m.label}</span>
-                    <span className={`text-[10px] mt-0.5 ${paymentMethod === m.id ? "text-white/90" : "text-[#0B0B0B]/60"}`}>
-                      {m.desc}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {paymentMethod === "UPI" && (
-              <div className="p-4 rounded-2xl bg-[#FAFAF8] border border-[#E5E7EB] text-center space-y-2">
-                <QrCode className="w-16 h-16 mx-auto text-[#0F3D2E]" />
-                <p className="text-xs font-bold text-[#0F3D2E]">
-                  Scan to Pay ₹{settlingOrder.grandTotal.toFixed(2)}
-                </p>
-                <p className="text-[10px] text-[#0B0B0B]/60 font-mono">UPI: royalbistro@icici</p>
-              </div>
-            )}
-
-            {/* Actions */}
-            <div className="flex items-center gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowSettleModal(false);
-                  setSettlingOrder(null);
-                }}
-                className="flex-1 py-2.5 rounded-xl border border-[#E5E7EB] text-xs font-semibold text-[#0B0B0B]/70 hover:bg-[#FAFAF8] transition"
-              >
-                Cancel
-              </button>
-              <MorphButton
-                onAction={handleProcessPayment}
-                disabled={isSettling}
-                loadingLabel="Settling..."
-                successLabel="Settled!"
-                className="flex-1 bg-[#FF6A3D] hover:bg-[#FF5522] text-white text-xs font-bold shadow-md shadow-[#FF6A3D]/25"
-              >
-                <CheckCircle2 className="w-4 h-4" />
-                <span>Confirm &amp; Settle</span>
-              </MorphButton>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Bill / Tax Invoice Modal */}
       {showInvoiceModal && selectedOrder && (

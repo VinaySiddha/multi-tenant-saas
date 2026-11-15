@@ -109,17 +109,18 @@ export default function MenuManagementPage() {
 
       if (editingItem) {
         const res = await apiClient.put(`/menu/items/${editingItem.id}`, payload);
-        const updated = res.data?.data || { ...editingItem, ...payload, categoryName: categories.find(c => c.id === payload.categoryId)?.name };
-        setItems(items.map(it => it.id === editingItem.id ? updated : it));
+        if (res.data?.data) {
+          setItems(items.map(it => it.id === editingItem.id ? res.data.data : it));
+        } else {
+          await fetchMenuData();
+        }
       } else {
         const res = await apiClient.post("/menu/items", payload);
-        const created = res.data?.data || {
-          id: String(Date.now()),
-          tenantId: "demo",
-          ...payload,
-          categoryName: categories.find(c => c.id === payload.categoryId)?.name
-        };
-        setItems([...items, created]);
+        if (res.data?.data) {
+          setItems([...items, res.data.data]);
+        } else {
+          await fetchMenuData();
+        }
       }
       setShowItemModal(false);
       setEditingItem(null);
@@ -136,15 +137,11 @@ export default function MenuManagementPage() {
         description: categoryForm.description,
         displayOrder: Number(categoryForm.displayOrder)
       });
-      const created = res.data?.data || {
-        id: String(Date.now()),
-        tenantId: "demo",
-        name: categoryForm.name,
-        description: categoryForm.description,
-        displayOrder: Number(categoryForm.displayOrder),
-        isActive: true
-      };
-      setCategories([...categories, created]);
+      if (res.data?.data) {
+        setCategories([...categories, res.data.data]);
+      } else {
+        await fetchMenuData();
+      }
       setShowCategoryModal(false);
       setCategoryForm({ name: "", description: "", displayOrder: categories.length + 1 });
     } catch (err: any) {

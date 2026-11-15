@@ -83,8 +83,11 @@ export default function StaffManagementPage() {
           role: staffForm.role,
           password: staffForm.password || undefined
         });
-        const updated = res.data?.data || { ...editingStaff, ...staffForm };
-        setStaffList(staffList.map(s => s.id === editingStaff.id ? updated : s));
+        if (res.data?.data) {
+          setStaffList(staffList.map(s => s.id === editingStaff.id ? res.data.data : s));
+        } else {
+          await fetchStaff();
+        }
       } else {
         const res = await apiClient.post("/staff", {
           email: staffForm.email,
@@ -93,16 +96,11 @@ export default function StaffManagementPage() {
           role: staffForm.role,
           password: staffForm.password || "Admin@123"
         });
-        const created = res.data?.data || {
-          id: String(Date.now()),
-          tenantId: "demo",
-          email: staffForm.email,
-          fullName: staffForm.fullName,
-          phoneNumber: staffForm.phoneNumber,
-          role: staffForm.role,
-          isActive: true
-        };
-        setStaffList([...staffList, created]);
+        if (res.data?.data) {
+          setStaffList([...staffList, res.data.data]);
+        } else {
+          await fetchStaff();
+        }
       }
       setShowStaffModal(false);
       setEditingStaff(null);
@@ -168,7 +166,7 @@ export default function StaffManagementPage() {
             Staff &amp; Access Permissions
           </h1>
           <p className="text-xs text-[#0B0B0B]/70 mt-1">
-            Manage your restaurant workforce, portal access levels, cashier terminals, kitchen displays, and waiter accounts.
+            Manage your restaurant workforce, portal access levels, floor service, kitchen displays, and waiter accounts.
           </p>
         </div>
 
@@ -217,12 +215,12 @@ export default function StaffManagementPage() {
         </div>
 
         <div className="p-5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs">
-          <span className="text-xs font-medium text-[#0B0B0B]/70">Cashiers &amp; POS</span>
+          <span className="text-xs font-medium text-[#0B0B0B]/70">Front Desk &amp; Cashiers</span>
           <div className="flex items-baseline justify-between mt-2">
             <span className="text-2xl font-bold text-[#0F3D2E]">
               {staffList.filter(s => s.role === "CASHIER").length}
             </span>
-            <span className="text-xs font-semibold text-[#0B0B0B]/60">Billing Terminal</span>
+            <span className="text-xs font-semibold text-[#0B0B0B]/60">Order Invoicing</span>
           </div>
         </div>
 
@@ -425,7 +423,7 @@ export default function StaffManagementPage() {
                   className="w-full px-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs focus:ring-2 focus:ring-[#FF6A3D] focus:outline-none"
                 >
                   <option value="WAITER">WAITER (Floor Orders &amp; Service)</option>
-                  <option value="CASHIER">CASHIER (POS Terminal &amp; Billing)</option>
+                  <option value="CASHIER">CASHIER (Front Desk &amp; Invoicing)</option>
                   <option value="CHEF">CHEF (Kitchen Display System KDS)</option>
                   <option value="BRANCH_MANAGER">BRANCH MANAGER (Operations)</option>
                   <option value="RESTAURANT_OWNER">RESTAURANT OWNER (Full Access)</option>

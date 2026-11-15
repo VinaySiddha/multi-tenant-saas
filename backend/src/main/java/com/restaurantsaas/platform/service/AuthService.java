@@ -50,6 +50,7 @@ public class AuthService {
     private final BranchRepository branchRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+    private final SubscriptionService subscriptionService;
 
     @Transactional
     public AuthResponse login(LoginRequest request) {
@@ -102,12 +103,15 @@ public class AuthService {
                 .slug(request.getSlug().toLowerCase().trim().replaceAll("\\s+", "-"))
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
-                .subscriptionPlan(request.getPlan() != null ? request.getPlan() : SubscriptionPlan.FREE_TRIAL)
-                .subscriptionStatus(SubscriptionStatus.ACTIVE)
+                .subscriptionPlan(request.getPlan() != null ? request.getPlan() : SubscriptionPlan.GROWTH)
+                .subscriptionStatus(SubscriptionStatus.TRIALING)
                 .subscriptionEndsAt(Instant.now().plus(14, ChronoUnit.DAYS))
                 .isActive(true)
                 .build();
         restaurant = restaurantRepository.save(restaurant);
+
+        // 1b. Initialize 14-day free trial subscription
+        subscriptionService.createTrialSubscription(restaurant, request.getPlan());
 
         // 2. Create Default Branch
         Branch branch = Branch.builder()

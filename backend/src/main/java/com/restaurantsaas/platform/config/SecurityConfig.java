@@ -65,21 +65,26 @@ public class SecurityConfig {
                         })
                 )
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
+                        // Public documentation and health probes
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
-                                "/actuator/**",
+                                "/actuator/health",
+                                "/actuator/info",
                                 "/health/**",
                                 "/auth/login",
                                 "/auth/register-restaurant",
                                 "/auth/refresh",
+                                "/billing/plans",
+                                "/billing/webhook/**",
                                 "/qr/**",
                                 "/ws/**",
                                 "/ws-direct/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // Restrict sensitive actuator metrics to Platform Admins
+                        .requestMatchers("/actuator/**").hasRole("PLATFORM_ADMIN")
                         // Protected endpoints
                         .anyRequest().authenticated()
                 )

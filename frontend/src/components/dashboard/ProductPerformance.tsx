@@ -22,129 +22,102 @@ interface ProductPerformanceProps {
 }
 
 export default function ProductPerformance({
-  products = [
-    {
-      id: "1",
-      name: "Truffle Mushroom Risotto",
-      category: "Main Course",
-      ordersCount: 142,
-      revenue: 68160,
-      margin: "Top Seller",
-      isVeg: true,
-      status: "IN_STOCK",
-    },
-    {
-      id: "2",
-      name: "Woodfired Margherita Pizza",
-      category: "Pizza & Oven",
-      ordersCount: 128,
-      revenue: 44800,
-      margin: "High",
-      isVeg: true,
-      status: "IN_STOCK",
-    },
-    {
-      id: "3",
-      name: "Smoked Chicken Quesadilla",
-      category: "Appetizers",
-      ordersCount: 96,
-      revenue: 33600,
-      margin: "Medium",
-      isVeg: false,
-      status: "IN_STOCK",
-    },
-    {
-      id: "4",
-      name: "Belgian Chocolate Lava Cake",
-      category: "Desserts & Bakery",
-      ordersCount: 84,
-      revenue: 23520,
-      margin: "Trending",
-      isVeg: true,
-      status: "LOW_STOCK",
-    },
-  ],
+  products = [],
 }: ProductPerformanceProps) {
   const getBadgeStyle = (margin: ProductRow["margin"]) => {
     switch (margin) {
       case "Top Seller":
-        return "bg-[#5D87FF]/10 text-[#5D87FF] border-[#5D87FF]/30";
+        return "bg-[#FF6A3D] text-white font-bold shadow-xs";
       case "High":
-        return "bg-emerald-500/10 text-emerald-500 border-emerald-500/30";
+        return "bg-[#0F3D2E] text-white border-[#165742]";
       case "Trending":
-        return "bg-[#FA896B]/10 text-[#FA896B] border-[#FA896B]/30";
+        return "bg-[#FF6A3D]/10 text-[#FF6A3D] border-[#FF6A3D]/30 font-semibold";
       case "Medium":
       default:
-        return "bg-[#FFAE1F]/10 text-[#FFAE1F] border-[#FFAE1F]/30";
+        return "bg-slate-100 dark:bg-[#165742] text-[#6B7280] dark:text-[#E5E7EB] border-[#E5E7EB] dark:border-[#165742]";
     }
   };
 
   return (
     <DashboardCard
       title="Top Menu Performance"
-      subtitle="Highest revenue generating dishes and margin metrics"
+      subtitle="Revenue-generating dishes, velocity & profit margin"
       action={
         <Link
           href="/menu"
-          className="text-xs font-semibold text-[#5D87FF] hover:underline flex items-center gap-1"
+          className="text-xs font-semibold text-[#0F3D2E] dark:text-[#E5E7EB] hover:text-[#FF6A3D] flex items-center gap-1 transition"
         >
-          <span>Manage Menu</span>
+          <span>Catalog</span>
           <ArrowRight className="w-3 h-3" />
         </Link>
       }
     >
-      <div className="overflow-x-auto -mx-6">
+      <div className="overflow-x-auto -mx-5 sm:-mx-6 -mb-5 sm:-mb-6">
         <table className="w-full text-left text-xs">
-          <thead className="bg-slate-50 dark:bg-slate-950/50 text-slate-500 dark:text-slate-400 border-b border-slate-100 dark:border-slate-800 font-bold uppercase tracking-wider">
+          <thead className="bg-[#FAFAF8] dark:bg-[#0A291F] text-[#0F3D2E] dark:text-[#FAFAF8] border-b border-[#E5E7EB] dark:border-[#165742] font-mono uppercase tracking-wider text-[10px]">
             <tr>
-              <th className="px-6 py-3">#</th>
-              <th className="px-4 py-3">Dish &amp; Description</th>
-              <th className="px-4 py-3">Section</th>
-              <th className="px-4 py-3">Sales Tag</th>
-              <th className="px-6 py-3 text-right">Revenue</th>
+              <th className="px-5 sm:px-6 py-2.5 font-bold">#</th>
+              <th className="px-4 py-2.5 font-bold">Item &amp; Category</th>
+              <th className="px-4 py-2.5 font-bold">Category</th>
+              <th className="px-4 py-2.5 font-bold">Classification</th>
+              <th className="px-5 sm:px-6 py-2.5 font-bold text-right">Revenue</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-600 dark:text-slate-300">
-            {products.map((p, idx) => (
-              <tr key={p.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-850/50 transition">
-                <td className="px-6 py-3.5 font-bold font-mono text-slate-400">
-                  {idx + 1}
-                </td>
-                <td className="px-4 py-3.5">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2 h-2 rounded-full shrink-0 ${
-                        p.isVeg ? "bg-emerald-500" : "bg-rose-500"
-                      }`}
-                      title={p.isVeg ? "Veg" : "Non-Veg"}
-                    />
-                    <div>
-                      <span className="font-bold text-slate-900 dark:text-slate-100 block">
-                        {p.name}
-                      </span>
-                      <span className="text-[10px] text-slate-400">
-                        {p.ordersCount} orders fulfilled
-                      </span>
+          <tbody className="divide-y divide-[#E5E7EB] dark:divide-[#165742]/40 text-[#0B0B0B] dark:text-[#E5E7EB]">
+            {products.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="py-12 text-center text-[#6B7280] dark:text-[#E5E7EB]/60">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="w-9 h-9 rounded-full bg-[#FAFAF8] dark:bg-[#165742]/40 border border-[#E5E7EB] dark:border-[#165742] flex items-center justify-center text-[#6B7280]">
+                      <Utensils className="w-4 h-4" />
                     </div>
+                    <p className="text-xs font-semibold text-[#0B0B0B] dark:text-[#FAFAF8]">No menu items recorded yet</p>
+                    <p className="text-[11px] text-[#6B7280]">Add items in the Menu Catalog to track sales performance.</p>
                   </div>
                 </td>
-                <td className="px-4 py-3.5 text-slate-500 dark:text-slate-400">
-                  {p.category}
-                </td>
-                <td className="px-4 py-3.5">
-                  <span
-                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getBadgeStyle(
-                      p.margin
-                    )}`}
-                  >
-                    {p.margin}
-                  </span>
-                </td>
-                <td className="px-6 py-3.5 text-right font-mono font-bold text-slate-900 dark:text-slate-100">
-                  {formatCurrency(p.revenue)}
-                </td>
               </tr>
-            ))}
+            ) : (
+              products.map((p, idx) => (
+                <tr key={p.id} className="hover:bg-[#FAFAF8]/80 dark:hover:bg-[#165742]/30 transition-colors">
+                  <td className="px-5 sm:px-6 py-3 font-mono text-[#6B7280]">
+                    {idx + 1}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`w-2 h-2 rounded-full shrink-0 ${
+                          p.isVeg ? "bg-emerald-500" : "bg-rose-500"
+                        }`}
+                        title={p.isVeg ? "Vegetarian" : "Non-Vegetarian"}
+                      />
+                      <div>
+                        <span className="font-semibold text-[#0B0B0B] dark:text-white block">
+                          {p.name}
+                        </span>
+                        <span className="text-[10px] text-[#6B7280] dark:text-[#E5E7EB]/60">
+                          {p.ordersCount} orders fulfilled
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-[#6B7280] dark:text-[#E5E7EB]/80 font-medium">
+                    {p.category}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`px-2 py-0.5 rounded text-[10px] border font-mono ${getBadgeStyle(
+                        p.margin
+                      )}`}
+                    >
+                      {p.margin}
+                    </span>
+                  </td>
+                  <td className="px-5 sm:px-6 py-3 text-right font-mono font-bold text-[#0F3D2E] dark:text-white">
+                    {formatCurrency(p.revenue)}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

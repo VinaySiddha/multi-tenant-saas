@@ -13,7 +13,9 @@ export interface User {
   email: string;
   fullName: string;
   phoneNumber?: string;
-  role: UserRole;
+  role?: UserRole;
+  primaryRole?: UserRole;
+  roles?: any[];
   isActive: boolean;
   createdAt: string;
 }

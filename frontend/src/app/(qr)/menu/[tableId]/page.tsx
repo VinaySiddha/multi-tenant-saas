@@ -125,9 +125,9 @@ export default function QrMenuPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-3 min-h-screen bg-slate-900 text-white">
-        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-semibold text-slate-400">Loading digital dining menu...</p>
+      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-3 min-h-screen bg-[#FAFAF8] text-[#0B0B0B]">
+        <div className="w-10 h-10 border-4 border-[#FF6A3D] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-semibold text-[#0B0B0B]/70">Loading digital dining menu...</p>
       </div>
     );
   }
@@ -135,47 +135,47 @@ export default function QrMenuPage() {
   // Order Success Screen
   if (placedOrder) {
     return (
-      <div className="flex-1 min-h-screen bg-slate-950 text-white flex flex-col justify-between p-6">
+      <div className="flex-1 min-h-screen bg-[#FAFAF8] text-[#0B0B0B] flex flex-col justify-between p-6">
         <div className="max-w-md mx-auto w-full space-y-6 pt-8 text-center">
-          <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto shadow-xl shadow-emerald-950/50 animate-bounce">
-            <CheckCircle2 className="w-10 h-10" />
+          <div className="w-20 h-20 bg-[#0F3D2E]/10 text-[#0F3D2E] border border-[#0F3D2E]/20 rounded-full flex items-center justify-center mx-auto shadow-lg animate-bounce">
+            <CheckCircle2 className="w-10 h-10 text-[#0F3D2E]" />
           </div>
 
           <div className="space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#FF6A3D]">
               Kitchen Order Confirmed
             </span>
-            <h1 className="text-2xl font-black text-white">
+            <h1 className="text-2xl font-black text-[#0F3D2E]">
               Order #{placedOrder.orderNumber}
             </h1>
-            <p className="text-xs text-slate-400">
-              Your order is placed for <strong className="text-white">Table {table?.tableNumber || "Your Table"}</strong>. The kitchen team has started preparation!
+            <p className="text-xs text-[#0B0B0B]/75">
+              Your order is placed for <strong className="text-[#0B0B0B]">Table {table?.tableNumber || "Your Table"}</strong>. The kitchen team has started preparation!
             </p>
           </div>
 
           {/* Prep Status Box */}
-          <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 text-left">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <span className="text-xs font-semibold text-slate-400">Status</span>
-              <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+          <div className="p-5 rounded-2xl bg-white border border-[#E5E7EB] space-y-3 text-left shadow-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
+              <span className="text-xs font-semibold text-[#0B0B0B]/70">Status</span>
+              <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#FF6A3D]/10 text-[#FF6A3D] border border-[#FF6A3D]/30">
                 In Kitchen Prep
               </span>
             </div>
-            <div className="flex items-center justify-between text-xs text-slate-300">
+            <div className="flex items-center justify-between text-xs text-[#0B0B0B]/80">
               <span className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-indigo-400" /> Estimated Time:
+                <Clock className="w-4 h-4 text-[#FF6A3D]" /> Estimated Time:
               </span>
-              <span className="font-bold text-white">~15 Minutes</span>
+              <span className="font-bold text-[#0B0B0B]">~15 Minutes</span>
             </div>
-            <div className="flex items-center justify-between text-xs text-slate-300">
+            <div className="flex items-center justify-between text-xs text-[#0B0B0B]/80">
               <span>Total Payable at Checkout:</span>
-              <span className="font-bold text-emerald-400 font-mono text-sm">
+              <span className="font-bold text-[#0F3D2E] font-mono text-sm">
                 {formatCurrency(placedOrder.grandTotal)}
               </span>
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-indigo-950/30 border border-indigo-900/40 text-xs text-indigo-200">
+          <div className="p-4 rounded-xl bg-[#0F3D2E]/5 border border-[#0F3D2E]/15 text-xs text-[#0F3D2E]">
             💡 When you are done enjoying your meal, request the bill from the captain or pay at the cashier counter.
           </div>
         </div>
@@ -183,7 +183,7 @@ export default function QrMenuPage() {
         <div className="max-w-md mx-auto w-full pt-6">
           <MorphButton
             onClick={() => setPlacedOrder(null)}
-            className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs"
+            className="w-full bg-[#0F3D2E] hover:bg-[#0A291F] text-white font-bold text-xs"
           >
             <span>Order More Dishes &amp; Drinks</span>
           </MorphButton>
@@ -193,16 +193,16 @@ export default function QrMenuPage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-slate-950 text-white font-sans">
+    <div className="flex-1 flex flex-col min-h-screen bg-[#FAFAF8] text-[#0B0B0B] font-sans">
       {/* Header */}
-      <div className="p-4 bg-slate-900 border-b border-slate-800 sticky top-0 z-30 flex items-center justify-between">
+      <div className="p-4 bg-[#0F3D2E] text-white sticky top-0 z-30 flex items-center justify-between shadow-md">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 bg-indigo-600/20 border border-indigo-500/30 rounded-xl text-indigo-400">
+          <div className="p-2 bg-white/10 border border-white/20 rounded-xl text-[#FF6A3D]">
             <UtensilsCrossed className="w-5 h-5" />
           </div>
           <div>
             <h1 className="font-bold text-sm text-white">The Royal Bistro</h1>
-            <p className="text-[11px] text-indigo-300 font-semibold">
+            <p className="text-[11px] text-[#E5E7EB] font-semibold">
               Contactless Table Ordering • Table {table?.tableNumber || "Direct"}
             </p>
           </div>
@@ -210,15 +210,15 @@ export default function QrMenuPage() {
       </div>
 
       {/* Category Pills & Search */}
-      <div className="p-4 bg-slate-900/60 border-b border-slate-800/80 space-y-3">
+      <div className="p-4 bg-white border-b border-[#E5E7EB] space-y-3">
         <div className="relative">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#0B0B0B]/40" />
           <input
             type="text"
             placeholder="Search menu..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-2 bg-[#FAFAF8] border border-[#E5E7EB] rounded-xl text-xs text-[#0B0B0B] placeholder-[#0B0B0B]/40 focus:outline-none focus:ring-2 focus:ring-[#FF6A3D]"
           />
         </div>
 
@@ -227,8 +227,8 @@ export default function QrMenuPage() {
             onClick={() => setSelectedCategory("ALL")}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition ${
               selectedCategory === "ALL"
-                ? "bg-indigo-600 text-white"
-                : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                ? "bg-[#FF6A3D] text-white shadow-xs"
+                : "bg-[#FAFAF8] text-[#0B0B0B]/70 hover:bg-[#E5E7EB] border border-[#E5E7EB]"
             }`}
           >
             All Dishes ({menuItems.length})
@@ -239,8 +239,8 @@ export default function QrMenuPage() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition ${
                 selectedCategory === cat.id
-                  ? "bg-indigo-600 text-white"
-                  : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                  ? "bg-[#FF6A3D] text-white shadow-xs"
+                  : "bg-[#FAFAF8] text-[#0B0B0B]/70 hover:bg-[#E5E7EB] border border-[#E5E7EB]"
               }`}
             >
               {cat.name}
@@ -252,9 +252,9 @@ export default function QrMenuPage() {
       {/* Menu List */}
       <div className="flex-1 p-4 space-y-3 overflow-y-auto pb-36">
         {filteredItems.length === 0 ? (
-          <div className="py-16 text-center text-slate-500 space-y-2">
-            <UtensilsCrossed className="w-10 h-10 mx-auto opacity-40 text-slate-600" />
-            <p className="text-xs font-bold text-slate-300">No items available</p>
+          <div className="py-16 text-center text-[#0B0B0B]/50 space-y-2">
+            <UtensilsCrossed className="w-10 h-10 mx-auto opacity-30 text-[#0F3D2E]" />
+            <p className="text-xs font-bold text-[#0B0B0B]">No items available</p>
           </div>
         ) : (
           filteredItems.map((item) => {
@@ -262,44 +262,44 @@ export default function QrMenuPage() {
             return (
               <div
                 key={item.id}
-                className="p-4 bg-slate-900 rounded-2xl border border-slate-800 shadow-sm flex flex-col gap-2 transition hover:border-slate-700"
+                className="p-4 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs flex flex-col gap-2 transition hover:border-[#FF6A3D]/40"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-2">
                       <span
                         className={`w-2.5 h-2.5 rounded-full ${
-                          item.isVeg ? "bg-emerald-500" : "bg-rose-500"
+                          item.isVeg ? "bg-emerald-600" : "bg-rose-600"
                         }`}
                         title={item.isVeg ? "Veg" : "Non-Veg"}
                       />
-                      <h3 className="text-xs font-bold text-white">{item.name}</h3>
+                      <h3 className="text-xs font-bold text-[#0B0B0B]">{item.name}</h3>
                     </div>
                     {item.description && (
-                      <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                      <p className="text-[11px] text-[#0B0B0B]/70 mt-1 leading-relaxed">
                         {item.description}
                       </p>
                     )}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
-                  <span className="text-xs font-bold text-indigo-400 font-mono">
+                <div className="flex items-center justify-between pt-2 border-t border-[#E5E7EB]">
+                  <span className="text-xs font-bold text-[#0F3D2E] font-mono">
                     {formatCurrency(item.price)}
                   </span>
 
                   {qty > 0 ? (
-                    <div className="flex items-center gap-2 bg-indigo-950/60 rounded-xl p-1 border border-indigo-800">
+                    <div className="flex items-center gap-2 bg-[#FAFAF8] rounded-xl p-1 border border-[#E5E7EB]">
                       <button
                         onClick={() => updateQty(item.id, -1)}
-                        className="p-1 text-indigo-400 hover:text-white"
+                        className="p-1 text-[#FF6A3D] hover:bg-white rounded-lg"
                       >
                         <Minus className="w-3.5 h-3.5" />
                       </button>
-                      <span className="text-xs font-bold text-white px-1.5">{qty}</span>
+                      <span className="text-xs font-bold text-[#0B0B0B] px-1.5">{qty}</span>
                       <button
                         onClick={() => updateQty(item.id, 1)}
-                        className="p-1 text-indigo-400 hover:text-white"
+                        className="p-1 text-[#FF6A3D] hover:bg-white rounded-lg"
                       >
                         <Plus className="w-3.5 h-3.5" />
                       </button>
@@ -307,7 +307,7 @@ export default function QrMenuPage() {
                   ) : (
                     <button
                       onClick={() => updateQty(item.id, 1)}
-                      className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-indigo-950/40"
+                      className="px-3.5 py-1.5 bg-[#FF6A3D] hover:bg-[#FF5522] text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs"
                     >
                       <Plus className="w-3.5 h-3.5" /> Add
                     </button>
@@ -321,21 +321,21 @@ export default function QrMenuPage() {
 
       {/* Floating Bottom Cart Bar */}
       {totalItemsCount > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-slate-900/95 border-t border-slate-800 backdrop-blur-xl z-40">
-          <div className="max-w-md mx-auto space-y-3">
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/95 border-t border-[#E5E7EB] backdrop-blur-xl z-40 max-w-md mx-auto shadow-2xl">
+          <div className="space-y-3">
             <div className="flex items-center justify-between text-xs">
               <div>
-                <span className="font-black text-sm text-white block font-mono">
+                <span className="font-black text-sm text-[#0F3D2E] block font-mono">
                   {totalItemsCount} {totalItemsCount === 1 ? "Item" : "Items"} • {formatCurrency(grandTotal)}
                 </span>
-                <span className="text-[10px] text-slate-400">Includes 5% GST</span>
+                <span className="text-[10px] text-[#0B0B0B]/60">Includes 5% GST</span>
               </div>
               <MorphButton
                 onAction={handlePlaceOrder}
                 disabled={isSubmitting || totalItemsCount === 0}
                 loadingLabel="Sending to Kitchen..."
                 successLabel="Order Sent!"
-                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-950/50"
+                className="bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-xs shadow-md shadow-[#FF6A3D]/25"
               >
                 <span>Submit to Kitchen</span>
                 <ArrowRight className="w-4 h-4 ml-1" />

@@ -21,85 +21,43 @@ interface RecentTransactionsProps {
 }
 
 export default function RecentTransactions({
-  transactions = [
-    {
-      id: "1",
-      time: "Just now",
-      title: "Bill Settled via UPI",
-      subtitle: "Table T-04 (Ground Floor)",
-      orderNumber: "#ORD-1048",
-      amount: 1450,
-      type: "PAYMENT",
-    },
-    {
-      id: "2",
-      time: "4 mins ago",
-      title: "Kitchen Marked KOT Ready",
-      subtitle: "Order #ORD-1047 (Direct Takeaway)",
-      type: "KOT_READY",
-    },
-    {
-      id: "3",
-      time: "12 mins ago",
-      title: "Chef Started Cooking",
-      subtitle: "KOT-09 • 2x Woodfired Pizza, 1x Pasta",
-      type: "COOKING",
-    },
-    {
-      id: "4",
-      time: "18 mins ago",
-      title: "New QR Guest Order Placed",
-      subtitle: "Table T-02 (Garden Patio)",
-      orderNumber: "#ORD-1046",
-      amount: 890,
-      type: "ORDER_PLACED",
-    },
-    {
-      id: "5",
-      time: "32 mins ago",
-      title: "Cash Bill Settled & Table Released",
-      subtitle: "Table T-01 • Cashier Counter",
-      orderNumber: "#ORD-1045",
-      amount: 2320,
-      type: "PAYMENT",
-    },
-  ],
+  transactions = [],
 }: RecentTransactionsProps) {
   const getDotStyle = (type: TransactionEvent["type"]) => {
     switch (type) {
       case "PAYMENT":
         return {
-          border: "border-emerald-500",
-          bg: "bg-emerald-500/10",
-          text: "text-emerald-500",
+          border: "border-[#0F3D2E]/40",
+          bg: "bg-[#0F3D2E]/10",
+          dot: "bg-[#0F3D2E]",
           icon: CreditCard,
         };
       case "KOT_READY":
         return {
-          border: "border-blue-500",
-          bg: "bg-blue-500/10",
-          text: "text-blue-500",
+          border: "border-[#FF6A3D]/40",
+          bg: "bg-[#FF6A3D]/10",
+          dot: "bg-[#FF6A3D]",
           icon: CheckCircle2,
         };
       case "COOKING":
         return {
-          border: "border-amber-500",
+          border: "border-amber-500/40",
           bg: "bg-amber-500/10",
-          text: "text-amber-500",
+          dot: "bg-amber-500",
           icon: Flame,
         };
       case "ORDER_PLACED":
         return {
-          border: "border-indigo-500",
-          bg: "bg-indigo-500/10",
-          text: "text-indigo-500",
+          border: "border-[#E5E7EB]",
+          bg: "bg-[#FAFAF8]",
+          dot: "bg-[#0F3D2E]",
           icon: ShoppingBag,
         };
       default:
         return {
-          border: "border-slate-500",
-          bg: "bg-slate-500/10",
-          text: "text-slate-500",
+          border: "border-[#E5E7EB]",
+          bg: "bg-[#FAFAF8]",
+          dot: "bg-[#0B0B0B]/40",
           icon: Clock,
         };
     }
@@ -107,68 +65,77 @@ export default function RecentTransactions({
 
   return (
     <DashboardCard
-      title="Recent Live Activity"
-      subtitle="Real-time timeline of restaurant floor events"
+      title="Live Floor Stream"
+      subtitle="Real-time timeline of kitchen, floor & billing events"
       action={
         <Link
           href="/orders"
-          className="text-xs font-semibold text-[#5D87FF] hover:underline flex items-center gap-1"
+          className="text-xs font-medium text-[#FF6A3D] hover:underline flex items-center gap-1 transition"
         >
           <span>View All</span>
           <ArrowRight className="w-3 h-3" />
         </Link>
       }
     >
-      <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-200 dark:before:bg-slate-800">
-        {transactions.map((tx) => {
-          const style = getDotStyle(tx.type);
-          const Icon = style.icon;
+      {transactions.length === 0 ? (
+        <div className="py-10 text-center border border-dashed border-[#E5E7EB] dark:border-[#165742] rounded-xl flex flex-col items-center justify-center gap-2">
+          <div className="w-9 h-9 rounded-full bg-[#FAFAF8] dark:bg-[#165742]/40 border border-[#E5E7EB] dark:border-[#165742] flex items-center justify-center text-[#6B7280]">
+            <Clock className="w-4 h-4" />
+          </div>
+          <p className="text-xs font-semibold text-[#0B0B0B] dark:text-[#FAFAF8]">No floor events recorded</p>
+          <p className="text-[11px] text-[#6B7280]">Real-time kitchen, order and payment actions will stream here.</p>
+        </div>
+      ) : (
+        <div className="relative pl-5 space-y-5 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[1px] before:bg-[#E5E7EB]">
+          {transactions.map((tx) => {
+            const style = getDotStyle(tx.type);
 
-          return (
-            <div key={tx.id} className="relative group">
-              {/* Timeline Dot Indicator */}
-              <div
-                className={`absolute -left-6 top-0.5 w-5 h-5 rounded-full border-2 bg-white dark:bg-slate-900 flex items-center justify-center ${style.border} ${style.text} shadow-sm group-hover:scale-110 transition-transform`}
-              >
-                <div className={`w-1.5 h-1.5 rounded-full ${style.border.replace('border-', 'bg-')}`} />
-              </div>
+            return (
+              <div key={tx.id} className="relative group">
+                {/* Timeline Dot Indicator */}
+                <div
+                  className={`absolute -left-5 top-0.5 w-4 h-4 rounded-full border ${style.border} bg-white flex items-center justify-center`}
+                >
+                  <div className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+                </div>
 
-              {/* Event Content */}
-              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
-                      {tx.title}
-                    </span>
-                    {tx.orderNumber && (
-                      <Link
-                        href="/orders"
-                        className="text-[11px] font-mono font-bold text-[#5D87FF] hover:underline"
-                      >
-                        {tx.orderNumber}
-                      </Link>
+                {/* Event Content */}
+                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-[#0B0B0B]">
+                        {tx.title}
+                      </span>
+                      {tx.orderNumber && (
+                        <Link
+                          href="/orders"
+                          className="text-[11px] font-mono font-medium text-[#0F3D2E] hover:underline transition"
+                        >
+                          {tx.orderNumber}
+                        </Link>
+                      )}
+                    </div>
+                    {tx.subtitle && (
+                      <p className="text-[11px] text-[#0B0B0B]/60 mt-0.5">
+                        {tx.subtitle}
+                      </p>
                     )}
                   </div>
-                  {tx.subtitle && (
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                      {tx.subtitle}
-                    </p>
-                  )}
-                </div>
 
-                <div className="flex items-center gap-2 text-[11px] text-slate-400 shrink-0">
-                  {tx.amount && (
-                    <span className="font-bold font-mono text-slate-900 dark:text-emerald-400">
-                      {formatCurrency(tx.amount)}
-                    </span>
-                  )}
-                  <span>• {tx.time}</span>
+                  <div className="flex items-center gap-2 text-[11px] text-[#0B0B0B]/50 shrink-0 font-mono">
+                    {tx.amount && (
+                      <span className="font-semibold text-[#0F3D2E]">
+                        {formatCurrency(tx.amount)}
+                      </span>
+                    )}
+                    <span>{tx.time}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </DashboardCard>
   );
 }

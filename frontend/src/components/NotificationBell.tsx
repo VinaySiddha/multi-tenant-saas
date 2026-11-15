@@ -120,7 +120,7 @@ export default function NotificationBell() {
                           onClick={() => setIsOpen(false)}
                           className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 hover:text-emerald-300 underline"
                         >
-                          Settle Bill &amp; Print &rarr;
+                          View Order Details &rarr;
                         </Link>
                       </div>
                     )}

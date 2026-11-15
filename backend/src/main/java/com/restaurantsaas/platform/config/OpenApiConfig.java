@@ -21,15 +21,16 @@ public class OpenApiConfig {
     public OpenAPI restaurantSaaSOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Enterprise Multi-Tenant Restaurant SaaS Platform API")
-                        .description("Production-grade multi-tenant REST API for Restaurant POS, KDS, QR Ordering, Inventory & Analytics")
-                        .version("1.0.0")
+                        .title("Sapru Restaurant Management Platform API")
+                        .description("Production-grade multi-tenant REST API & WebSocket service for Restaurant Operations, KDS, Floorplan Tables, Contactless QR Ordering, Inventory, Subscriptions & Billing.")
+                        .version("1.2.0")
                         .contact(new Contact()
-                                .name("Enterprise SaaS Team")
-                                .email("architect@restaurantsaas.io"))
+                                .name("Sapru Platform Engineering")
+                                .email("support@sapru.io")
+                                .url("https://sapru.io"))
                         .license(new License()
                                 .name("Proprietary")
-                                .url("https://restaurantsaas.io/terms")))
+                                .url("https://sapru.io/terms")))
                 .addSecurityItem(new SecurityRequirement().addList(BEARER_AUTH))
                 .components(new Components()
                         .addSecuritySchemes(BEARER_AUTH, new SecurityScheme()
@@ -37,7 +38,7 @@ public class OpenApiConfig {
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT")
-                                .description("Enter JWT Bearer token")));
+                                .description("Enter JWT Bearer token obtained from /api/v1/auth/login or /api/v1/auth/register-restaurant")));
     }
 
     @Bean

@@ -2,13 +2,14 @@
 set -e
 
 echo "=========================================================="
-echo "  🚀 RestoSaaS Enterprise Platform - Deployment Script"
+echo "  🚀 Sapru Restaurant Management Platform - Deploy Script"
 echo "=========================================================="
 
 # 1. Environment file setup
 if [ ! -f .env ]; then
   echo "📄 Creating .env from .env.example..."
   cp .env.example .env
+  echo "⚠️ Warning: Please configure your real secrets in .env before exposing to production!"
 fi
 
 # 2. Check Docker availability
@@ -23,17 +24,15 @@ docker compose build --parallel
 docker compose up -d
 
 echo "⏳ Waiting for services to become healthy..."
-sleep 10
+sleep 8
 
 echo "=========================================================="
-echo "  ✅ Deployment Complete & Online!"
+echo "  ✅ Sapru Platform Deployment Complete & Online!"
 echo "=========================================================="
-echo "  🌐 Gateway & Frontend URL : http://localhost"
-echo "  📊 Direct Next.js App    : http://localhost:3000"
-echo "  ⚙️ Backend REST API      : http://localhost:8080/api/v1"
-echo "  📚 Swagger API Docs      : http://localhost:8080/api/v1/swagger-ui.html"
-echo ""
-echo "  🔑 Demo Credentials:"
-echo "     - Email    : owner@royalbistro.com"
-echo "     - Password : Admin@123"
+echo "  🌐 Gateway Web Application : http://localhost"
+echo "  🍳 Kitchen Display System  : http://localhost/kds"
+echo "  💳 Subscriptions & Billing : http://localhost/billing"
+echo "  🏷️ Pricing & Features      : http://localhost/pricing"
+echo "  ⚙️ Backend REST API Root   : http://localhost/api/v1"
+echo "  📚 OpenAPI / Swagger UI    : http://localhost/api/v1/swagger-ui.html"
 echo "=========================================================="

@@ -6,10 +6,11 @@ export default function QrLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex justify-center">
-      <div className="w-full max-w-md bg-white dark:bg-slate-900 min-h-screen shadow-xl flex flex-col">
+    <div className="min-h-screen bg-[#FAFAF8] flex justify-center text-[#0B0B0B]">
+      <div className="w-full max-w-md bg-white min-h-screen shadow-xl border-x border-[#E5E7EB] flex flex-col">
         {children}
       </div>
     </div>
   );
 }
+

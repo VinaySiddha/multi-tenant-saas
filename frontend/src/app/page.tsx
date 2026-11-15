@@ -3,584 +3,876 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { 
-  Receipt, 
-  ChefHat, 
-  QrCode, 
-  TrendingUp, 
-  ShieldCheck, 
-  Building2, 
-  Boxes, 
-  Users, 
-  ArrowRight, 
-  CheckCircle2, 
-  Sparkles, 
-  Zap, 
-  Lock, 
-  LayoutGrid, 
-  Clock, 
-  CircleDot, 
-  Store, 
-  DollarSign, 
-  BarChart3, 
-  CreditCard, 
-  SmartphoneNfc, 
-  ExternalLink, 
-  ChevronRight, 
-  ShoppingBag,
-  Flame,
-  Globe
+import FloatingNavbar from "@/components/FloatingNavbar";
+import {
+  ArrowRight,
+  Play,
+  TrendingUp,
+  Activity,
+  Layers,
+  BarChart3,
+  Sliders,
+  CheckCircle2,
+  Sparkles,
+  ArrowUpRight,
+  Shield,
+  Zap,
+  Clock,
+  Compass,
+  LineChart,
+  Cpu,
+  ChevronRight,
+  Receipt,
+  ChefHat,
+  QrCode,
+  Package,
+  Users,
+  Check,
 } from "lucide-react";
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState<"pos" | "kds" | "qr" | "analytics">("pos");
-
-  const productTabs = [
-    { id: "pos" as const, label: "POS & Billing", icon: Receipt, badge: "Front Desk" },
-    { id: "kds" as const, label: "Kitchen Display (KDS)", icon: ChefHat, badge: "Kitchen Line" },
-    { id: "qr" as const, label: "Online & QR Orders", icon: QrCode, badge: "Guest Self-Order" },
-    { id: "analytics" as const, label: "Inventory & Insights", icon: BarChart3, badge: "Management" },
-  ];
-
-  const productDetails = {
-    pos: {
-      tag: "FRONT OF HOUSE",
-      title: "Lightning-Fast POS & Table Billing",
-      subtitle: "Speed up table turns and eliminate billing bottlenecks.",
-      description: "Take orders in seconds, manage visual floorplans, apply instant customizations, and process split checks seamlessly on any touch device.",
-      actionLabel: "Launch Live POS Terminal",
-      actionHref: "/terminal",
-      imageSrc: "/mockup-pos.png",
-      stats: [
-        { label: "Order Entry Speed", value: "< 2.5s" },
-        { label: "Billing Accuracy", value: "99.9%" },
-        { label: "Table Turnover", value: "+35%" },
-      ],
-      features: [
-        "Visual floorplans with real-time table status",
-        "Instant KOT ticket dispatch to kitchen stations",
-        "Split checks by seat, item, or custom ratio",
-        "Integrated UPI, card, and cash settlement",
-      ],
-    },
-    kds: {
-      tag: "BACK OF HOUSE",
-      title: "Real-Time Kitchen Display System",
-      subtitle: "Digitize kitchen ticket flow with live prep timers.",
-      description: "Replace noisy paper printers with responsive kitchen screens. Group items by station, monitor elapsed prep times, and notify waitstaff when food is plated.",
-      actionLabel: "Open Kitchen Display Screen",
-      actionHref: "/kds",
-      imageSrc: "/mockup-dashboard.png",
-      stats: [
-        { label: "Lost Tickets", value: "0" },
-        { label: "Prep Time Reduction", value: "22%" },
-        { label: "Station Sync", value: "Instant" },
-      ],
-      features: [
-        "Color-coded preparation pacing & timer warnings",
-        "Station routing for hot line, grill, salad, and bar",
-        "Dietary tags and custom chef preparation notes",
-        "One-tap bump bar to mark orders ready",
-      ],
-    },
-    qr: {
-      tag: "GUEST EXPERIENCE",
-      title: "Contactless QR Menu & Ordering",
-      subtitle: "Empower guests to browse, order, and pay from their phones.",
-      description: "Provide a friction-free dining experience. Guests scan their table's unique QR code to view appetizing digital menus and place orders without waiting.",
-      actionLabel: "Experience Guest QR Menu",
-      actionHref: "/menu/5da85f64-5717-4562-b3fc-2c963f66afb5",
-      imageSrc: "/mockup-mobile.png",
-      stats: [
-        { label: "Average Check Size", value: "+18%" },
-        { label: "Labor Efficiency", value: "+28%" },
-        { label: "Guest Satisfaction", value: "4.9/5" },
-      ],
-      features: [
-        "Zero app download or registration required",
-        "Instant live 86'd out-of-stock menu sync",
-        "Item variations, add-ons, and allergen filters",
-        "Seamless digital receipts & feedback loop",
-      ],
-    },
-    analytics: {
-      tag: "EXECUTIVE INTELLIGENCE",
-      title: "Real-Time Revenue & Inventory Control",
-      subtitle: "Complete operational visibility across all restaurant branches.",
-      description: "Transform daily transactions into actionable intelligence. Monitor gross sales, peak trading hours, top-performing dishes, and automated ingredient depletion.",
-      actionLabel: "Explore Executive Dashboard",
-      actionHref: "/dashboard",
-      imageSrc: "/mockup-dashboard.png",
-      stats: [
-        { label: "Food Wastage", value: "-40%" },
-        { label: "Multi-Branch Sync", value: "Live" },
-        { label: "Stock Accuracy", value: "100%" },
-      ],
-      features: [
-        "Automated stock deductions on every order",
-        "Low-inventory warning thresholds",
-        "Consolidated multi-unit sales reporting",
-        "Staff productivity and shift auditing",
-      ],
-    },
-  };
-
-  const featurePillars = [
-    {
-      icon: Receipt,
-      title: "Cloud POS & Rapid Billing",
-      description: "Fast touch terminal with visual table maps, split checks, and sub-second receipt printing.",
-      tag: "Front of House",
-    },
-    {
-      icon: ChefHat,
-      title: "Synchronized Kitchen (KDS)",
-      description: "Digital ticket dispatch with real-time prep timers, station routing, and zero paper chits.",
-      tag: "Kitchen Line",
-    },
-    {
-      icon: QrCode,
-      title: "Contactless QR Ordering",
-      description: "Guests scan, browse, and place table-side orders directly from their smartphone browsers.",
-      tag: "Guest Experience",
-    },
-    {
-      icon: LayoutGrid,
-      title: "Floor & Table Management",
-      description: "Design floorplans, track occupancy states (Available, Occupied, Reserved), and assign tables.",
-      tag: "Floor Operations",
-    },
-    {
-      icon: Boxes,
-      title: "Automated Stock Depletion",
-      description: "Ingredient-level inventory tracking that automatically deducts stock upon every sale.",
-      tag: "Supply Chain",
-    },
-    {
-      icon: BarChart3,
-      title: "Executive Revenue Analytics",
-      description: "Live sales telemetry, average check size, peak trading hours, and multi-branch reports.",
-      tag: "Business Intelligence",
-    },
-  ];
+  // Section 2: One Connected Workspace Active View Tab
+  const [workspaceTab, setWorkspaceTab] = useState<
+    "overview" | "performance" | "activity" | "insights" | "operations"
+  >("overview");
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0A0E14] text-slate-100 selection:bg-[#FF6A3D] selection:text-white font-sans antialiased">
-      
-      {/* Top Brand Notification */}
-      <div className="border-b border-slate-800/80 bg-[#070A0F] text-xs py-2 px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 text-slate-300">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF6A3D] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF6A3D]"></span>
-            </span>
-            <span className="font-semibold text-white">Sapru Platform</span>
-            <span className="text-slate-600 hidden sm:inline">•</span>
-            <span className="text-slate-400 hidden sm:inline">Same Passion. A Smarter Way.</span>
-          </div>
-          <div className="flex items-center gap-4 text-slate-400">
-            <span className="hidden sm:inline">People. Plates. Progress.</span>
-            <Link href="/login" className="text-[#FF6A3D] hover:text-[#ff825c] font-semibold transition flex items-center gap-1">
-              <span>Staff Portal</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#FAFAF8] text-[#0B0B0B] font-sans selection:bg-[#FF6A3D] selection:text-white antialiased overflow-x-hidden">
+      {/* ========================================================================= */}
+      {/* 1. FLOATING CAPSULE NAVIGATION BAR (LOCKED / UNTOUCHED)                     */}
+      {/* ========================================================================= */}
+      <FloatingNavbar
+        links={[
+          { label: "Product", href: "#workspace" },
+          { label: "Capabilities", href: "#capabilities" },
+          { label: "Pricing", href: "/pricing" },
+          { label: "Docs", href: "/docs" },
+          { label: "Support", href: "/support" },
+          { label: "Dashboard", href: "/dashboard" },
+        ]}
+        email="hello@sapru.io"
+      />
 
-      {/* Navigation Header */}
-      <header className="border-b border-slate-800/80 bg-[#0A0E14]/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          
-          {/* Official Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-9 h-9 rounded-xl overflow-hidden shadow-md shadow-[#FF6A3D]/20 border border-slate-700/80 group-hover:scale-105 transition-transform duration-200">
-              <Image
-                src="/app-icon-dark.png"
-                alt="Sapru"
-                width={36}
-                height={36}
-                className="object-cover w-full h-full"
-                priority
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black tracking-tight text-white group-hover:text-slate-100 transition flex items-center">
-                Sapru<span className="text-[10px] text-[#FF6A3D] ml-0.5 -mt-3">™</span>
-              </span>
-              <span className="text-[9px] text-slate-400 font-bold tracking-widest uppercase -mt-1">
-                Built For A Better Tomorrow
-              </span>
-            </div>
-          </Link>
+      {/* ========================================================================= */}
+      {/* 2. HERO SECTION (LOCKED / UNTOUCHED)                                      */}
+      {/* ========================================================================= */}
+      <section className="relative pt-32 pb-24 lg:pt-40 lg:pb-36 overflow-hidden">
+        {/* Subtle Ambient Glows */}
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-gradient-to-b from-[#FF6A3D]/10 via-[#0F3D2E]/10 to-transparent blur-3xl pointer-events-none -z-10" />
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <a href="#solutions" className="hover:text-white transition">Solutions</a>
-            <a href="#showcase" className="hover:text-white transition">Product Tour</a>
-            <a href="#impact" className="hover:text-white transition">Why Sapru</a>
-            <Link href="/menu/5da85f64-5717-4562-b3fc-2c963f66afb5" className="hover:text-white transition">
-              QR Menu
-            </Link>
-          </nav>
-
-          {/* Header Action CTAs */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/terminal"
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold transition hover:border-[#FF6A3D]/50 hover:text-[#FF6A3D]"
-            >
-              <Receipt className="w-3.5 h-3.5 text-[#FF6A3D]" />
-              <span>Live POS</span>
-            </Link>
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FF6A3D] hover:bg-[#ff5522] text-white text-xs font-bold transition shadow-md shadow-[#FF6A3D]/25"
-            >
-              <span>Get Started</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero Section */}
-      <section className="relative pt-16 pb-20 lg:pt-24 lg:pb-28 overflow-hidden">
-        
-        {/* Subtle Ambient Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-r from-[#FF6A3D]/10 via-[#0F3D2E]/20 to-[#FF6A3D]/10 blur-3xl pointer-events-none -z-10" />
-
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          
-          {/* Category Tag */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-[11px] font-bold tracking-wider text-slate-300 uppercase mb-8 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[#FF6A3D]" />
-            <span>Restaurant Management Software</span>
-          </div>
-
-          {/* Headline Matching Official Brand */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white mb-6 leading-[1.1]">
-            Run your restaurant,{" "}
-            <span className="text-[#FF6A3D]">
-              the smarter way.
-            </span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
-            All-in-one platform for POS, orders, inventory, staff, and analytics — built for modern restaurants.
-          </p>
-
-          {/* Action CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
-            <Link
-              href="/terminal"
-              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#FF6A3D] hover:bg-[#ff5522] text-white font-bold text-sm transition shadow-xl shadow-[#FF6A3D]/30 hover:-translate-y-0.5"
-            >
-              <span>Get Started</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm border border-slate-800 transition hover:-translate-y-0.5"
-            >
-              <span>Book a Demo</span>
-            </Link>
-          </div>
-
-          {/* 4 Brand Quick Pill Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            <Link
-              href="/terminal"
-              className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-[#FF6A3D]/50 transition flex flex-col items-center gap-2 group"
-            >
-              <div className="p-2.5 rounded-xl bg-slate-800 text-[#FF6A3D] group-hover:scale-110 transition-transform">
-                <Receipt className="w-5 h-5" />
-              </div>
-              <span className="text-xs font-bold text-slate-200">POS &amp; Billing</span>
-            </Link>
-
-            <Link
-              href="/menu/5da85f64-5717-4562-b3fc-2c963f66afb5"
-              className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-[#FF6A3D]/50 transition flex flex-col items-center gap-2 group"
-            >
-              <div className="p-2.5 rounded-xl bg-slate-800 text-[#FF6A3D] group-hover:scale-110 transition-transform">
-                <QrCode className="w-5 h-5" />
-              </div>
-              <span className="text-xs font-bold text-slate-200">Online &amp; QR Orders</span>
-            </Link>
-
-            <Link
-              href="/inventory"
-              className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-[#FF6A3D]/50 transition flex flex-col items-center gap-2 group"
-            >
-              <div className="p-2.5 rounded-xl bg-slate-800 text-[#FF6A3D] group-hover:scale-110 transition-transform">
-                <Boxes className="w-5 h-5" />
-              </div>
-              <span className="text-xs font-bold text-slate-200">Inventory Control</span>
-            </Link>
-
-            <Link
-              href="/dashboard"
-              className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-[#FF6A3D]/50 transition flex flex-col items-center gap-2 group"
-            >
-              <div className="p-2.5 rounded-xl bg-slate-800 text-[#FF6A3D] group-hover:scale-110 transition-transform">
-                <BarChart3 className="w-5 h-5" />
-              </div>
-              <span className="text-xs font-bold text-slate-200">Revenue Insights</span>
-            </Link>
-          </div>
-
-        </div>
-      </section>
-
-      {/* Interactive Showcase & Mockups */}
-      <section id="showcase" className="py-20 bg-[#070A0F] border-t border-slate-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-[#FF6A3D] mb-2">
-              Product Tour
-            </h2>
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-              Designed for Speed. Built for Scale.
-            </h3>
-            <p className="text-base text-slate-400">
-              Explore how Sapru connects the dining room, kitchen line, and business office in one cohesive system.
-            </p>
-          </div>
-
-          {/* Interactive Navigation Tabs */}
-          <div className="flex justify-center mb-10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 max-w-3xl w-full">
-              {productTabs.map((tab) => {
-                const Icon = tab.icon;
-                const isSelected = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-semibold transition ${
-                      isSelected
-                        ? "bg-[#FF6A3D] text-white shadow-md shadow-[#FF6A3D]/30 font-bold"
-                        : "text-slate-400 hover:text-slate-200"
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{tab.label}</span>
-                  </button>
-                );
-              })}
+          {/* Eyebrow & Hero Copy */}
+          <div className="text-center max-w-4xl mx-auto mb-16 space-y-6">
+            {/* Eyebrow Pill */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#E5E7EB] text-[11px] font-bold tracking-widest text-[#0F3D2E] uppercase shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-[#FF6A3D] animate-pulse" />
+              <span>RESTAURANT MANAGEMENT SOFTWARE</span>
             </div>
-          </div>
 
-          {/* Tab Content Display */}
-          {(() => {
-            const current = productDetails[activeTab];
-            return (
-              <div className="bg-slate-900 rounded-3xl border border-slate-800 p-8 lg:p-12 shadow-2xl">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                  
-                  {/* Left Column: Details */}
-                  <div className="lg:col-span-6 space-y-6">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6A3D]/10 text-[#FF6A3D] border border-[#FF6A3D]/20 text-[11px] font-bold tracking-wider">
-                      {current.tag}
-                    </span>
-                    
-                    <h4 className="text-2xl sm:text-3xl font-extrabold text-white">
-                      {current.title}
-                    </h4>
+            {/* Main Headline */}
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#0F3D2E] font-poppins leading-[1.08]">
+              Your restaurant.
+              <br />
+              <span className="text-[#FF6A3D]">One intelligent system.</span>
+            </h1>
 
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                      {current.description}
-                    </p>
+            {/* Supporting Subtitle */}
+            <p className="text-lg sm:text-xl text-[#0B0B0B]/75 max-w-2xl mx-auto font-normal leading-relaxed">
+              From the first order to the final report, Sapru brings your restaurant’s
+              operations together.
+            </p>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                      {current.features.map((f, i) => (
-                        <div key={i} className="flex items-start gap-2.5 text-xs text-slate-300">
-                          <CheckCircle2 className="w-4 h-4 text-[#FF6A3D] shrink-0 mt-0.5" />
-                          <span>{f}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="pt-4">
-                      <Link
-                        href={current.actionHref}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#FF6A3D] hover:bg-[#ff5522] text-white font-bold text-xs transition shadow-md shadow-[#FF6A3D]/20"
-                      >
-                        <span>{current.actionLabel}</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Visual Product Image Frame */}
-                  <div className="lg:col-span-6">
-                    <div className="relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl group">
-                      <Image
-                        src={current.imageSrc}
-                        alt={current.title}
-                        width={600}
-                        height={450}
-                        className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-300"
-                      />
-                    </div>
-                  </div>
-
+            {/* Hero Action Buttons */}
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-sm transition-all shadow-lg shadow-[#FF6A3D]/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+              >
+                <span>Get Started</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <a
+                href="#workspace"
+                className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-white hover:bg-[#FAFAF8] text-[#0F3D2E] font-semibold text-sm border border-[#E5E7EB] transition hover:-translate-y-0.5 shadow-xs"
+              >
+                <div className="w-6 h-6 rounded-full bg-[#0F3D2E]/10 flex items-center justify-center text-[#0F3D2E]">
+                  <Play className="w-3 h-3 fill-current ml-0.5" />
                 </div>
-              </div>
-            );
-          })()}
-
-        </div>
-      </section>
-
-      {/* Solutions & Feature Pillars */}
-      <section id="solutions" className="py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-[#FF6A3D] mb-2">
-              Core Capabilities
-            </h2>
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-              Everything Needed to Power Modern Hospitality
-            </h3>
-            <p className="text-base text-slate-400">
-              Each module in Sapru connects directly into a synchronized operational pipeline.
-            </p>
+                <span>See Sapru in action</span>
+              </a>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featurePillars.map((p, idx) => {
-              const Icon = p.icon;
-              return (
-                <div key={idx} className="p-8 rounded-2xl bg-slate-900 border border-slate-800/90 shadow-md hover:border-slate-700 transition flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-5">
-                      <div className="p-3 bg-[#FF6A3D]/10 text-[#FF6A3D] rounded-xl border border-[#FF6A3D]/20">
-                        <Icon className="w-5 h-5" />
+          {/* Visual Layer: Premium Restaurant Environment + Floating Dashboard Interface */}
+          <div className="relative max-w-5xl mx-auto">
+            {/* Restaurant Environmental Container */}
+            <div className="relative rounded-3xl overflow-hidden border border-[#E5E7EB] shadow-2xl bg-[#0A291F]">
+              {/* Background Restaurant Photography */}
+              <div className="relative h-[480px] sm:h-[580px] w-full">
+                <Image
+                  src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1600&auto=format&fit=crop"
+                  alt="Fine dining restaurant environment"
+                  fill
+                  priority
+                  className="object-cover opacity-35 filter brightness-75 contrast-125"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A291F] via-[#0F3D2E]/60 to-transparent" />
+              </div>
+
+              {/* Floating Sapru Dashboard Interface Overlay */}
+              <div className="absolute inset-x-4 sm:inset-x-8 top-8 bottom-8 flex flex-col justify-between">
+                {/* Top Telemetry Floating Card */}
+                <div className="bg-[#0F3D2E]/90 backdrop-blur-xl border border-[#FAFAF8]/20 rounded-2xl p-4 sm:p-6 text-white shadow-2xl max-w-2xl mx-auto w-full">
+                  <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-[#FAFAF8] text-[#0F3D2E] flex items-center justify-center font-bold text-sm">
+                        S
                       </div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                        {p.tag}
+                      <div>
+                        <h4 className="text-sm font-bold text-white font-poppins">
+                          The Grand Pavilion • Live Operations
+                        </h4>
+                        <p className="text-[11px] text-[#E5E7EB]/70">
+                          Main Dining Room &amp; 4 Online Channels Synchronized
+                        </p>
+                      </div>
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF6A3D]/20 text-[#FF6A3D] text-[11px] font-bold border border-[#FF6A3D]/30">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF6A3D] animate-ping" />
+                      <span>LIVE TELEMETRY</span>
+                    </div>
+                  </div>
+
+                  {/* 4 Core Metrics Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
+                    <div>
+                      <span className="text-[11px] text-[#E5E7EB]/70 block font-medium">
+                        Today’s Revenue
+                      </span>
+                      <span className="text-xl sm:text-2xl font-extrabold text-white mt-0.5 block font-poppins">
+                        ₹48,320
+                      </span>
+                      <span className="text-[10px] text-emerald-400 font-semibold inline-flex items-center gap-0.5">
+                        <TrendingUp className="w-3 h-3" /> +18.4% vs yesterday
                       </span>
                     </div>
-                    <h4 className="text-lg font-bold text-white mb-2">{p.title}</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed">{p.description}</p>
+
+                    <div>
+                      <span className="text-[11px] text-[#E5E7EB]/70 block font-medium">
+                        Total Orders
+                      </span>
+                      <span className="text-xl sm:text-2xl font-extrabold text-white mt-0.5 block font-poppins">
+                        124
+                      </span>
+                      <span className="text-[10px] text-[#E5E7EB]/60">32 Dine-In • 92 Web</span>
+                    </div>
+
+                    <div>
+                      <span className="text-[11px] text-[#E5E7EB]/70 block font-medium">
+                        Avg. Ticket Prep
+                      </span>
+                      <span className="text-xl sm:text-2xl font-extrabold text-white mt-0.5 block font-poppins">
+                        11m 40s
+                      </span>
+                      <span className="text-[10px] text-emerald-400 font-semibold">
+                        3m faster than SLA
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[11px] text-[#E5E7EB]/70 block font-medium">
+                        Top Selling Dish
+                      </span>
+                      <span className="text-sm font-bold text-white mt-1 block truncate">
+                        Dum Biryani (48)
+                      </span>
+                      <span className="text-[10px] text-[#FF6A3D] font-bold">
+                        ₹18,240 gross
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Live Activity Pills */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Left Pill: Table 4 Live Ticket */}
+                  <div className="bg-[#FAFAF8]/95 backdrop-blur-md border border-[#E5E7EB] rounded-2xl p-3.5 shadow-xl text-[#0B0B0B] flex items-center justify-between gap-3 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-[#0F3D2E]/10 text-[#0F3D2E] flex items-center justify-center font-bold text-xs">
+                        T-04
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-[#0F3D2E]">Table 4 (4 Guests)</span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#FF6A3D]/15 text-[#FF6A3D]">
+                            Preparing • 4m
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#0B0B0B]/70 truncate max-w-[200px] sm:max-w-xs">
+                          2x Hyderabadi Biryani, 1x Butter Naan, 2x Fresh Lime
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold text-[#0F3D2E]">₹1,480</span>
+                  </div>
+
+                  {/* Right Pill: Swiggy / Online Delivery Sync */}
+                  <div className="bg-[#FAFAF8]/95 backdrop-blur-md border border-[#E5E7EB] rounded-2xl p-3.5 shadow-xl text-[#0B0B0B] flex items-center justify-between gap-3 animate-in fade-in slide-in-from-right-4 duration-500">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-[#FF6A3D]/15 text-[#FF6A3D] flex items-center justify-center font-bold text-xs">
+                        WEB
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-[#0F3D2E]">
+                            Order #1049 • Direct Web
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-700">
+                            Ready for Pickup
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#0B0B0B]/70">
+                          1x Paneer Tikka, 1x Dal Makhani, 4x Roti (UPI Paid)
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold text-[#0F3D2E]">₹890</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 1 — WHAT SAPRU PROVIDES                                           */}
+      {/* ========================================================================= */}
+      <section id="capabilities" className="py-24 sm:py-32 lg:py-36 bg-[#FAFAF8] border-t border-[#E5E7EB]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="max-w-3xl mb-20 space-y-4">
+            <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
+              ALL-IN-ONE CAPABILITIES
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F3D2E] font-poppins leading-tight">
+              Everything you need to run your restaurant.
+            </h2>
+            <p className="text-base sm:text-lg text-[#0B0B0B]/70 font-normal leading-relaxed">
+              Sapru brings your daily billing, kitchen workflow, and business reports into one clear, easy-to-use software.
+            </p>
+          </div>
+
+          {/* 5 Broad Capabilities Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 lg:gap-10 pt-6">
+            {[
+              {
+                index: "01",
+                title: "RUN",
+                description: "Fast order coordination, quick table punching, and smooth floor service.",
+              },
+              {
+                index: "02",
+                title: "UNDERSTAND",
+                description: "Live visibility into daily sales, peak hours, and order volumes.",
+              },
+              {
+                index: "03",
+                title: "CONTROL",
+                description: "Keep your kitchen, table seating, and inventory organized.",
+              },
+              {
+                index: "04",
+                title: "IMPROVE",
+                description: "Clear numbers and reports that help you make better daily decisions.",
+              },
+              {
+                index: "05",
+                title: "GROW",
+                description: "Reliable software built to support your restaurant as you expand.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="group pt-6 border-t border-[#E5E7EB] hover:border-[#FF6A3D] transition-colors duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <span className="text-xs font-mono font-semibold text-[#6B7280] block mb-4 group-hover:text-[#FF6A3D] transition-colors">
+                    {item.index}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#0F3D2E] font-poppins mb-3 tracking-tight">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-[#0B0B0B]/70 leading-relaxed font-normal">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 2 — ONE CONNECTED WORKSPACE                                       */}
+      {/* ========================================================================= */}
+      <section id="workspace" className="py-24 sm:py-32 lg:py-36 bg-[#0F3D2E] text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
+              UNIFIED SOFTWARE
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-poppins leading-tight">
+              One place for your entire operation.
+            </h2>
+            <p className="text-base sm:text-lg text-[#E5E7EB]/80 font-normal leading-relaxed">
+              No more jumping between separate billing machines and manual logs. Everything stays synchronized in real time.
+            </p>
+
+            {/* Navigation Filter Tabs */}
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-6">
+              {[
+                { key: "overview", label: "Overview" },
+                { key: "performance", label: "Performance" },
+                { key: "activity", label: "Live Activity" },
+                { key: "insights", label: "Daily Insights" },
+                { key: "operations", label: "Stations & Status" },
+              ].map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setWorkspaceTab(tab.key as any)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                    workspaceTab === tab.key
+                      ? "bg-white text-[#0F3D2E] shadow-sm"
+                      : "text-[#E5E7EB]/70 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Large Realistic Product Interface Showcase */}
+          <div className="max-w-5xl mx-auto rounded-3xl border border-[#165742] bg-[#0A291F] p-6 sm:p-10 shadow-2xl">
+            {/* Top Workspace Bar */}
+            <div className="flex items-center justify-between pb-6 border-b border-[#165742]">
+              <div className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-lg bg-[#FF6A3D] text-white flex items-center justify-center font-bold text-xs">
+                  S
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-white block">
+                    Sapru Restaurant Platform
+                  </span>
+                  <span className="text-[11px] text-[#E5E7EB]/60 font-mono">
+                    All stations active • System status: Live
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs font-mono text-[#E5E7EB]/70">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="hidden sm:inline">Real-time sync</span>
+              </div>
+            </div>
+
+            {/* Dynamic View Content Based on Tab */}
+            {workspaceTab === "overview" && (
+              <div className="space-y-6 pt-6">
+                {/* 3 Overview Metric Strips */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742]">
+                    <span className="text-xs font-mono text-[#E5E7EB]/70 block mb-1">
+                      Today's Gross Sales
+                    </span>
+                    <span className="text-2xl font-bold font-mono text-white block">
+                      ₹48,320
+                    </span>
+                    <span className="text-[11px] text-emerald-400 font-medium mt-1 inline-block">
+                      +18.4% vs yesterday
+                    </span>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742]">
+                    <span className="text-xs font-mono text-[#E5E7EB]/70 block mb-1">
+                      Orders Fulfilled
+                    </span>
+                    <span className="text-2xl font-bold font-mono text-white block">
+                      124 Tickets
+                    </span>
+                    <span className="text-[11px] text-[#E5E7EB]/60 font-medium mt-1 inline-block">
+                      100% order accuracy
+                    </span>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742]">
+                    <span className="text-xs font-mono text-[#E5E7EB]/70 block mb-1">
+                      Average Kitchen Time
+                    </span>
+                    <span className="text-2xl font-bold font-mono text-white block">
+                      11m 40s
+                    </span>
+                    <span className="text-[11px] text-[#FF6A3D] font-medium mt-1 inline-block">
+                      Fast ticket turnaround
+                    </span>
+                  </div>
+                </div>
+
+                {/* Main Abstract Graph & Flow Preview */}
+                <div className="p-6 rounded-2xl bg-[#0F3D2E]/40 border border-[#165742] space-y-4">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-semibold text-white">Daily Sales &amp; Order Volume Flow</span>
+                    <span className="font-mono text-[#E5E7EB]/60">Live Past 24 Hours</span>
+                  </div>
+
+                  {/* Abstract Clean SVG Graph */}
+                  <div className="h-44 w-full flex items-end gap-2 pt-4">
+                    {[35, 48, 62, 44, 78, 92, 84, 96, 70, 88, 105, 95, 110, 82, 98, 115].map((val, i) => (
+                      <div key={i} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group">
+                        <div
+                          className="w-full rounded-t-sm bg-gradient-to-t from-[#165742] to-[#FF6A3D] group-hover:to-white transition-all opacity-85 group-hover:opacity-100"
+                          style={{ height: `${val}%` }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {workspaceTab === "performance" && (
+              <div className="space-y-6 pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742] space-y-3">
+                    <span className="text-xs font-mono text-[#E5E7EB]/70 block">
+                      Order Breakdown by Channel
+                    </span>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-[#E5E7EB]">Dine-In Orders</span>
+                        <span className="font-mono text-white font-bold">58%</span>
+                      </div>
+                      <div className="h-1.5 w-full bg-[#165742] rounded-full overflow-hidden">
+                        <div className="h-full bg-white rounded-full w-[58%]" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-[#E5E7EB]">QR Self-Ordering</span>
+                        <span className="font-mono text-white font-bold">28%</span>
+                      </div>
+                      <div className="h-1.5 w-full bg-[#165742] rounded-full overflow-hidden">
+                        <div className="h-full bg-[#FF6A3D] rounded-full w-[28%]" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-[#E5E7EB]">Takeaway &amp; Pickup</span>
+                        <span className="font-mono text-white font-bold">14%</span>
+                      </div>
+                      <div className="h-1.5 w-full bg-[#165742] rounded-full overflow-hidden">
+                        <div className="h-full bg-[#6B7280] rounded-full w-[14%]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-[#0F3D2E]/60 border border-[#165742] flex flex-col justify-between">
+                    <div>
+                      <span className="text-xs font-mono text-[#E5E7EB]/70 block mb-2">
+                        Kitchen Efficiency Summary
+                      </span>
+                      <p className="text-sm text-[#E5E7EB]/90 leading-relaxed font-normal">
+                        Order fulfillment is tracking smoothly. Kitchen display timers indicate zero bottleneck during peak lunch and dinner hours.
+                      </p>
+                    </div>
+                    <div className="pt-4 border-t border-[#165742] flex items-center justify-between text-xs font-mono">
+                      <span className="text-[#E5E7EB]/60">Daily Service Score</span>
+                      <span className="text-emerald-400 font-bold">98.5% on-time</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {workspaceTab === "activity" && (
+              <div className="space-y-3 pt-6">
+                {[
+                  { time: "Just now", event: "Bill settled via UPI at Table 4 (₹1,480)", status: "Settled" },
+                  { time: "3 mins ago", event: "Kitchen marked Order #1049 ready for takeaway", status: "Ready" },
+                  { time: "12 mins ago", event: "New guest order placed via Table QR code", status: "In Kitchen" },
+                  { time: "28 mins ago", event: "Cash drawer shift balanced with zero discrepancy", status: "Audited" },
+                ].map((act, i) => (
+                  <div
+                    key={i}
+                    className="p-3.5 rounded-xl bg-[#0F3D2E]/60 border border-[#165742] flex items-center justify-between text-xs"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF6A3D]" />
+                      <span className="text-white font-medium">{act.event}</span>
+                    </div>
+                    <div className="flex items-center gap-3 font-mono text-[#E5E7EB]/60">
+                      <span className="text-emerald-400">{act.status}</span>
+                      <span>{act.time}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {workspaceTab === "insights" && (
+              <div className="space-y-4 pt-6">
+                <div className="p-5 rounded-2xl bg-[#0F3D2E]/80 border border-[#FF6A3D]/30 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF6A3D]">
+                      DAILY EXECUTIVE SUMMARY
+                    </span>
+                    <span className="text-[11px] font-mono text-[#E5E7EB]/60">Today's Highlight</span>
+                  </div>
+                  <p className="text-sm sm:text-base text-white font-medium leading-relaxed">
+                    “Dinner revenue grew 18% this week. Table turnover was 22 minutes faster on QR-enabled sections.”
+                  </p>
+                  <p className="text-xs text-[#E5E7EB]/70">
+                    Generated automatically at the end of each shift for restaurant owners.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {workspaceTab === "operations" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-6">
+                {[
+                  { name: "Live Orders", role: "Floor Operations", state: "Live" },
+                  { name: "Kitchen Display (KDS)", role: "Kitchen Pacing", state: "Connected" },
+                  { name: "Table Floorplan", role: "Floor Seating", state: "Active" },
+                  { name: "Inventory Alerts", role: "Stock Tracking", state: "Audited" },
+                ].map((mod, i) => (
+                  <div
+                    key={i}
+                    className="p-4 rounded-xl bg-[#0F3D2E]/60 border border-[#165742] space-y-2"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-white">{mod.name}</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    </div>
+                    <span className="text-[11px] text-[#E5E7EB]/60 block">{mod.role}</span>
+                    <span className="text-[10px] font-mono text-[#FF6A3D] font-semibold">{mod.state}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 3 — SIMPLE BY DESIGN (Simpler & Benefit-Driven)                    */}
+      {/* ========================================================================= */}
+      <section id="why-sapru" className="py-24 sm:py-32 lg:py-36 bg-[#FAFAF8] border-t border-[#E5E7EB]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
+            <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
+              WHY RESTAURANTS CHOOSE SAPRU
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F3D2E] font-poppins leading-tight">
+              Simplicity meets performance.
+            </h2>
+            <p className="text-base sm:text-lg text-[#0B0B0B]/70 font-normal leading-relaxed">
+              Designed for speed, ease of use, and complete peace of mind during your busiest rush hours.
+            </p>
+          </div>
+
+          {/* 3 Simple, High-Impact Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+            {[
+              {
+                icon: Zap,
+                title: "Fast & Easy to Learn",
+                headline: "Zero complicated training.",
+                desc: "Your cashier, servers, and kitchen team can start taking orders and billing in minutes on any tablet, desktop, or mobile screen.",
+                points: ["Quick touch interface", "Staff PIN logins", "Instant receipt printing"],
+              },
+              {
+                icon: Layers,
+                title: "Everything Connected",
+                headline: "One single reliable software.",
+                desc: "Orders from dining tables, takeaways, and QR scans flow directly to your kitchen and management screens with zero manual delays or lost tickets.",
+                points: ["Live kitchen display sync", "Table status indicators", "Real-time order tracking"],
+              },
+              {
+                icon: BarChart3,
+                title: "Total Owner Visibility",
+                headline: "Know your numbers anytime.",
+                desc: "Track daily revenue, best-selling items, and stock depletion in real time. Spend less time managing software and more time delighting your guests.",
+                points: ["Automatic daily reports", "Low-stock warning alerts", "Clear sales breakdowns"],
+              },
+            ].map((card) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={card.title}
+                  className="p-8 rounded-3xl bg-white border border-[#E5E7EB] hover:border-[#FF6A3D]/40 transition-all duration-300 shadow-sm flex flex-col justify-between space-y-8 group"
+                >
+                  <div className="space-y-5">
+                    <div className="w-12 h-12 rounded-2xl bg-[#FF6A3D]/10 border border-[#FF6A3D]/20 flex items-center justify-center text-[#FF6A3D] group-hover:scale-105 transition-transform">
+                      <Icon className="w-6 h-6" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#FF6A3D] block">
+                        {card.title}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-bold text-[#0F3D2E] font-poppins tracking-tight">
+                        {card.headline}
+                      </h3>
+                      <p className="text-sm text-[#0B0B0B]/70 font-normal leading-relaxed pt-1">
+                        {card.desc}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-[#E5E7EB] space-y-2.5">
+                    {card.points.map((pt, i) => (
+                      <div key={i} className="flex items-center gap-2.5 text-xs text-[#0F3D2E] font-medium">
+                        <Check className="w-3.5 h-3.5 text-[#FF6A3D] shrink-0" />
+                        <span>{pt}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               );
             })}
           </div>
-
         </div>
       </section>
 
-      {/* Enterprise Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-[#070A0F] via-slate-900 to-[#070A0F] border-t border-slate-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6A3D]/10 text-[#FF6A3D] border border-[#FF6A3D]/20 text-xs font-bold uppercase">
-            <span>Enterprise Ready</span>
+      {/* ========================================================================= */}
+      {/* SECTION 4 — HOW SAPRU HELPS (Simple Workflow)                              */}
+      {/* ========================================================================= */}
+      <section id="how-it-works" className="py-24 sm:py-32 lg:py-36 bg-white border-t border-b border-[#E5E7EB]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
+            <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
+              HOW IT WORKS
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F3D2E] font-poppins leading-tight">
+              How Sapru powers your everyday service.
+            </h2>
+            <p className="text-base sm:text-lg text-[#0B0B0B]/70 font-normal leading-relaxed">
+              A smooth, reliable workflow from the moment a guest orders to the end-of-day summary.
+            </p>
           </div>
 
-          <h3 className="text-3xl sm:text-5xl font-black text-white">
-            Ready to upgrade your restaurant operations?
-          </h3>
-          
-          <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto font-normal">
-            Experience how Sapru transforms order speed, kitchen communication, and financial visibility with our unified cloud platform.
+          {/* Visual Progression: 4-step workflow */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+            {[
+              {
+                step: "01",
+                title: "Take Orders Faster",
+                desc: "Punch dine-in, takeaway, or QR orders in seconds with lightning-fast search and item selection.",
+              },
+              {
+                step: "02",
+                title: "Kitchen Sync",
+                desc: "Orders instantly route to your kitchen display with preparation timers and zero lost tickets.",
+              },
+              {
+                step: "03",
+                title: "Quick Settlement",
+                desc: "Accept Cash, UPI, or Card payments in one tap with split billing and printed GST invoices.",
+              },
+              {
+                step: "04",
+                title: "Review & Grow",
+                desc: "Automatic end-of-day reports showing total revenue, top-selling items, and inventory status.",
+              },
+            ].map((phase, idx) => (
+              <div
+                key={phase.step}
+                className="p-6 rounded-2xl bg-[#FAFAF8] border border-[#E5E7EB] space-y-4 relative group hover:border-[#FF6A3D] transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-[#FF6A3D]">
+                    STEP {phase.step}
+                  </span>
+                  {idx < 3 && (
+                    <ChevronRight className="w-4 h-4 text-[#6B7280] hidden md:block" />
+                  )}
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-[#0F3D2E] font-poppins tracking-tight">
+                  {phase.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-[#0B0B0B]/70 font-normal leading-relaxed">
+                  {phase.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 5 — PRODUCT PREVIEW                                               */}
+      {/* ========================================================================= */}
+      <section className="py-24 sm:py-32 lg:py-36 bg-[#0A291F] text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="max-w-3xl mb-16 space-y-4">
+            <span className="text-xs font-bold tracking-widest text-[#FF6A3D] uppercase font-mono">
+              DESIGNED FOR CLARITY
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-poppins leading-tight">
+              Built to keep your business running smoothly.
+            </h2>
+            <p className="text-base sm:text-lg text-[#E5E7EB]/80 font-normal leading-relaxed">
+              Consolidated reports, live activity tracking, and intelligent summaries in one clean interface.
+            </p>
+          </div>
+
+          {/* Floating Interface Fragments Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+            {/* Fragment 1: Left 7 Cols - Business Velocity & Activity Fragment */}
+            <div className="md:col-span-7 space-y-6">
+              {/* Top Dashboard Fragment */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-[#0F3D2E] border border-[#165742] space-y-4 shadow-xl">
+                <div className="flex items-center justify-between pb-4 border-b border-[#165742]">
+                  <span className="text-xs font-mono font-bold uppercase text-[#E5E7EB]/70">
+                    Live Operational Performance
+                  </span>
+                  <span className="text-xs font-mono text-emerald-400 font-semibold">
+                    100% Service Uptime
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                  <div>
+                    <span className="text-xs text-[#E5E7EB]/60 block font-mono">Service Throughput</span>
+                    <span className="text-2xl font-bold font-mono text-white mt-1 block">98.8%</span>
+                  </div>
+                  <div>
+                    <span className="text-xs text-[#E5E7EB]/60 block font-mono">Register Audit</span>
+                    <span className="text-2xl font-bold font-mono text-[#FF6A3D] mt-1 block">₹0 Discrepancy</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Real-time Activity Stream Fragment */}
+              <div className="p-6 rounded-3xl bg-[#0F3D2E]/60 border border-[#165742] space-y-3 shadow-lg">
+                <span className="text-xs font-mono font-bold uppercase text-[#E5E7EB]/70 block mb-2">
+                  Live Floor &amp; Station Log
+                </span>
+                {[
+                  { tag: "ORDERS", msg: "Table 4 guest order routed to kitchen display", time: "1m ago" },
+                  { tag: "KITCHEN", msg: "Order #1049 marked ready on kitchen display", time: "5m ago" },
+                  { tag: "REPORTS", msg: "Daily revenue briefing generated for manager", time: "20m ago" },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between text-xs py-2 border-b border-[#165742]/50 last:border-0"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-white/10 text-white">
+                        {item.tag}
+                      </span>
+                      <span className="text-[#E5E7EB]/90">{item.msg}</span>
+                    </div>
+                    <span className="text-[11px] font-mono text-[#E5E7EB]/50">{item.time}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Fragment 2: Right 5 Cols - Intelligence Card & Summary */}
+            <div className="md:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-3xl bg-[#0F3D2E] border border-[#165742] shadow-xl space-y-6">
+              <div className="space-y-4">
+                <div className="w-8 h-8 rounded-xl bg-[#FF6A3D]/20 text-[#FF6A3D] flex items-center justify-center font-bold text-xs">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <h3 className="text-xl font-bold text-white font-poppins">
+                  Clear Daily Insights
+                </h3>
+                <p className="text-sm text-[#E5E7EB]/80 leading-relaxed font-normal">
+                  Sapru automatically compiles your daily sales, peak rush hours, and stock depletion into clear summaries so you always know how your restaurant is doing.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[#0A291F] border border-[#165742] space-y-2">
+                <span className="text-[10px] font-mono font-bold text-[#FF6A3D] uppercase">
+                  Automated shift summary
+                </span>
+                <p className="text-xs text-[#E5E7EB] font-mono">
+                  Everything connected. Clear &amp; simple.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 6 — FINAL CTA                                                     */}
+      {/* ========================================================================= */}
+      <section className="py-24 sm:py-32 lg:py-36 bg-[#FAFAF8] text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#0F3D2E] font-poppins leading-tight">
+            A simpler way to run your restaurant.
+          </h2>
+
+          <p className="text-lg sm:text-xl text-[#0B0B0B]/70 max-w-xl mx-auto font-normal leading-relaxed">
+            Start managing your billing, kitchen, and business effortlessly with Sapru.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div>
             <Link
-              href="/terminal"
-              className="px-8 py-4 rounded-xl bg-[#FF6A3D] hover:bg-[#ff5522] text-white font-bold text-xs transition shadow-lg shadow-[#FF6A3D]/30"
+              href="/dashboard"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-[#FF6A3D] hover:bg-[#FF5522] text-white font-bold text-sm transition-all shadow-lg shadow-[#FF6A3D]/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
             >
-              Launch Live POS Terminal
+              <span>Get Started</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link
-              href="/login"
-              className="px-8 py-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-xs transition border border-slate-800"
-            >
-              Access Staff Console
-            </Link>
+          </div>
+
+          <div className="pt-8">
+            <div className="inline-flex items-center gap-2 text-xs font-mono text-[#6B7280]">
+              <span className="w-2 h-2 rounded-full bg-[#0F3D2E]" />
+              <span>SAPRU RESTAURANT PLATFORM</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Minimalist Corporate Footer */}
-      <footer className="border-t border-slate-800 bg-[#070A0F] py-12 text-slate-400 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
-            
-            <div className="col-span-2 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="relative w-7 h-7 rounded-lg overflow-hidden border border-slate-700">
-                  <Image
-                    src="/app-icon-dark.png"
-                    alt="Sapru"
-                    width={28}
-                    height={28}
-                    className="object-cover"
-                  />
-                </div>
-                <span className="text-lg font-extrabold text-white">Sapru<span className="text-[10px] text-[#FF6A3D] ml-0.5">™</span></span>
-              </div>
-              <p className="text-slate-400 max-w-sm leading-relaxed">
-                The unified hospitality intelligence platform for point-of-sale billing, digital kitchen orchestration, contactless guest ordering, and multi-unit analytics.
-              </p>
+      {/* ========================================================================= */}
+      {/* FOOTER                                                                    */}
+      {/* ========================================================================= */}
+      <footer className="bg-white border-t border-[#E5E7EB] py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 rounded-md bg-[#0F3D2E] text-white flex items-center justify-center font-bold text-xs">
+              S
             </div>
-
-            <div>
-              <h5 className="font-bold text-white uppercase tracking-wider mb-3">Products</h5>
-              <ul className="space-y-2">
-                <li><Link href="/terminal" className="hover:text-white transition">Point of Sale (POS)</Link></li>
-                <li><Link href="/kds" className="hover:text-white transition">Kitchen Display (KDS)</Link></li>
-                <li><Link href="/menu/5da85f64-5717-4562-b3fc-2c963f66afb5" className="hover:text-white transition">Contactless QR Menu</Link></li>
-                <li><Link href="/dashboard" className="hover:text-white transition">Executive Dashboard</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h5 className="font-bold text-white uppercase tracking-wider mb-3">Management</h5>
-              <ul className="space-y-2">
-                <li><Link href="/tables" className="hover:text-white transition">Table Floorplans</Link></li>
-                <li><Link href="/inventory" className="hover:text-white transition">Inventory Control</Link></li>
-                <li><Link href="/orders" className="hover:text-white transition">Orders &amp; Invoices</Link></li>
-                <li><Link href="/staff" className="hover:text-white transition">Staff Governance</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h5 className="font-bold text-white uppercase tracking-wider mb-3">Company</h5>
-              <ul className="space-y-2">
-                <li><a href="#showcase" className="hover:text-white transition">Product Tour</a></li>
-                <li><a href="#solutions" className="hover:text-white transition">Core Solutions</a></li>
-                <li><Link href="/login" className="hover:text-white transition">Staff Sign In</Link></li>
-                <li><span className="text-slate-500">Enterprise SLA</span></li>
-              </ul>
-            </div>
-
+            <span className="text-sm font-bold text-[#0F3D2E] font-poppins">Sapru</span>
+            <span className="text-xs text-[#6B7280]">
+              — Restaurant management software, built beautifully.
+            </span>
           </div>
 
-          <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
-            <p>© 2026 Sapru Technologies Inc. All rights reserved. People. Plates. Progress.</p>
-            <div className="flex items-center gap-6">
-              <span className="inline-flex items-center gap-1.5 text-emerald-400 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Operational Status: Normal
-              </span>
-              <span>Enterprise Hospitality Suite</span>
-            </div>
+          <div className="flex items-center gap-6 text-xs text-[#0B0B0B]/70 font-medium">
+            <a href="#workspace" className="hover:text-[#FF6A3D] transition">Platform</a>
+            <Link href="/pricing" className="hover:text-[#FF6A3D] transition">Pricing</Link>
+            <Link href="/docs" className="hover:text-[#FF6A3D] transition">API Docs</Link>
+            <Link href="/support" className="hover:text-[#FF6A3D] transition">Support</Link>
+            <Link href="/login" className="hover:text-[#FF6A3D] transition">Sign In</Link>
+            <Link href="/dashboard" className="hover:text-[#FF6A3D] transition">Dashboard</Link>
           </div>
 
+          <div className="text-xs text-[#6B7280] font-mono">
+            © 2026 Sapru. All rights reserved.
+          </div>
         </div>
       </footer>
-
     </div>
   );
 }
-
